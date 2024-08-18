@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 STUID = ysyx_24100005
+=======
+STUID = ysyx_22040000
+>>>>>>> 8f46f12 (modified my info)
 STUNAME = 何源宏
 
 # DO NOT modify the following code!!!
