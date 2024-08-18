@@ -56,6 +56,7 @@ NPC_EXEC := $(BIN) $(IMG) $(ELF) $(REF)
 
 sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+<<<<<<< HEAD
 	$(NPC_EXEC)
 
 ## gdb有问题，传递的参数要加 --args参数
@@ -69,4 +70,11 @@ clean:
 .PHONY: default all clean run
 
 # git commit的tracer
+=======
+	@echo "Write this Makefile by your self."
+	verilator --cc --exe --build -j 0 -Wall ./csrc/main.cpp ./vsrc/example.v --trace --binary
+
+clean:
+	rm -rf ./obj_dir
+>>>>>>> b1cfd9b (> sim RTL)
 include ../Makefile

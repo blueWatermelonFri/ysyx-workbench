@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // #include <nvboard.h>
 #include "npc_common.h"
 #include "sdb.h"
@@ -35,3 +36,35 @@ int main(int argc, char *argv[]) {
   end_wave();
 
 }
+=======
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include "Vexample.h"
+#include "verilated.h"
+
+// while (1) {
+
+
+// }
+
+int main(int argc, char** argv) {
+      int a = rand() & 1;
+      int b = rand() & 1;
+      VerilatedContext* contextp = new VerilatedContext;
+      contextp->commandArgs(argc, argv);
+      Vexample* top = new Vexample{contextp};
+      
+
+      while (!contextp->gotFinish()) {
+        top->a = a;
+        top->b = b;
+        top->eval();
+        printf("a = %d, b = %d, f = %d\n", a, b, top->f);
+        assert(top->f == (a ^ b));
+         }
+      delete top;
+      delete contextp;
+      return 0;
+  }
+>>>>>>> b1cfd9b (> sim RTL)
