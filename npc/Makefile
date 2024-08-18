@@ -72,7 +72,7 @@ clean:
 # git commit的tracer
 =======
 	@echo "Write this Makefile by your self."
-	verilator --cc --exe --build -j 0 -Wall --trace --binary ./csrc/main.cpp ./vsrc/example.v 
+	verilator --cc --exe --build -j 0 -Wall --trace  ./csrc/main.cpp ./vsrc/example.v 
 
 clean:
 	rm -rf ./obj_dir

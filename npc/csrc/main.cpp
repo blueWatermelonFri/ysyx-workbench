@@ -55,6 +55,7 @@ int main(int argc, char** argv) {
       contextp->commandArgs(argc, argv);
       Vexample* top = new Vexample{contextp};
       
+    contextp->traceEverOn(true); // 生成波形文件使用，打开追踪功能
 
       while (!contextp->gotFinish()) {
         top->a = a;
@@ -62,6 +63,8 @@ int main(int argc, char** argv) {
         top->eval();
         printf("a = %d, b = %d, f = %d\n", a, b, top->f);
         assert(top->f == (a ^ b));
+                contextp->timeInc(1); // 时间+1，推动仿真时间
+
          }
       delete top;
       delete contextp;
