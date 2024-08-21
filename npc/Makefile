@@ -147,7 +147,7 @@ include ../Makefile
 
 
 sim:$(BIN)
-	$(call git_commit, "sim RTL") 
+	# $(call git_commit, "sim RTL") 
 
 clean:
 	rm -rf $(BUILD_DIR)
