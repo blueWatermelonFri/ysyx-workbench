@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // #include <nvboard.h>
 #include "npc_common.h"
 #include "sdb.h"
@@ -44,30 +45,32 @@ int main(int argc, char *argv[]) {
 #include "verilated.h"
 
 // while (1) {
+=======
+#include <nvboard.h>
+#include <Vtop.h>
+#include <iostream>
+>>>>>>> f2d33a7 (>)
 
 
-// }
+static TOP_NAME dut;
 
-int main(int argc, char** argv) {
-      int a = rand() & 1;
-      int b = rand() & 1;
-      VerilatedContext* contextp = new VerilatedContext;
-      contextp->commandArgs(argc, argv);
-      Vexample* top = new Vexample{contextp};
-      
-    contextp->traceEverOn(true); // 生成波形文件使用，打开追踪功能
+void nvboard_bind_all_pins(TOP_NAME* top);
 
-      while (!contextp->gotFinish()) {
-        top->a = a;
-        top->b = b;
-        top->eval();
-        printf("a = %d, b = %d, f = %d\n", a, b, top->f);
-        assert(top->f == (a ^ b));
-                contextp->timeInc(1); // 时间+1，推动仿真时间
+int main() {
+  nvboard_bind_all_pins(&dut);
+  nvboard_init();
 
+<<<<<<< HEAD
          }
       delete top;
       delete contextp;
       return 0;
   }
 >>>>>>> b1cfd9b (> sim RTL)
+=======
+  while(1) {
+    nvboard_update();
+    dut.eval();
+  }
+}
+>>>>>>> f2d33a7 (>)
