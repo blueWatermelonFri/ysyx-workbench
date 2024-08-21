@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 TOPNAME = ysyx_24100005_top
 NXDC_FILES = constr/top.nxdc
 INC_PATH ?= /home/myuser/ysyx/ysyx-workbench/npc/include
@@ -49,6 +50,9 @@ endef
 
 
 
+=======
+include ../Makefile
+>>>>>>> e4f70e1 (>)
 TOPNAME = top
 NXDC_FILES = constr/top.nxdc
 INC_PATH ?=
@@ -147,11 +151,15 @@ include ../Makefile
 
 
 sim:$(BIN)
-	# $(call git_commit, "sim RTL") 
+	$(call git_commit, "sim RTL") 
 
 clean:
 	rm -rf $(BUILD_DIR)
 
 .PHONY: default all clean run
 
+<<<<<<< HEAD
 >>>>>>> f2d33a7 (>)
+=======
+
+>>>>>>> e4f70e1 (>)
