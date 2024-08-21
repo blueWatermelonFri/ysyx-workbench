@@ -159,7 +159,10 @@ clean:
 .PHONY: default all clean run
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> f2d33a7 (>)
 =======
 
 >>>>>>> e4f70e1 (>)
+=======
+>>>>>>> 9cde4a2 (>)
