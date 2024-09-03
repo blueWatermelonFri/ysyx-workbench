@@ -10,7 +10,8 @@ static TOP_NAME top;
 
 int main() {
 
-  while (1) {
+  int tmp = 1000;
+  while (tmp >0) {
     int a = rand() & 1;
     int b = rand() & 1;
     top.a = a;
@@ -18,5 +19,6 @@ int main() {
     top.eval();
     printf("a = %d, b = %d, f = %d\n", a, b, top.f);
     assert(top.f == (a ^ b));
+    tmp -= 1;
   }
 }
