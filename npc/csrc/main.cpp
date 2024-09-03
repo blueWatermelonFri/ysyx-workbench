@@ -1,24 +1,31 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <Vtop.h>
+#include <Vlight.h>
 #include <nvboard.h>
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 
 static TOP_NAME top;
 
-int main() {
+void nvboard_bind_all_pins(TOP_NAME* top);
 
-  int tmp = 1000;
-  while (tmp >0) {
-    int a = rand() & 1;
-    int b = rand() & 1;
-    top.a = a;
-    top.b = b;
-    top.eval();
-    printf("a = %d, b = %d, f = %d\n", a, b, top.f);
-    assert(top.f == (a ^ b));
-    tmp -= 1;
+static void single_cycle() {
+  top.clk = 0; top.eval();
+  top.clk = 1; top.eval();
+}
+
+static void reset(int n) {
+  top.rst = 1;
+  while (n -- > 0) single_cycle();
+  top.rst = 0;
+}
+
+int main() {
+  nvboard_bind_all_pins(&top);
+  nvboard_init();
+
+  reset(10);
+
+  while(1) {
+    nvboard_update();
+    single_cycle();
   }
 }
