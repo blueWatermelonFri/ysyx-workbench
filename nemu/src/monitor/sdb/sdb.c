@@ -55,7 +55,11 @@ static int cmd_q(char *args) {
 
 
 static int cmd_si(char *args) {
-  cpu_exec(10);
+  
+  char *endptr;
+
+  uint64_t steps = strtoul(args, &endptr, 0);
+  cpu_exec(steps);
   return 0;
 }
 
@@ -114,19 +118,14 @@ void sdb_mainloop() {
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
 
-    printf("%s\n", str);
-
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
-    printf("%s\n", cmd);
-
     if (cmd == NULL) { continue; }
 
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;
-    printf("%s\n", args);
     if (args >= str_end) {
       args = NULL;
     }
