@@ -55,7 +55,7 @@ static int cmd_q(char *args) {
 
 
 static int cmd_si(char *args) {
-  cpu_single_exec(-1);
+  cpu_exec(10);
   return 0;
 }
 
@@ -116,6 +116,9 @@ void sdb_mainloop() {
 
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
+    printf("%s\n", str);
+    printf("%s\n", cmd);
+
     if (cmd == NULL) { continue; }
 
     /* treat the remaining string as the arguments,
