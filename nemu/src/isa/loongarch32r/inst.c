@@ -66,13 +66,3 @@ static int decode_exec(Decode *s) {
   return 0;
 }
 
-int isa_exec_once(Decode *s) {
-  printf("111111111111\n");
-  printf("111111111111\n");
-  printf("111111111111\n");
-  printf("111111111111\n");
-  printf("111111111111\n");
-
-  s->isa.inst.val = inst_fetch(&s->snpc, 4);
-  return decode_exec(s);
-}
