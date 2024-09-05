@@ -55,6 +55,8 @@ static void exec_once(Decode *s, vaddr_t pc) {
   printf("%x\n", s->isa.inst.val);
   printf("%x\n", s->isa.inst.val);
   printf("%x\n", s->isa.inst.val);
+  printf("%x\n", s->isa.inst.val);
+  printf("%x\n", s->isa.inst.val);
   
   for (i = ilen - 1; i >= 0; i --) {
     p += snprintf(p, 4, " %02x", inst[i]);
