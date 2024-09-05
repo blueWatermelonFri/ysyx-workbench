@@ -18,11 +18,12 @@
 #include <memory/vaddr.h>
 
 static inline uint32_t inst_fetch(vaddr_t *pc, int len) {
-  printf("1111%x\n", *pc);
-  printf("1111%x\n", *pc);
-  printf("1111%x\n", *pc);
-  printf("1111%x\n", *pc);
   uint32_t inst = vaddr_ifetch(*pc, len);
+  printf("1111%x\n", inst);
+  printf("1111%x\n", inst);
+  printf("1111%x\n", inst);
+  printf("1111%x\n", inst);
+  printf("1111%x\n", inst);
   (*pc) += len;
   return inst;
 }
