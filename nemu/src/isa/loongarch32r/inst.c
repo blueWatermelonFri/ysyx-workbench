@@ -71,6 +71,11 @@ int isa_exec_once(Decode *s) {
   printf("%p\n", &s->snpc);
   printf("%p\n", &s->snpc);
   printf("%p\n", &s->snpc);
+  printf("%p\n", &s->snpc);
+  printf("%p\n", &s->snpc);
+  printf("%p\n", &s->snpc);
+  printf("%p\n", &s->snpc);
+  printf("%p\n", &s->snpc);
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
   return decode_exec(s);
 }
