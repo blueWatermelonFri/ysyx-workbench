@@ -47,7 +47,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
-  printf("%p", p);
+  printf("%p\n", p);
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
   printf("%p", p);
 
