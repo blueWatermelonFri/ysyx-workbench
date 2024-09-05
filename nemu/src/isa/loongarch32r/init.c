@@ -39,6 +39,9 @@ void init_isa() {
   memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
   unsigned int  ret = host_read(guest_to_host(0x80000000), 4);
   printf("%x\n", ret);
+  printf("%x\n", ret);
+  printf("%x\n", ret);
+  printf("%x\n", ret);q
   /* Initialize this virtual computer system. */
   restart();
 }
