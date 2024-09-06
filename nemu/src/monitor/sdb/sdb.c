@@ -70,7 +70,21 @@ static int cmd_si(char *args) {
 static int cmd_x(char *args) {
 
 
-  // printf("0x%08x\n", pmem  - CONFIG_MBASE)
+  // p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
+  // int ilen = s->snpc - s->pc;
+  // int i;
+  // uint8_t *inst = (uint8_t *)&s->isa.inst.val;
+  // for (i = ilen - 1; i >= 0; i --) {
+  //   p += snprintf(p, 4, " %02x", inst[i]);
+  // }
+
+  // int b = 2;
+  // long a = 1;
+  // uint32_t paddr = strtou
+  // uint8_t addr = guest_to_host()
+
+  // printf("0x%08x\n", pmem + xx CONFIG_MBASE)
+  printf("%ld\n", sizeof(long));
   // for (;n > 0; n --) {
   //   exec_once(&s, cpu.pc);
   //   trace_and_difftest(&s, cpu.pc);
