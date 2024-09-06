@@ -84,7 +84,7 @@ static int cmd_x(char *args) {
   // uint8_t addr = guest_to_host()
 
   // printf("0x%08x\n", pmem + xx CONFIG_MBASE)
-  printf("%ld\n", sizeof(long));
+  printf("%ld\n", sizeof(long long));
   // for (;n > 0; n --) {
   //   exec_once(&s, cpu.pc);
   //   trace_and_difftest(&s, cpu.pc);
