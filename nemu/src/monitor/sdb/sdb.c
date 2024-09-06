@@ -69,23 +69,24 @@ static int cmd_si(char *args) {
 
 static int cmd_x(char *args) {
 
+  char *str_len = strtok(args, " ");
+  args = str_len + strlen(str_len) + 1;
+  char *str_addr = strtok(args, " ");
 
-  // p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
-  // int ilen = s->snpc - s->pc;
-  // int i;
-  // uint8_t *inst = (uint8_t *)&s->isa.inst.val;
-  // for (i = ilen - 1; i >= 0; i --) {
-  //   p += snprintf(p, 4, " %02x", inst[i]);
-  // }
+  // 只支持32位的地址
+  assert(strlen(str_addr) == 8);
+  
+  char *endptr;
+  uint64_t steps = strtoul(str_addr, &endptr, 0);
 
-  // int b = 2;
-  // long a = 1;
-  // uint32_t paddr = strtou
-  // uint8_t addr = guest_to_host()
-
-  long  a;
+  uint32_t addr = (uint32_t) steps;
+  uint32_t val =  vaddr_ifetch(addr, 4);
+  uint8_t * int8_addr = (uint8_t *)& val;
+  
+  for (int i = 4 - 1; i >= 0; i --) {
+    printf("%02x", int8_addr[i]);
+  }
   // printf("0x%08x\n", pmem + xx CONFIG_MBASE)
-  printf("%ld\n", sizeof(a));
   // for (;n > 0; n --) {
   //   exec_once(&s, cpu.pc);
   //   trace_and_difftest(&s, cpu.pc);
