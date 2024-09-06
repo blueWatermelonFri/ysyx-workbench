@@ -74,7 +74,7 @@ static int cmd_x(char *args) {
   char *str_addr = strtok(args, " ");
 
   // 只支持32位的地址
-  assert(strlen(str_addr) == 8);
+  assert(strlen(str_addr) == 10);
   
   char *endptr;
   uint64_t steps = strtoul(str_addr, &endptr, 0);
