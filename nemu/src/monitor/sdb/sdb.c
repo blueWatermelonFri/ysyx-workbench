@@ -70,6 +70,7 @@ static int cmd_si(char *args) {
 static int cmd_x(char *args) {
 
 
+  // printf("0x%08x\n", pmem  - CONFIG_MBASE)
   // for (;n > 0; n --) {
   //   exec_once(&s, cpu.pc);
   //   trace_and_difftest(&s, cpu.pc);
@@ -91,7 +92,6 @@ static struct {
   { "r", "print register info", cmd_r },
   { "x", "print memory info", cmd_x },
 
-  
   /* TODO: Add more commands */
 
 };
