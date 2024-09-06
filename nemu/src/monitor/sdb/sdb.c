@@ -67,6 +67,16 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+static int cmd_x(char *args) {
+
+
+  // for (;n > 0; n --) {
+  //   exec_once(&s, cpu.pc);
+  //   trace_and_difftest(&s, cpu.pc);
+  // }
+
+  return 0;
+}
 static int cmd_help(char *args);
 
 static struct {
@@ -79,6 +89,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Single  step", cmd_si },
   { "r", "print register info", cmd_r },
+  { "x", "print memory info", cmd_x },
+
   
   /* TODO: Add more commands */
 
