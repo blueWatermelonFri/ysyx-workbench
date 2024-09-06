@@ -83,7 +83,7 @@ static int cmd_x(char *args) {
   // uint32_t paddr = strtou
   // uint8_t addr = guest_to_host()
 
-  long long a;
+  long  a;
   // printf("0x%08x\n", pmem + xx CONFIG_MBASE)
   printf("%ld\n", sizeof(a));
   // for (;n > 0; n --) {
