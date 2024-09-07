@@ -151,7 +151,23 @@ static bool make_token(char *e) {
     printf("%d, %s\n", tokens[2].type, tokens[2].str);    
     printf("%d, %s\n", tokens[3].type, tokens[3].str);    
     printf("%d, %s\n", tokens[4].type, tokens[4].str);    
-    printf("%d, %s\n", tokens[5].type, tokens[5].str);    
+    printf("%d, %s\n", tokens[5].type, tokens[5].str);  
+    printf("%d, %s\n", tokens[6].type, tokens[6].str);
+    printf("%d, %s\n", tokens[7].type, tokens[7].str);    
+    printf("%d, %s\n", tokens[8].type, tokens[8].str);    
+    printf("%d, %s\n", tokens[9].type, tokens[9].str);    
+    printf("%d, %s\n", tokens[10].type, tokens[10].str);    
+    printf("%d, %s\n", tokens[11].type, tokens[11].str);          
+    printf("%d, %s\n", tokens[12].type, tokens[12].str);          
+    printf("%d, %s\n", tokens[13].type, tokens[13].str);          
+    printf("%d, %s\n", tokens[14].type, tokens[14].str);          
+    printf("%d, %s\n", tokens[15].type, tokens[15].str);          
+    printf("%d, %s\n", tokens[16].type, tokens[16].str);    
+    printf("%d, %s\n", tokens[17].type, tokens[17].str);    
+    printf("%d, %s\n", tokens[18].type, tokens[18].str); 
+    printf("%d, %s\n", tokens[19].type, tokens[19].str); 
+    printf("%d, %s\n", tokens[20].type, tokens[20].str); 
+
   return true;
 }
 
