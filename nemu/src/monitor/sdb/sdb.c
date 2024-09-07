@@ -79,7 +79,7 @@ static int cmd_x(char *args) {
   char *endptr;
   // if  base is zero or 16, the string may then include a "0x" prefix, and  the
   //  number  will  be read in base 16; 
-  printf("%s\n", str_addr);
+  // printf("%s\n", str_addr);
   uint64_t steps = strtoul(str_addr, &endptr, 0);
   // int len = (int) strtoul(str_len, &endptr, 0);
 
@@ -87,11 +87,12 @@ static int cmd_x(char *args) {
   uint32_t addr1 = (uint32_t) steps;
   uint32_t val1 =  vaddr_ifetch(addr1, 4);
   uint8_t * int8_addr = (uint8_t *)& val1;
+  printf("\n");
   
   for (int j = 3; j >= 0 ; j --) {
     printf("%02x", int8_addr[j]);
   }
-
+  printf("\n");
   addr1 = (uint32_t) (steps + 4);
    val1 =  vaddr_ifetch(addr1, 4);
   int8_addr = (uint8_t *)& val1;
@@ -99,6 +100,7 @@ static int cmd_x(char *args) {
   for (int j = 3; j >= 0 ; j --) {
     printf("%02x", int8_addr[j]);
   }
+  printf("\n");
 
     printf("%p", &val1);
 
