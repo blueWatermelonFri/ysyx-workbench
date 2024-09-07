@@ -91,7 +91,6 @@ static int cmd_x(char *args) {
 
     // printf("%x", val);
     // printf("%x", val);
-    printf("%08x", cpu.pc);
     // printf("%02x", pmem[6]);
 
 
