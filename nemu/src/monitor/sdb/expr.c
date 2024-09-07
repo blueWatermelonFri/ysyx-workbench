@@ -128,7 +128,7 @@ static bool make_token(char *e) {
           case NUMBER:
             assert (strlen(substr_start) < sizeof(tokens[count].str));
             tokens[count].type = NUMBER;
-            strncpy(tokens[count].str, substr_start, sizeof(tokens[count].str) - 1);
+            strncpy(tokens[count].str, substr_start, substr_len);
             break; 
           default :
             break;
@@ -138,11 +138,6 @@ static bool make_token(char *e) {
         break;
       }
     }
-    printf("%s \n", tokens[0].str);
-    printf("%s \n", tokens[1].str);
-    printf("%s \n", tokens[2].str);
-    printf("%s \n", tokens[3].str);
-    printf("%s \n", tokens[4].str);
 
     if (i == NR_REGEX) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
