@@ -91,6 +91,20 @@ static int cmd_x(char *args) {
     if( i % 4 == 0)
       printf("\n");
   }
+
+    printf("%02x", int8_addr[0]);
+    printf("%02x", int8_addr[1]);
+    printf("%02x", int8_addr[2]);
+    printf("%02x", int8_addr[3]);
+    printf("%02x", int8_addr[4]);
+    printf("%02x", int8_addr[5]);
+    printf("%02x", int8_addr[6]);
+    printf("%02x", int8_addr[7]);
+    printf("%02x", int8_addr[8]);
+    printf("%02x", int8_addr[9]);
+    printf("%02x", int8_addr[10]);
+    printf("%02x", int8_addr[11]);
+
   // printf("0x%08x\n", pmem + xx CONFIG_MBASE)
   // for (;n > 0; n --) {
   //   exec_once(&s, cpu.pc);
