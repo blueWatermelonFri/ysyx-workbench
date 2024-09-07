@@ -85,28 +85,12 @@ static int cmd_x(char *args) {
   uint32_t addr = (uint32_t) steps;
   uint32_t val =  vaddr_ifetch(addr, 4);
   uint8_t * int8_addr = (uint8_t *)& val;
-  printf("%02x", int8_addr[3]);
-  printf("%02x", int8_addr[2]);
-  printf("%02x", int8_addr[1]);
-  printf("%02x", int8_addr[0]);
-
-  printf("%02x", int8_addr[7]);
-  printf("%02x", int8_addr[6]);
-  printf("%02x", int8_addr[5]);
-  printf("%02x", int8_addr[5]);
-
-    printf("\n");
-
-  for (int i = 0; i < len; i++ ) {
-    for (int j = 3; j >= 0 ; j --) {
-      printf("%02x", int8_addr[i * 4 + j]);
-    }
-    printf("\n");
-    printf("%p\n", &(int8_addr[i * 4]));
-
-  }
-
   
+  for (int i = len * 4 - 1; i >= 0; i --) {
+    printf("%02x", int8_addr[i]);
+    if( i % 4 == 0)
+      printf("\n");
+  }
   return 0;
 }
 static int cmd_help(char *args);
