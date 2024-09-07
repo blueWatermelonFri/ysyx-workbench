@@ -116,7 +116,7 @@ static bool make_token(char *e) {
             tokens[i].type = DIV;
             break;
           case NUMBER:
-            assert (strlen(substr_start) > 32);
+            assert (strlen(substr_start) < 32);
             tokens[i].type = NUMBER;
             strncpy(tokens[i].str, substr_start, sizeof(tokens[i].str) - 1);
             break;            
