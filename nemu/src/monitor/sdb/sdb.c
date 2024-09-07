@@ -101,7 +101,6 @@ static int cmd_x(char *args) {
   
   for (int i = 0; i < len; i++ ) {
     printf("%08x : 0x", 0x80000000 + 4 * i);
-    
     for (int j = 3; j >= 0 ; j --) {
       printf("%02x", int8_addr[i * 4 + j]);
   }
