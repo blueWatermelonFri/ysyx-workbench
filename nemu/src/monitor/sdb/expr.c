@@ -146,12 +146,12 @@ static bool make_token(char *e) {
     }
   }
 
-    printf("%s\n", tokens[0].str);
-    printf("%s\n", tokens[1].str);    
-    printf("%s\n", tokens[2].str);    
-    printf("%s\n", tokens[3].str);    
-    printf("%s\n", tokens[4].str);    
-    printf("%s\n", tokens[5].str);    
+    printf("%d, %s\n", tokens[0].type, tokens[0].str);
+    printf("%d, %s\n", tokens[1].type, tokens[1].str);    
+    printf("%d, %s\n", tokens[2].type, tokens[2].str);    
+    printf("%d, %s\n", tokens[3].type, tokens[3].str);    
+    printf("%d, %s\n", tokens[4].type, tokens[4].str);    
+    printf("%d, %s\n", tokens[5].type, tokens[5].str);    
   return true;
 }
 
