@@ -111,11 +111,8 @@ static int cmd_x(char *args) {
 }
 
 static int cmd_p(char *args) {
-      if (args[0] ==  '\0') 
-    printf("111111111111111111111111111");
+
   bool *success = false;
-      if (args[0] ==  '\0') 
-    printf("111111111111111111111111111");
   expr(args, success);
   return 0;
   
