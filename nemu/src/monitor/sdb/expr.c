@@ -132,11 +132,12 @@ static bool make_token(char *e) {
             break; 
           default :
             break;
-        count += 1;                   
         }
 
         break;
       }
+        count += 1;                   
+
     }
 
     if (i == NR_REGEX) {
