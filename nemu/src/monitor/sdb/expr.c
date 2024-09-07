@@ -84,7 +84,7 @@ static bool make_token(char *e) {
   regmatch_t pmatch;
 
   nr_token = 0;
-
+    int count = 0;
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
@@ -104,22 +104,27 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case PLUS:
-            tokens[i].type = PLUS;
+            tokens[count].type = PLUS;
             break;
           case SUB:
-            tokens[i].type = SUB;
+            tokens[count].type = SUB;
             break;
           case MUL:
-            tokens[i].type = MUL;
+            tokens[count].type = MUL;
             break;
           case DIV:
-            tokens[i].type = DIV;
+            tokens[count].type = DIV;
             break;
           case NUMBER:
-            assert (strlen(substr_start) < 32);
-            tokens[i].type = NUMBER;
-            strncpy(tokens[i].str, substr_start, sizeof(tokens[i].str) - 1);
-            break;            
+            printf("%ld\n", sizeof(tokens[count].str));
+            assert (strlen(substr_start) < sizeof(tokens[count].str));
+            tokens[count].type = NUMBER;
+            strncpy(tokens[count].str, substr_start, sizeof(tokens[count].str) - 1);
+            break; 
+          default :
+            break;
+        count += 1;
+                   
         }
 
         break;
