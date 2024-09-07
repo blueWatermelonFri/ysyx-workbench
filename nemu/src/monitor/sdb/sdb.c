@@ -93,6 +93,9 @@ static int cmd_x(char *args) {
     printf("%02x", int8_addr[j]);
   }
   printf("\n");
+  
+  printf("%p", int8_addr);
+  printf("\n");
   addr1 = (uint32_t) (steps + 4);
    val1 =  vaddr_ifetch(addr1, 4);
   int8_addr = (uint8_t *)& val1;
@@ -101,8 +104,11 @@ static int cmd_x(char *args) {
     printf("%02x", int8_addr[j]);
   }
   printf("\n");
+  
+  printf("%p", int8_addr);
+  
+  printf("\n");
 
-    printf("%p", &val1);
 
     // printf("%x", val);
     // printf("%x", val);
