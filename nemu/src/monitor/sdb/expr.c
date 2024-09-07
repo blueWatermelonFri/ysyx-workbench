@@ -21,8 +21,13 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-
+  TK_NOTYPE = 256,
+  PLUS,
+  SUB,
+  MUL,
+  DIV,
+  NUMBER,
+  TK_EQ,
   /* TODO: Add more token types */
 
 };
@@ -35,9 +40,12 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
+  {"-", '-'},           // sub
+  {"\\*", '*'},         // multiply
+  {"\\/", '/'},         // divide
+  {"-?[0-9]+", NUMBER}, // decimalism integer
   {"==", TK_EQ},        // equal
 };
 
@@ -77,9 +85,6 @@ static bool make_token(char *e) {
 
   nr_token = 0;
 
-
-
-
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
@@ -98,7 +103,23 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
+          case PLUS:
+            tokens[i].type = PLUS;
+            break;
+          case SUB:
+            tokens[i].type = SUB;
+            break;
+          case MUL:
+            tokens[i].type = MUL;
+            break;
+          case DIV:
+            tokens[i].type = DIV;
+            break;
+          case NUMBER:
+            assert (strlen(substr_start) > 32);
+            tokens[i].type = NUMBER;
+            strncpy(tokens[i].str, substr_start, sizeof(tokens[i].str) - 1);
+            break;            
         }
 
         break;
@@ -116,7 +137,6 @@ static bool make_token(char *e) {
 
 
 word_t expr(char *e, bool *success) {
-
 
 
   if (!make_token(e)) {
