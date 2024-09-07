@@ -88,15 +88,11 @@ static int cmd_x(char *args) {
 
     printf("%08x", val);
     printf("%08x", *(&val + 1));
+
     // printf("%x", val);
     // printf("%x", val);
-    // printf("%02x", int8_addr[i]);
-    // printf("%02x", int8_addr[i]);
-    // printf("%02x", int8_addr[i]);
-    // printf("%02x", int8_addr[i]);
-    // printf("%02x", int8_addr[i]);
-    // printf("%02x", int8_addr[i]);
-    // printf("%02x", int8_addr[i]);
+    printf("%08x", cpu.pc);
+    // printf("%02x", pmem[6]);
 
 
   // for (int i = 39; i >= 0; i --) {
