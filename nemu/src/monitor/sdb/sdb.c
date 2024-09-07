@@ -86,11 +86,14 @@ static int cmd_x(char *args) {
   uint32_t val =  vaddr_ifetch(addr, 4);
   uint8_t * int8_addr = (uint8_t *)& val;
   
-  for (int i = len * 4 - 1; i >= 0; i --) {
-    printf("%02x", int8_addr[i]);
-    if( i % 4 == 0)
-      printf("\n");
+  for (int i = 0; i < len; i++ ) {
+    for (int j = 3; j >= 0 ; j --) {
+      printf("%02x", int8_addr[i * len + j]);
+    }
+    printf("\n");
   }
+
+  
   return 0;
 }
 static int cmd_help(char *args);
