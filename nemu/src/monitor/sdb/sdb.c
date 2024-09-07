@@ -100,6 +100,8 @@ static int cmd_x(char *args) {
   uint8_t * int8_addr =  guest_to_host(addr);
   
   for (int i = 0; i < len; i++ ) {
+    printf("0x");
+    
     for (int j = 3; j >= 0 ; j --) {
       printf("%02x", int8_addr[i * 4 + j]);
   }
