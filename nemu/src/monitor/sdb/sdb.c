@@ -94,10 +94,14 @@ static int cmd_x(char *args) {
   printf("%d\n", len);
   printf("%d\n", len);
   printf("%d\n", len);
+
   if (endptr == str_addr) {
         fprintf(stderr, "No digits were found\n");
         exit(EXIT_FAILURE);
   }
+
+  printf("%d\n", len);
+
 
   uint8_t * int8_addr =  guest_to_host(addr);
   
