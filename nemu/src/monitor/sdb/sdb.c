@@ -82,6 +82,7 @@ static int cmd_x(char *args) {
   uint64_t steps = strtoul(str_addr, &endptr, 0);
   // int len = (int) strtoul(str_len, &endptr, 0);
 
+  printf("%ld", steps);
   uint32_t addr = (uint32_t) steps;
   uint32_t val =  vaddr_ifetch(addr, 4);
   // uint8_t * int8_addr = (uint8_t *)& val;
