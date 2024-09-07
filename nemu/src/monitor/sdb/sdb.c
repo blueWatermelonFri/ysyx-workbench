@@ -80,17 +80,18 @@ static int cmd_x(char *args) {
   // if  base is zero or 16, the string may then include a "0x" prefix, and  the
   //  number  will  be read in base 16; 
   uint64_t steps = strtoul(str_addr, &endptr, 0);
-  uint64_t len = strtoul(str_len, &endptr, 0);
+  // int len = (int) strtoul(str_len, &endptr, 0);
 
   uint32_t addr = (uint32_t) steps;
   uint32_t val =  vaddr_ifetch(addr, 4);
   uint8_t * int8_addr = (uint8_t *)& val;
   
-  for (int i = len * 4 - 1; i >= 0; i --) {
+  for (int i = 4 - 1; i >= 0; i --) {
     printf("%02x", int8_addr[i]);
     if( i % 4 == 0)
       printf("\n");
   }
+  // printf("0x%08x\n", pmem + xx CONFIG_MBASE)
   // for (;n > 0; n --) {
   //   exec_once(&s, cpu.pc);
   //   trace_and_difftest(&s, cpu.pc);
