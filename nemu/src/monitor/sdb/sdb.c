@@ -91,6 +91,8 @@ static int cmd_x(char *args) {
       printf("%02x", int8_addr[i * 4 + j]);
     }
     printf("\n");
+    printf("%p\n", &(int8_addr[i * 4]));
+
   }
 
   
