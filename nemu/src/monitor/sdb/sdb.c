@@ -82,7 +82,7 @@ static int cmd_x(char *args) {
   // if  base is zero or 16, the string may then include a "0x" prefix, and  the
   //  number  will  be read in base 16; 
   uint32_t addr = (uint32_t) strtoul(str_addr, &endptr, 0);
-  
+  assert (addr >= 0x80000000);
   /* Check for various possible errors , from man 3 strtol*/
   if (endptr == str_addr) {
         fprintf(stderr, "No digits were found\n");
@@ -92,7 +92,7 @@ static int cmd_x(char *args) {
   int len = (int) strtoul(str_len, &endptr, 0);
   assert(len > 0);
 
-  if (endptr == str_addr) {
+  if (endptr == str_len) {
         fprintf(stderr, "No digits were found\n");
         exit(EXIT_FAILURE);
   }
@@ -100,7 +100,7 @@ static int cmd_x(char *args) {
   uint8_t * int8_addr =  guest_to_host(addr);
   
   for (int i = 0; i < len; i++ ) {
-    printf("%08x : 0x", 0x80000000+ 4 * i);
+    printf("%08x : 0x", 0x80000000 + 4 * i);
     
     for (int j = 3; j >= 0 ; j --) {
       printf("%02x", int8_addr[i * 4 + j]);
