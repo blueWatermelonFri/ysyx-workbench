@@ -73,25 +73,29 @@ static int cmd_x(char *args) {
   args = str_len + strlen(str_len) + 1;
   char *str_addr = strtok(args, " ");
 
-  // 只支持0x开始32位的地址，以字符串的形式输入，所以是10位数字
+  // 只支持32位的地址
   assert(strlen(str_addr) == 10);
   
   char *endptr;
   // if  base is zero or 16, the string may then include a "0x" prefix, and  the
   //  number  will  be read in base 16; 
   uint64_t steps = strtoul(str_addr, &endptr, 0);
-  int len = (int) strtoul(str_len, &endptr, 0);
+  uint64_t len = strtoul(str_len, &endptr, 0);
 
   uint32_t addr = (uint32_t) steps;
   uint32_t val =  vaddr_ifetch(addr, 4);
   uint8_t * int8_addr = (uint8_t *)& val;
   
-  printf("%d\n", len);
   for (int i = len * 4 - 1; i >= 0; i --) {
     printf("%02x", int8_addr[i]);
     if( i % 4 == 0)
       printf("\n");
   }
+  // for (;n > 0; n --) {
+  //   exec_once(&s, cpu.pc);
+  //   trace_and_difftest(&s, cpu.pc);
+  // }
+
   return 0;
 }
 static int cmd_help(char *args);
