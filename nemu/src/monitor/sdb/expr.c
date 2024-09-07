@@ -138,6 +138,12 @@ static bool make_token(char *e) {
         break;
       }
     }
+    printf("%s\n", tokens[0].str);
+    printf("%s\n", tokens[1].str);    
+    printf("%s\n", tokens[2].str);    
+    printf("%s\n", tokens[3].str);    
+    printf("%s\n", tokens[4].str);    
+    printf("%s\n", tokens[5].str);    
 
     if (i == NR_REGEX) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
