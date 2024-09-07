@@ -77,8 +77,7 @@ static bool make_token(char *e) {
 
   nr_token = 0;
 
-  if (e[position] ==  '\0') 
-    printf("111111111111111111111111111");
+
 
 
   while (e[position] != '\0') {
@@ -117,6 +116,10 @@ static bool make_token(char *e) {
 
 
 word_t expr(char *e, bool *success) {
+
+    if (e[0] ==  '\0') 
+    printf("111111111111111111111111111");
+
   if (!make_token(e)) {
     *success = false;
     return 0;
