@@ -86,8 +86,7 @@ static int cmd_x(char *args) {
   uint32_t val =  vaddr_ifetch(addr, 4);
   // uint8_t * int8_addr = (uint8_t *)& val;
 
-    printf("%08x", val);
-    printf("%08x", *(&val + 1));
+    printf("%p", &val);
 
     // printf("%x", val);
     // printf("%x", val);
