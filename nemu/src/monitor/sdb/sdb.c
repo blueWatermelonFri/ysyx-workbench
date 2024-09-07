@@ -83,33 +83,26 @@ static int cmd_x(char *args) {
   // int len = (int) strtoul(str_len, &endptr, 0);
 
   uint32_t addr = (uint32_t) steps;
-  printf("%0x\n", addr);
   uint32_t val =  vaddr_ifetch(addr, 4);
-  uint8_t * int8_addr = (uint8_t *)& val;
-  
-  for (int i = 39; i >= 0; i --) {
-    printf("%02x", int8_addr[i]);
-    if( i % 4 == 0)
-      printf("\n");
-  }
+  // uint8_t * int8_addr = (uint8_t *)& val;
 
-    printf("%02x", int8_addr[0]);
-    printf("%02x", int8_addr[1]);
-    printf("%02x", int8_addr[2]);
-    printf("%02x", int8_addr[3]);
-    printf("%02x", int8_addr[4]);
-    printf("%02x", int8_addr[5]);
-    printf("%02x", int8_addr[6]);
-    printf("%02x", int8_addr[7]);
-    printf("%02x", int8_addr[8]);
-    printf("%02x", int8_addr[9]);
-    printf("%02x", int8_addr[10]);
-    printf("%02x", int8_addr[11]);
+    printf("%x", val);
+    printf("%x", *(&val + 1));
+    // printf("%x", val);
+    // printf("%x", val);
+    // printf("%02x", int8_addr[i]);
+    // printf("%02x", int8_addr[i]);
+    // printf("%02x", int8_addr[i]);
+    // printf("%02x", int8_addr[i]);
+    // printf("%02x", int8_addr[i]);
+    // printf("%02x", int8_addr[i]);
+    // printf("%02x", int8_addr[i]);
 
-  // printf("0x%08x\n", pmem + xx CONFIG_MBASE)
-  // for (;n > 0; n --) {
-  //   exec_once(&s, cpu.pc);
-  //   trace_and_difftest(&s, cpu.pc);
+
+  // for (int i = 39; i >= 0; i --) {
+  //   printf("%02x", int8_addr[i]);
+  //   if( i % 4 == 0)
+  //     printf("\n");
   // }
 
   return 0;
