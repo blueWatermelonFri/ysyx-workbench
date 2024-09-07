@@ -131,7 +131,7 @@ static struct {
   { "si", "Single  step", cmd_si },
   { "r", "print register info", cmd_r },
   { "x", "print memory info", cmd_x },
-  { "p", "print memory info", cmd_p },
+  { "p", "get expr value", cmd_p },
 
   /* TODO: Add more commands */
 
