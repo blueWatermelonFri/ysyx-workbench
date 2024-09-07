@@ -53,8 +53,8 @@ static int cmd_q(char *args) {
   return -1;
 }
 
-static int cmd_r() {
-  isa_reg_display();
+static int cmd_r(char *args) {
+  isa_reg_display(args);
   return 0;
 }
 
@@ -110,6 +110,14 @@ static int cmd_x(char *args) {
   return 0;
 }
 
+static int cmd_p(char *args) {
+
+  bool *success = false;
+  expr(args, success);
+  return 0;
+  
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -123,6 +131,7 @@ static struct {
   { "si", "Single  step", cmd_si },
   { "r", "print register info", cmd_r },
   { "x", "print memory info", cmd_x },
+  { "p", "get expr value", cmd_p },
 
   /* TODO: Add more commands */
 

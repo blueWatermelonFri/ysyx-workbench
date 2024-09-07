@@ -21,8 +21,15 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-
+  TK_NOTYPE = 256,
+  PLUS,
+  SUB,
+  MUL,
+  DIV,
+  LBRACKET,
+  RBRACKET,
+  NUMBER,
+  TK_EQ,
   /* TODO: Add more token types */
 
 };
@@ -35,9 +42,14 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
+  {"\\+", PLUS},         // plus
+  {"-", SUB},           // sub
+  {"\\*", MUL},         // multiply
+  {"\\/", DIV},         // divide
+  {"\\(", LBRACKET},         // divide
+  {"\\)", RBRACKET},         // divide
+  {"-?[0-9]+", NUMBER}, // decimalism integer
   {"==", TK_EQ},        // equal
 };
 
@@ -76,7 +88,7 @@ static bool make_token(char *e) {
   regmatch_t pmatch;
 
   nr_token = 0;
-
+    int count = 0;
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
@@ -95,13 +107,39 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
+          case PLUS:
+            tokens[count].type = PLUS;
+            break;
+          case SUB:
+            tokens[count].type = SUB;
+            break;
+          case MUL:
+            tokens[count].type = MUL;
+            break;
+          case DIV:
+            tokens[count].type = DIV;
+            break;
+          case LBRACKET:
+            tokens[count].type = LBRACKET;
+            break;
+          case RBRACKET:
+            tokens[count].type = RBRACKET;
+            break;         
+          case NUMBER:
+            assert (substr_len < sizeof(tokens[count].str));
+            tokens[count].type = NUMBER;
+            strncpy(tokens[count].str, substr_start, substr_len);
+            break; 
+          default :
+            break;
         }
-
         break;
       }
-    }
 
+    }
+    
+    count += 1;
+    assert(count < 32);
     if (i == NR_REGEX) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
@@ -111,15 +149,46 @@ static bool make_token(char *e) {
   return true;
 }
 
+word_t (char *p, chat *q) {
+  if (p > q) {
+    /* Bad expression */
+  }
+  else if (p == q) {
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1);
+  }
+  else {
+    op = the position of 主运算符 in the token expression;
+    val1 = eval(p, op - 1);
+    val2 = eval(op + 1, q);
+
+    switch (op_type) {
+      case '+': return val1 + val2;
+      case '-': /* ... */
+      case '*': /* ... */
+      case '/': /* ... */
+      default: assert(0);
+    }
+  }
+}
 
 word_t expr(char *e, bool *success) {
+
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  eval();
 
   return 0;
 }
