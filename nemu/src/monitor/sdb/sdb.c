@@ -84,11 +84,23 @@ static int cmd_x(char *args) {
   // int len = (int) strtoul(str_len, &endptr, 0);
 
   printf("%ld", steps);
-  uint32_t addr = (uint32_t) steps;
-  uint32_t val =  vaddr_ifetch(addr, 4);
-  // uint8_t * int8_addr = (uint8_t *)& val;
+  uint32_t addr1 = (uint32_t) steps;
+  uint32_t val1 =  vaddr_ifetch(addr1, 4);
+  uint8_t * int8_addr = (uint8_t *)& val1;
+  
+  for (int j = 3; j >= 0 ; j --) {
+    printf("%02x", int8_addr[j]);
+  }
 
-    printf("%p", &val);
+  addr1 = (uint32_t) (steps + 4);
+   val1 =  vaddr_ifetch(addr1, 4);
+  int8_addr = (uint8_t *)& val1;
+  
+  for (int j = 3; j >= 0 ; j --) {
+    printf("%02x", int8_addr[j]);
+  }
+
+    printf("%p", &val1);
 
     // printf("%x", val);
     // printf("%x", val);
