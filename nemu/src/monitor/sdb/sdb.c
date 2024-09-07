@@ -90,7 +90,10 @@ static int cmd_x(char *args) {
   }
 
   int len = (int) strtoul(str_len, &endptr, 0);
-
+  printf("%d\n", len);
+  printf("%d\n", len);
+  printf("%d\n", len);
+  printf("%d\n", len);
   if (endptr == str_addr) {
         fprintf(stderr, "No digits were found\n");
         exit(EXIT_FAILURE);
