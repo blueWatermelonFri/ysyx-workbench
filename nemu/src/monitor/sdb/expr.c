@@ -126,7 +126,7 @@ static bool make_token(char *e) {
             tokens[count].type = RBRACKET;
             break;         
           case NUMBER:
-            assert (strlen(substr_start) < sizeof(tokens[count].str));
+            assert (substr_len < sizeof(tokens[count].str));
             tokens[count].type = NUMBER;
             strncpy(tokens[count].str, substr_start, substr_len);
             break; 
