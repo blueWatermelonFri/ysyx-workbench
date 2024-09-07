@@ -97,7 +97,6 @@ static int cmd_x(char *args) {
         exit(EXIT_FAILURE);
   }
 
-
   uint8_t * int8_addr =  guest_to_host(addr);
   
   for (int i = 0; i < len; i++ ) {
