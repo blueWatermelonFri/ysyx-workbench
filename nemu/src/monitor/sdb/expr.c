@@ -26,6 +26,8 @@ enum {
   SUB,
   MUL,
   DIV,
+  LBRACKET,
+  RBRACKET,
   NUMBER,
   TK_EQ,
   /* TODO: Add more token types */
@@ -41,10 +43,12 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
-  {"-", '-'},           // sub
-  {"\\*", '*'},         // multiply
-  {"\\/", '/'},         // divide
+  {"\\+", PLUS},         // plus
+  {"-", SUB},           // sub
+  {"\\*", MUL},         // multiply
+  {"\\/", DIV},         // divide
+  {"\\(", LBRACKET},         // divide
+  {"\\)", RBRACKET},         // divide
   {"-?[0-9]+", NUMBER}, // decimalism integer
   {"==", TK_EQ},        // equal
 };
@@ -115,16 +119,20 @@ static bool make_token(char *e) {
           case DIV:
             tokens[count].type = DIV;
             break;
+          case LBRACKET:
+            tokens[count].type = LBRACKET;
+            break;
+          case RBRACKET:
+            tokens[count].type = RBRACKET;
+            break;         
           case NUMBER:
-            printf("%ld\n", sizeof(tokens[count].str));
             assert (strlen(substr_start) < sizeof(tokens[count].str));
             tokens[count].type = NUMBER;
             strncpy(tokens[count].str, substr_start, sizeof(tokens[count].str) - 1);
             break; 
           default :
             break;
-        count += 1;
-                   
+        count += 1;                   
         }
 
         break;
