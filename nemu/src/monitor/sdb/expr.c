@@ -251,7 +251,7 @@ word_t expr(char *e, bool *success)
                 break;
             case NUMBER:
                 strncpy((expression + count), tokens[count].str, strlen(tokens[count].str));
-                count += 1;
+                count += strlen(tokens[count].str);
                 break;
             default:
                 break;
