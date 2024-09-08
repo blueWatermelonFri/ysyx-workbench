@@ -222,6 +222,9 @@ int  check_parentheses(int p, int q)
     int parentheses = 0;
     int count = p;
     int matched = 1;
+    printf("%d\n", p);
+    printf("%d\n", q);
+
     for(; count <= q; count++){        
         switch (tokens[count].type){
             case LBRACKET:
