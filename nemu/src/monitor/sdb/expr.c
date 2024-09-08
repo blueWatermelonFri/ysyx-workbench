@@ -255,7 +255,7 @@ word_t eval (int p, int q)
     if (p > q)
     {
         /* Bad expression */
-        fprintf(stderr, "No digits were found\n");
+        return 0;
     }
     else if (p == q)
     {   
@@ -308,6 +308,7 @@ word_t expr(char *e, bool *success)
     }
 
     /* TODO: Insert codes to evaluate the expression. */
+    Assert(nr_token - 1 >= 0, "expression is bad!");
     printf("%d\n", eval(0, nr_token - 1));
 
     return 0;
