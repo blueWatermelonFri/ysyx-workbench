@@ -244,11 +244,11 @@ int  check_parentheses(int p, int q)
 
     else if (matched == 0)
     {
-        return 0;
+        return 1;
     }
     
     else{
-        return 1;
+        return 0;
     }
 
 }
