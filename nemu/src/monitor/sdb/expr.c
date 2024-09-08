@@ -31,6 +31,7 @@ enum
     RBRACKET,        // ）
     NUMBER,          // number
     TK_EQ,           // ==
+                     // 添加一条规则判断有任意的加减号
                      /* TODO: Add more token types */
 };
 
@@ -255,7 +256,7 @@ word_t eval (int p, int q)
     if (p > q)
     {
         /* Bad expression */
-        return 0;
+        fprintf(stderr, "No digits were found\n");
     }
     else if (p == q)
     {   

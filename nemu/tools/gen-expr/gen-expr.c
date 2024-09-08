@@ -23,12 +23,12 @@
 // this should be enough
 static char buf[65536] = {};
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
-static int index = 0; // a little larger than `buf`
+static int count = 0; // a little larger than `buf`
 
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
-"  unsigned result = %s; "
+"  unsigned int result = %s; "
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
@@ -39,20 +39,34 @@ static int choose(int n){
 static void gen_rand_op(){
   int op =  rand() % 4 ;
   switch (op) {
-    case 0: buf[index] = '+'; break;
-    case 1: buf[index] = '+';  break;
-    case 2: buf[index] = '+';; break;
-    case 3 : gen_rand_expr();  break;
+    case 0: buf[count] = '+'; break;
+    case 1: buf[count] = '-';  break;
+    case 2: buf[count] = '*';; break;
+    case 3: buf[count] = '/';  break;
     default : assert(0);
   }
+  count ++;
+}
+
+static void gen(char str){
+  buf[count] = str;
+  count ++;
+}
+
+static void gen_num(){
+  uint32_t op =  rand() ;
+  // op的最大值是10位有效数字，加上'\0'字符，一共最多11个字符，
+  // 但是返回值不会包括'\0'。
+  count += snprintf(buf + count, 11, "%u", op);
 
 }
+
 
 static void gen_rand_expr() {
   switch (choose(4)) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
-    case 2: gen(' '); break;
+    case 2: gen(' '); gen_rand_expr(); break;
     default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
   }
 }
@@ -67,10 +81,12 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
     
-    i = 0;
+    count = 0;
     gen_rand_expr();
-    Assert(i < 65536, "expr test buffer overflow!\n");
-    buf[i] = '\0';
+    assert(i < 65536);
+    buf[count] = '\0';
+
+    printf("%s\n", buf);
 
     sprintf(code_buf, code_format, buf);
 
