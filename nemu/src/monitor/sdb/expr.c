@@ -142,6 +142,7 @@ static bool make_token(char *e)
                     assert(substr_len < sizeof(tokens[nr_token].str));
                     tokens[nr_token].type = NUMBER;
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
+                    tokens[nr_token].str[substr_len] = '\0';
                     break;
                 default:
                     break;
@@ -248,8 +249,6 @@ word_t expr(char *e, bool *success)
                 count += 1;
                 break;
             case NUMBER:
-                // printf("%s\n", tokens[count].str);
-                // strcat(expression, tokens[count].str);
                 strncpy((expression + count), tokens[i].str, strlen(tokens[i].str));
                 count += strlen(tokens[i].str);
                 break;
@@ -264,3 +263,5 @@ word_t expr(char *e, bool *success)
 
     return 0;
 }
+
+// 1+2345* 1395 + 235 /12548*1235 + 8123-(1234 / 1235 + 1345 * 2134 * 11111111111111111111)
