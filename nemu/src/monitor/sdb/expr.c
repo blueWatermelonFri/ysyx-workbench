@@ -243,8 +243,11 @@ int  check_parentheses(int p, int q)
         Assert(0, "Input expr's parentheses not complete");
     }
 
-    return matched;
+    else if(tokens[0].type == LBRACKET)
+        return matched;
 
+    else
+        return 0;
 }
 
 word_t eval (int p, int q)
