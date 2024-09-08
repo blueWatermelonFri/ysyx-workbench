@@ -172,7 +172,7 @@ int  check_op_positions(int p, int q)
     int in_parentheses = 0;
     int has_lower = 0;
 
-    for(; p < q; p++){
+    for(; p <= q; p++){
         
         switch (tokens[p].type){
             case PLUS:
@@ -211,6 +211,48 @@ int  check_op_positions(int p, int q)
     return op;
 }
 
+int  check_parentheses(int p, int q)
+{
+    // 断表达式是否被一对匹配的括号包围着,
+    // 同时检查表达式的左右括号是否匹配, 
+    // 如果不匹配, 这个表达式肯定是不符合语法的
+    // 如果结果parentheses != 0, 表达式不合法
+    // 如果表达式合法，表达式第一个是左括号，遍历中间存在parentheses==0，返回0
+    // 否则返回1
+    int parentheses = 0;
+    int count = p;
+    int matched = 1;
+    for(; count <= q; p++){        
+        switch (tokens[count].type){
+            case LBRACKET:
+                parentheses += 1;
+                break;
+            case RBRACKET:
+                parentheses -= 1;
+                if(tokens[p].type == LBRACKET && parentheses == 0 && count != q){
+                    matched = 0;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    if(parentheses != 0){
+        Assert(0, "Input expr's parentheses not complete");
+    }
+
+    else if (matched == 0)
+    {
+        return 0;
+    }
+    
+    else{
+        return 1;
+    }
+
+}
+
 word_t eval (int p, int q)
 {
     if (p > q)
@@ -225,13 +267,13 @@ word_t eval (int p, int q)
 
         return value;
     }
-    // else if (check_parentheses(p, q) == true)
-    // {
-    //     /* The expression is surrounded by a matched pair of parentheses.
-    //      * If that is the case, just throw away the parentheses.
-    //      */
-    //     return eval(p + 1, q - 1);
-    // }
+    else if (check_parentheses(p, q) == true)
+    {
+        /* The expression is surrounded by a matched pair of parentheses.
+         * If that is the case, just throw away the parentheses.
+         */
+        return eval(p + 1, q - 1);
+    }
     else
     {
         int op = check_op_positions(p, q);
