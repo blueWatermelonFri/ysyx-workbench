@@ -289,6 +289,7 @@ word_t eval (int p, int q)
                 return val1 * val2;
                 break;
             case DIV:
+                Assert(val2 != 0, "Zero cannot be devides");
                 return val1 / val2;
             default:
                 Assert(0, "not support op %d", tokens[op].type);
