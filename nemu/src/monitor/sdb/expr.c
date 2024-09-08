@@ -243,7 +243,7 @@ int  check_parentheses(int p, int q)
         Assert(0, "Input expr's parentheses not complete");
     }
 
-    else if(tokens[0].type == LBRACKET)
+    else if(tokens[p].type == LBRACKET)
         return matched;
 
     else
