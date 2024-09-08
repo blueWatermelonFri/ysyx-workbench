@@ -150,7 +150,9 @@ static bool make_token(char *e)
             }
         }
 
-        nr_token += 1;
+        if(rules[i].token_type != TK_NOTYPE)
+            nr_token += 1;
+
         Assert(nr_token < 32, "token count can not larger than 32");
 
         if (i == NR_REGEX)
@@ -248,11 +250,9 @@ word_t expr(char *e, bool *success)
             case NUMBER:
                 strncpy((expression + count), tokens[count].str, strlen(tokens[count].str));
                 count += 1;
-
                 break;
             default:
                 break;
-            
             }
     }
     // q = expression + count;
