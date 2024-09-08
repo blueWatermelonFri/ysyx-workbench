@@ -250,6 +250,8 @@ word_t expr(char *e, bool *success)
                 break;
             default:
                 break;
+    printf("%s\n", expression);
+            
             }
     }
     // q = expression + count;
