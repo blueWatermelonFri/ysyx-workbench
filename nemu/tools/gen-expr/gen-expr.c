@@ -23,6 +23,8 @@
 // this should be enough
 static char buf[65536] = {};
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
+static int index = 0; // a little larger than `buf`
+
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
@@ -30,9 +32,29 @@ static char *code_format =
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
+static int choose(int n){
+  return rand() % n ;
+}
+
+static void gen_rand_op(){
+  int op =  rand() % 4 ;
+  switch (op) {
+    case 0: buf[index] = '+'; break;
+    case 1: buf[index] = '+';  break;
+    case 2: buf[index] = '+';; break;
+    case 3 : gen_rand_expr();  break;
+    default : assert(0);
+  }
+
+}
 
 static void gen_rand_expr() {
-  buf[0] = '\0';
+  switch (choose(4)) {
+    case 0: gen_num(); break;
+    case 1: gen('('); gen_rand_expr(); gen(')'); break;
+    case 2: gen(' '); break;
+    default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -44,7 +66,11 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    
+    i = 0;
     gen_rand_expr();
+    Assert(i < 65536, "expr test buffer overflow!\n");
+    buf[i] = '\0';
 
     sprintf(code_buf, code_format, buf);
 
