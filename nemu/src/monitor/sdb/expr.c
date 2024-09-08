@@ -32,7 +32,6 @@ enum
     NUMBER,          // number
     TK_EQ,           // ==
                      /* TODO: Add more token types */
-
 };
 
 static struct rule
@@ -102,6 +101,7 @@ static bool make_token(char *e)
     while (e[position] != '\0')
     {
         /* Try all rules one by one. */
+        Assert(nr_token < 32, "token count can not larger than 32");
         for (i = 0; i < NR_REGEX; i++)
         {
             if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0)
@@ -154,7 +154,6 @@ static bool make_token(char *e)
         if(rules[i].token_type != TK_NOTYPE)
             nr_token += 1;
 
-        Assert(nr_token < 32, "token count can not larger than 32");
 
         if (i == NR_REGEX)
         {
@@ -166,45 +165,50 @@ static bool make_token(char *e)
     return true;
 }
 
-// 1*2 +4 - 5 * 23 * (88 + 64)
-// word_t eval (char *p, char *q)
-// {
-//     if (p > q)
-//     {
-//         /* Bad expression */
-//         fprintf(stderr, "No digits were found\n");
-//     }
-//     else if (p == q)
-//     {
-//     }
-//     else if (check_parentheses(p, q) == true)
-//     {
-//         /* The expression is surrounded by a matched pair of parentheses.
-//          * If that is the case, just throw away the parentheses.
-//          */
-//         return eval(p + 1, q - 1);
-//     }
-//     else
-//     {
-//         char *op = check_op_positions(p, q);
-//         char val1 = eval(p, op - 1);
-//         char val2 = eval(op + 1, q);
+word_t eval (int p, int q)
+{
+    if (p > q)
+    {
+        /* Bad expression */
+        fprintf(stderr, "No digits were found\n");
+        return 0;
+    }
+    else if (p == q)
+    {   
+        char * endptr ;
+        uint32_t value = (uint32_t) strtoul(tokens[p].str, &endptr, 0);
 
-//         switch (*op)
-//         {
-//         case '+':
-//             return val1 + val2;
-//         case '-':
-//             return val1 - val2;
-//         case '*':
-//             return val1 * val2;
-//         case '/':
-//             return val1 / val2;
-//         default:
-//             assert(0);
-//         }
-//     }
-// }
+        return value;
+    }
+    // else if (check_parentheses(p, q) == true)
+    // {
+    //     /* The expression is surrounded by a matched pair of parentheses.
+    //      * If that is the case, just throw away the parentheses.
+    //      */
+    //     return eval(p + 1, q - 1);
+    // }
+    else
+    {
+        return 0;
+        // char *op = check_op_positions(p, q);
+        // char val1 = eval(p, op - 1);
+        // char val2 = eval(op + 1, q);
+
+        // switch (*op)
+        // {
+        // case '+':
+        //     return val1 + val2;
+        // case '-':
+        //     return val1 - val2;
+        // case '*':
+        //     return val1 * val2;
+        // case '/':
+        //     return val1 / val2;
+        // default:
+        //     Assert(0, "not support op %c", *op);
+        // }
+    }
+}
 
 word_t expr(char *e, bool *success)
 {
@@ -216,51 +220,51 @@ word_t expr(char *e, bool *success)
     }
 
     /* TODO: Insert codes to evaluate the expression. */
-    char *expression;
+    // char *expression;
     
-    uint32_t count = 0;
-    expression = (char *) malloc(TOKEN_NUM * TOKEN_STR_NUM * sizeof(char));
-    for(int i = 0; i < nr_token; i++){
-        switch (tokens[i].type)
-            {
-            case PLUS:
-                expression[count] = '+';
-                count += 1;
-                break;
-            case SUB:
-                expression[count] = '-';
-                count += 1;
-                break;
-            case MUL:
-                expression[count] = '*';
-                count += 1;
-                break;
-            case DIV:
-                expression[count] = '/';
-                count += 1;
-                break;
-            case LBRACKET:
-                expression[count] = '(';
-                count += 1;
-                break;
-            case RBRACKET:
-                expression[count] = ')';
-                count += 1;
-                break;
-            case NUMBER:
-                strncpy((expression + count), tokens[i].str, strlen(tokens[i].str));
-                count += strlen(tokens[i].str);
-                break;
-            default:
-                break;
-            }
-    }
+    // uint32_t count = 0;
+    // expression = (char *) malloc(TOKEN_NUM * TOKEN_STR_NUM * sizeof(char));
+    // for(int i = 0; i < nr_token; i++){
+    //     switch (tokens[i].type)
+    //         {
+    //         case PLUS:
+    //             expression[count] = '+';
+    //             count += 1;
+    //             break;
+    //         case SUB:
+    //             expression[count] = '-';
+    //             count += 1;
+    //             break;
+    //         case MUL:
+    //             expression[count] = '*';
+    //             count += 1;
+    //             break;
+    //         case DIV:
+    //             expression[count] = '/';
+    //             count += 1;
+    //             break;
+    //         case LBRACKET:
+    //             expression[count] = '(';
+    //             count += 1;
+    //             break;
+    //         case RBRACKET:
+    //             expression[count] = ')';
+    //             count += 1;
+    //             break;
+    //         case NUMBER:
+    //             strncpy((expression + count), tokens[i].str, strlen(tokens[i].str));
+    //             count += strlen(tokens[i].str);
+    //             break;
+    //         default:
+    //             break;
+    //         }
+    // }
 
-    printf("%s\n", expression);
-    printf("%c\n", *(expression + count-1));
+    // printf("%s\n", expression);
+    // printf("%c\n", *(expression + count-1));
     // char *q;
 
-    // eval(expression, expression + count);
+    // eval(0, nr_token - 1);
 
     return 0;
 }
