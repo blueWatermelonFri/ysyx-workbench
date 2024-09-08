@@ -222,7 +222,7 @@ int  check_parentheses(int p, int q)
     int parentheses = 0;
     int count = p;
     int matched = 1;
-    for(; count <= q; p++){        
+    for(; count <= q; count++){        
         switch (tokens[count].type){
             case LBRACKET:
                 parentheses += 1;
