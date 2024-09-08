@@ -142,6 +142,8 @@ static bool make_token(char *e)
                     assert(substr_len < sizeof(tokens[nr_token].str));
                     tokens[nr_token].type = NUMBER;
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
+                    for(int tmp = 0; tmp < substr_len; tmp ++)
+                        printf("%c", substr_start[tmp]);
                     break;
                 default:
                     break;
@@ -165,6 +167,7 @@ static bool make_token(char *e)
     return true;
 }
 
+// 1*2 +4 - 5 * 23 * (88 + 64)
 // word_t eval (char *p, char *q)
 // {
 //     if (p > q)
