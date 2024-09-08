@@ -217,7 +217,6 @@ word_t expr(char *e, bool *success)
 
     /* TODO: Insert codes to evaluate the expression. */
     char *expression;
-    // char *q;
     
     uint32_t count = 0;
     expression = (char *) malloc(TOKEN_NUM * TOKEN_STR_NUM * sizeof(char));
@@ -256,10 +255,12 @@ word_t expr(char *e, bool *success)
                 break;
             }
     }
-    // q = expression + count;
 
     printf("%s\n", expression);
-    // eval(expression, q);
+    printf("%c\n", *(expression + count));
+    // char *q;
+
+    // eval(expression, expression + count);
 
     return 0;
 }
