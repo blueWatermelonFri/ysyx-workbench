@@ -257,7 +257,7 @@ word_t expr(char *e, bool *success)
     }
 
     printf("%s\n", expression);
-    printf("%c\n", *(expression + count));
+    printf("%c\n", *(expression + count-1));
     // char *q;
 
     // eval(expression, expression + count);
