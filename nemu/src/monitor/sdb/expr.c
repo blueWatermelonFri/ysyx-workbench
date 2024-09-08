@@ -277,7 +277,7 @@ word_t eval (int p, int q)
     else
     {
         int op = check_op_positions(p, q);
-        Assert(op > 0, "Op position must be greater than 0, but got %d", op);
+        // Assert(op > 0, "Op position must be greater than 0, but got %d", op);
 
         uint32_t val1 = eval(p, op - 1);
         uint32_t val2 = eval(op + 1, q);
