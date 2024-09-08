@@ -220,11 +220,7 @@ word_t expr(char *e, bool *success)
     
     uint32_t count = 0;
     expression = (char *) malloc(TOKEN_NUM * TOKEN_STR_NUM * sizeof(char));
-    printf("%d\n", nr_token);
-    printf("%d\n", nr_token);
-    printf("%d\n", nr_token);
     for(int i = 0; i < nr_token; i++){
-    printf("%s\n", tokens[i].str);
         switch (tokens[i].type)
             {
             case PLUS:
