@@ -80,7 +80,7 @@ void init_regex()
     }
 }
 
-#define TOKEN_NUM 32
+#define TOKEN_NUM 128
 #define TOKEN_STR_NUM TOKEN_NUM
 
 typedef struct token
@@ -103,7 +103,7 @@ static bool make_token(char *e)
     while (e[position] != '\0')
     {
         /* Try all rules one by one. */
-        Assert(nr_token < 32, "token count can not larger than 32");
+        Assert(nr_token < TOKEN_NUM, "token count can not larger than 32");
         for (i = 0; i < NR_REGEX; i++)
         {
             if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0)
