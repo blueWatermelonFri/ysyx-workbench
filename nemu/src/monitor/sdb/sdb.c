@@ -53,6 +53,10 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_r(char *args) {
+  isa_reg_display(args);
+  return 0;
+}
 
 static int cmd_si(char *args) {
   
@@ -61,6 +65,57 @@ static int cmd_si(char *args) {
   uint64_t steps = strtoul(args, &endptr, 0);
   cpu_exec(steps);
   return 0;
+}
+
+static int cmd_x(char *args) {
+
+  char *str_len = strtok(args, " ");
+  args = str_len + strlen(str_len) + 1;
+  char *str_addr = strtok(args, " ");
+
+  assert(str_len != NULL && str_addr != NULL);
+
+  // 只支持0x开始32位的地址，以字符串的形式输入，所以是10位数字
+  assert(strlen(str_addr) == 10);
+
+  char *endptr;
+  // if  base is zero or 16, the string may then include a "0x" prefix, and  the
+  //  number  will  be read in base 16; 
+  uint32_t addr = (uint32_t) strtoul(str_addr, &endptr, 0);
+  assert (addr >= 0x80000000);
+  /* Check for various possible errors , from man 3 strtol*/
+  if (endptr == str_addr) {
+        fprintf(stderr, "No digits were found\n");
+        exit(EXIT_FAILURE);
+  }
+
+  int len = (int) strtoul(str_len, &endptr, 0);
+  assert(len > 0);
+
+  if (endptr == str_len) {
+        fprintf(stderr, "No digits were found\n");
+        exit(EXIT_FAILURE);
+  }
+
+  uint8_t * int8_addr =  guest_to_host(addr);
+  
+  for (int i = 0; i < len; i++ ) {
+    printf("%08x : 0x", 0x80000000 + 4 * i);
+    for (int j = 3; j >= 0 ; j --) {
+      printf("%02x", int8_addr[i * 4 + j]);
+  }
+    printf("\n");
+}
+
+  return 0;
+}
+
+static int cmd_p(char *args) {
+
+  bool *success = false;
+  expr(args, success);
+  return 0;
+  
 }
 
 static int cmd_help(char *args);
@@ -74,7 +129,9 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Single  step", cmd_si },
-  
+  { "r", "print register info", cmd_r },
+  { "x", "print memory info", cmd_x },
+  { "p", "get expr value", cmd_p },
 
   /* TODO: Add more commands */
 
