@@ -245,14 +245,7 @@ int  check_parentheses(int p, int q)
         Assert(0, "Input expr's parentheses not complete");
     }
 
-    else if (matched == 0)
-    {
-        return 0;
-    }
-    
-    else{
-        return 1;
-    }
+    return matched;
 
 }
 
@@ -313,7 +306,6 @@ word_t expr(char *e, bool *success)
     }
 
     /* TODO: Insert codes to evaluate the expression. */
-    printf("%d\n", nr_token-1);
     printf("%d\n", eval(0, nr_token - 1));
 
     return 0;
