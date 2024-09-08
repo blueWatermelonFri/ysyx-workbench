@@ -61,6 +61,7 @@ static regex_t re[NR_REGEX] = {};
 /* Rules are used for many times.
  * Therefore we compile them only once before any usage.
  */
+
 void init_regex()
 {
     int i;
@@ -165,13 +166,57 @@ static bool make_token(char *e)
     return true;
 }
 
+int  check_op_positions(int p, int q)
+{
+    int op = 0;
+    int in_parentheses = 0;
+    int has_lower = 0;
+
+    for(; p < q; p++){
+        
+        switch (tokens[p].type){
+            case PLUS:
+                if(!in_parentheses){
+                    op = p;
+                    has_lower = 1;
+                }
+                break;
+            case SUB:
+                if(!in_parentheses){
+                    op = p;
+                    has_lower = 1;
+                }
+                break;
+            case MUL:
+                if(!in_parentheses && !has_lower)
+                    op = p;
+                break;
+            case DIV:
+                if(!in_parentheses && !has_lower)
+                    op = p;
+                break;
+            case LBRACKET:
+                in_parentheses += 1;
+                break;
+            case RBRACKET:
+                in_parentheses -= 1;
+                break;
+            case NUMBER:
+                break;
+            default:
+                break;
+        }
+    }
+
+    return op;
+}
+
 word_t eval (int p, int q)
 {
     if (p > q)
     {
         /* Bad expression */
         fprintf(stderr, "No digits were found\n");
-        return 0;
     }
     else if (p == q)
     {   
@@ -189,25 +234,27 @@ word_t eval (int p, int q)
     // }
     else
     {
-        return 0;
-        // char *op = check_op_positions(p, q);
-        // char val1 = eval(p, op - 1);
-        // char val2 = eval(op + 1, q);
+        int op = check_op_positions(p, q);
+        Assert(op > 0, "Op position must be greater than 0, but got %d", op);
 
-        // switch (*op)
-        // {
-        // case '+':
-        //     return val1 + val2;
-        // case '-':
-        //     return val1 - val2;
-        // case '*':
-        //     return val1 * val2;
-        // case '/':
-        //     return val1 / val2;
-        // default:
-        //     Assert(0, "not support op %c", *op);
-        // }
+        uint32_t val1 = eval(p, op - 1);
+        uint32_t val2 = eval(op + 1, q);
+
+        switch (tokens[op].type){
+            case PLUS:
+                return val1 + val2;
+            case SUB:
+                return val1 - val2;
+            case MUL:
+                return val1 * val2;
+                break;
+            case DIV:
+                return val1 / val2;
+            default:
+                Assert(0, "not support op %d", tokens[op].type);
+        }
     }
+    return 0;
 }
 
 word_t expr(char *e, bool *success)
@@ -220,53 +267,8 @@ word_t expr(char *e, bool *success)
     }
 
     /* TODO: Insert codes to evaluate the expression. */
-    // char *expression;
-    
-    // uint32_t count = 0;
-    // expression = (char *) malloc(TOKEN_NUM * TOKEN_STR_NUM * sizeof(char));
-    // for(int i = 0; i < nr_token; i++){
-    //     switch (tokens[i].type)
-    //         {
-    //         case PLUS:
-    //             expression[count] = '+';
-    //             count += 1;
-    //             break;
-    //         case SUB:
-    //             expression[count] = '-';
-    //             count += 1;
-    //             break;
-    //         case MUL:
-    //             expression[count] = '*';
-    //             count += 1;
-    //             break;
-    //         case DIV:
-    //             expression[count] = '/';
-    //             count += 1;
-    //             break;
-    //         case LBRACKET:
-    //             expression[count] = '(';
-    //             count += 1;
-    //             break;
-    //         case RBRACKET:
-    //             expression[count] = ')';
-    //             count += 1;
-    //             break;
-    //         case NUMBER:
-    //             strncpy((expression + count), tokens[i].str, strlen(tokens[i].str));
-    //             count += strlen(tokens[i].str);
-    //             break;
-    //         default:
-    //             break;
-    //         }
-    // }
 
-    // printf("%s\n", expression);
-    // printf("%c\n", *(expression + count-1));
-    // char *q;
-
-    // eval(0, nr_token - 1);
+    printf("%d\n", eval(0, nr_token - 1));
 
     return 0;
 }
-
-// 1+2345* 1395 + 235 /12548*1235 + 8123-(1234 / 1235 + 1345 * 2134 * 11111111111111111111)
