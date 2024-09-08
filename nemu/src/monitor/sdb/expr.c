@@ -142,8 +142,7 @@ static bool make_token(char *e)
                     assert(substr_len < sizeof(tokens[nr_token].str));
                     tokens[nr_token].type = NUMBER;
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
-                    for(int tmp = 0; tmp < substr_len; tmp ++)
-                        printf("%c", substr_start[tmp]);
+                        printf("%s", tokens[nr_token].str);
                     break;
                 default:
                     break;
