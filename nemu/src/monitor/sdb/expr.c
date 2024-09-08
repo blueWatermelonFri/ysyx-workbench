@@ -142,7 +142,6 @@ static bool make_token(char *e)
                     assert(substr_len < sizeof(tokens[nr_token].str));
                     tokens[nr_token].type = NUMBER;
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
-                        printf("%s", tokens[nr_token].str);
                     break;
                 default:
                     break;
@@ -223,6 +222,7 @@ word_t expr(char *e, bool *success)
     expression = (char *) malloc(TOKEN_NUM * TOKEN_STR_NUM * sizeof(char));
 
     for(int i = 0; i < nr_token; i++){
+    printf("%s\n", tokens[i].str);
         switch (tokens[i].type)
             {
             case PLUS:
