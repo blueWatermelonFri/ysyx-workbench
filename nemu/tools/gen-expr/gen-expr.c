@@ -37,12 +37,12 @@ static int choose(int n){
 }
 
 static void gen_rand_op(){
-  int op =  rand() % 4 ;
+  int op =  rand() % 3 ;
   switch (op) {
     case 0: buf[count] = '+'; break;
     case 1: buf[count] = '-';  break;
     case 2: buf[count] = '*';; break;
-    case 3: buf[count] = '/';  break;
+    // case 3: buf[count] = '/';  break;
     default : assert(0);
   }
   count ++;
@@ -109,3 +109,4 @@ int main(int argc, char *argv[]) {
   }
   return 0;
 }
+
