@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
     
     count = 0;
     gen_rand_expr();
-    assert(i < 65536);
+    assert(count < 65536);
     buf[count] = '\0';
 
     printf("%s\n", buf);
