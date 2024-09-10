@@ -35,12 +35,9 @@ void test_cmd_p(){
     char B[MAX_LINE] = ""; // 存储其余内容
 
     while (fgets(line, sizeof(line), file)) { // 读取每一行
-      char tempA[MAX_LINE], tempB[MAX_LINE];
     
     // 使用 sscanf 读取第一个数字
-    if (sscanf(line, "%s %[^\n]", tempA, tempB) == 2) {
-        strcpy(A, tempA);
-        strcpy(B, tempB);
+    if (sscanf(line, "%s %[^\n]", A, B) == 2) {
         printf("%s ", A);
         printf("%s \n", B);
     }
