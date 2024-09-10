@@ -21,20 +21,13 @@
 #include <string.h>
 
 // this should be enough
-static char buf[65536] = {};
+static char buf[65536] = "{}";
 static char code_buf[65536 + 1024] = {}; // a little larger than `buf`
 static int count = 0; 
 
 static char *code_format =
-"#include <signal.h>\n"
 "#include <stdio.h>\n"
-"#include <stdlib.h>\n"
-"void handle_division_by_zero(int sig) {\n"
-"    printf(\"Error: Division by zero caught! Signal: %%d\", sig);"
-"    exit(EXIT_FAILURE);"
-"}"
-"int main() \n{ "
-"  signal(SIGFPE, handle_division_by_zero);"
+"int main() { "
 "  unsigned int result = %s; "
 "  printf(\"%%u\", result); "
 "  return 0; "
@@ -44,6 +37,10 @@ static int choose(int n){
 }
 
 static void gen_rand_op(){
+  // 防止出现一个运算符后面没有表达式这种情况
+  if(count + 1 > 65000)
+    return; 
+
   int op =  rand() % 4 ;
   switch (op) {
     case 0: buf[count] = '+'; break;
@@ -56,15 +53,18 @@ static void gen_rand_op(){
 }
 
 static void gen(char str){
+  // 防止出现()这种情况
+  if(count + 1 > 65000)
+    return; 
   buf[count] = str;
   count ++;
 }
 
 static void gen_num(){
-  uint32_t op =  rand() ;
+  uint32_t op =  rand() % 65536;
   // op的最大值是10位有效数字，加上'\0'字符，一共最多11个字符，
   // 但是返回值不会包括'\0'。
-  count += snprintf(buf + count, 22, "(unsigned) %u", op);
+  count += snprintf(buf + count, 11, "%uu", op);
 
 }
 
@@ -73,10 +73,11 @@ static void gen_rand_expr() {
   if (count > 65000)
     return;
 
-  switch (choose(4)) {
+  switch (choose(5)) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
     case 2: gen(' '); gen_rand_expr(); break;
+    case 3: gen(' '); gen_rand_expr(); break;
     default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
   }
 
