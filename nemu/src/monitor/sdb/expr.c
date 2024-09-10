@@ -311,6 +311,8 @@ word_t eval (int p, int q)
                 return val1 + val2;
             case SUB:
                 return val1 - val2;
+            case NEG:
+                return 0 - val2;                
             case MUL:
                 return val1 * val2;
                 break;
