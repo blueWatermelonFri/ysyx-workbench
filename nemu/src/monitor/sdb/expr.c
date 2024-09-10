@@ -214,6 +214,11 @@ int  check_op_positions(int p, int q)
                     has_lower = 1;
                 }
                 break;
+            case NEG:
+                if(op == 0){
+                    op = p;
+                }
+                break;
             case MUL:
                 if(!in_parentheses && !has_lower)
                     op = p;
