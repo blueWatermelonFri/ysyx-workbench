@@ -133,15 +133,24 @@ static bool make_token(char *e)
                     tokens[nr_token].type = PLUS;
                     break;
                 case SUB:
-                    tokens[nr_token].type = SUB;
+                    if (nr_token == 0 || tokens[nr_token - 1].type == PLUS ||
+                                         tokens[nr_token - 1].type == SUB ||
+                                         tokens[nr_token - 1].type == MUL ||
+                                         tokens[nr_token - 1].type == DIV ||
+                                         tokens[nr_token - 1].type == LBRACKET){
+                        tokens[nr_token].type = NEG;
+                    }
+                    else{
+                        tokens[nr_token].type = SUB;
+                    }                
                     break;
                 case MUL:
-                    if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == PLUS ||
-                                                            tokens[i - 1].type == SUB ||
-                                                            tokens[i - 1].type == MUL ||
-                                                            tokens[i - 1].type == DIV ||
-                                                            tokens[i - 1].type == LBRACKET)){
-                        tokens[i].type = DEREF;
+                    if (nr_token == 0 || tokens[nr_token - 1].type == PLUS ||
+                                           tokens[nr_token - 1].type == SUB ||
+                                           tokens[nr_token - 1].type == MUL ||
+                                           tokens[nr_token - 1].type == DIV ||
+                                           tokens[nr_token - 1].type == LBRACKET){
+                        tokens[nr_token].type = DEREF;
                     }
                     else{
                         tokens[nr_token].type = MUL;
