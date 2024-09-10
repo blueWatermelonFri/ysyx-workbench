@@ -51,6 +51,8 @@ void test_cmd_p(){
           word_t real = (word_t) strtoul(A, &endptr, 0);
 
           word_t res = cmd_p_test(B);
+          fprintf(stdout, "real is %u, res is %u\n", real, res);
+
           if(real != res){
             fprintf(stderr, "real is %u, res is %u\n", real, res);
           } 
