@@ -41,7 +41,7 @@ void test_cmd_p(){
     if (sscanf(line, "%s %[^\n]", tempA, tempB) == 2) {
         strcpy(A, tempA);
         strcpy(B, tempB);
-        printf("%s \n", A);
+        printf("%s ", A);
         printf("%s \n", B);
     }
     }
