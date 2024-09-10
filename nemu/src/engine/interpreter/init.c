@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LINE 65536 + 2048
+#define MAX_LINE 65536 + 1024
 
 void sdb_mainloop();
 extern int cmd_p(char *args);
