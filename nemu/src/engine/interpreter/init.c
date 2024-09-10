@@ -21,7 +21,15 @@
 #define MAX_LINE 65536 + 1024
 
 void sdb_mainloop();
-extern int cmd_p(char *args);
+extern word_t expr(char *e, bool *success);
+
+static word_t cmd_p_test(char *args) {
+
+  bool *success = false;
+  word_t res = expr(args, success);
+  return res;
+  
+}
 
 void test_cmd_p(){
     FILE *file = fopen("/home/myuser/ysyx/ysyx-workbench/nemu/tools/gen-expr/input", "r"); // 打开文件
@@ -36,15 +44,19 @@ void test_cmd_p(){
 
     while (fgets(line, sizeof(line), file)) { // 读取每一行
     
-    // 使用 sscanf 读取第一个数字
-    if (sscanf(line, "%s %[^\n]", A, B) == 2) {
-        printf("%s ", A);
-        printf("%s \n", B);
+      //  使用 sscanf 读取第一个数字
+      if (sscanf(line, "%s %[^\n]", A, B) == 2) {
+
+          char * endptr ;
+          word_t real = (word_t) strtoul(A, &endptr, 0);
+
+          word_t res = cmd_p_test(B);
+          if(real != res){
+            fprintf(stderr, "real is %u, res is %u\n", real, res);
+          } 
+      }
     }
-    }
-    
-    // printf("字符串 A: \n%s\n", A);
-    // printf("字符串 B: \n%s\n", B);
+
 
     fclose(file);
     return;
