@@ -21,9 +21,9 @@
 #include <string.h>
 
 // this should be enough
-static char buf[65536] = {};
-static char code_buf[65536 + 128] = {}; // a little larger than `buf`
-static int count = 0; // a little larger than `buf`
+static char buf[65536] = "{}";
+static char code_buf[65536 + 1024] = {}; // a little larger than `buf`
+static int count = 0; 
 
 static char *code_format =
 "#include <stdio.h>\n"
@@ -37,6 +37,10 @@ static int choose(int n){
 }
 
 static void gen_rand_op(){
+  // 防止出现一个运算符后面没有表达式这种情况
+  if(count + 1 > 65000)
+    return; 
+
   int op =  rand() % 4 ;
   switch (op) {
     case 0: buf[count] = '+'; break;
@@ -49,26 +53,34 @@ static void gen_rand_op(){
 }
 
 static void gen(char str){
+  // 防止出现()这种情况
+  if(count + 1 > 65000)
+    return; 
   buf[count] = str;
   count ++;
 }
 
 static void gen_num(){
-  uint32_t op =  rand() ;
+  uint32_t op =  rand() % 65536;
   // op的最大值是10位有效数字，加上'\0'字符，一共最多11个字符，
   // 但是返回值不会包括'\0'。
-  count += snprintf(buf + count, 11, "%u", op);
+  count += snprintf(buf + count, 11, "%uu", op);
 
 }
 
 
 static void gen_rand_expr() {
-  switch (choose(4)) {
+  if (count > 65000)
+    return;
+
+  switch (choose(5)) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
     case 2: gen(' '); gen_rand_expr(); break;
+    case 3: gen(' '); gen_rand_expr(); break;
     default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
   }
+
 }
 
 int main(int argc, char *argv[]) {
@@ -83,10 +95,11 @@ int main(int argc, char *argv[]) {
     
     count = 0;
     gen_rand_expr();
-    assert(i < 65536);
-    buf[count] = '\0';
+    
+    if(count > 65535)
+      continue;
 
-    printf("%s\n", buf);
+    buf[count] = '\0';
 
     sprintf(code_buf, code_format, buf);
 
@@ -95,7 +108,7 @@ int main(int argc, char *argv[]) {
     fputs(code_buf, fp);
     fclose(fp);
 
-    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
+    int ret = system("gcc /tmp/.code.c  -Werror -o /tmp/.expr");
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
@@ -109,3 +122,4 @@ int main(int argc, char *argv[]) {
   }
   return 0;
 }
+

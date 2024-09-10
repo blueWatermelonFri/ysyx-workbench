@@ -14,14 +14,55 @@
 ***************************************************************************************/
 
 #include <cpu/cpu.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LINE 65536 + 1024
 
 void sdb_mainloop();
 
+extern word_t expr(char *e, bool *success);
+
+void test_cmd_p(){
+    FILE *file = fopen("/home/myuser/ysyx/ysyx-workbench/nemu/tools/gen-expr/input", "r"); // 打开文件
+    if (!file) {
+        perror("无法打开文件");
+        return;
+    }
+
+    char line[MAX_LINE];   // 存储每一行
+    char A[11] = ""; // 存储第一个数字
+    char B[MAX_LINE] = ""; // 存储其余内容
+
+    while (fgets(line, sizeof(line), file)) { // 读取每一行
+    
+      //  使用 sscanf 读取第一个数字
+      if (sscanf(line, "%s %[^\n]", A, B) == 2) {
+
+          char * endptr ;
+          word_t real = (word_t) strtoul(A, &endptr, 0);
+          word_t res = expr(B, false);
+
+          if(real != res){
+            fprintf(stderr, "real is %u, res is %u\n", real, res);
+          } 
+      }
+    }
+    fclose(file);
+    return;
+}
+
 void engine_start() {
 #ifdef CONFIG_TARGET_AM
-  cpu_exec(-1);
+  cpu_exec(-1); 
 #else
   /* Receive commands from user. */
-  sdb_mainloop();
+  #if 1
+    sdb_mainloop();
+  #else
+    // test expr compute 
+    test_cmd_p();
+  #endif
 #endif
 }

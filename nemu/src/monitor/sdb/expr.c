@@ -49,8 +49,8 @@ static struct rule
     {"-", SUB},           // sub
     {"\\*", MUL},         // multiply
     {"\\/", DIV},         // divide
-    {"\\(", LBRACKET},    // divide
-    {"\\)", RBRACKET},    // divide
+    {"\\(", LBRACKET},    // (
+    {"\\)", RBRACKET},    // )
     {"-?[0-9]+", NUMBER}, // decimalism integer
     {"==", TK_EQ},        // equal
 };
@@ -80,8 +80,8 @@ void init_regex()
     }
 }
 
-#define TOKEN_NUM 128
-#define TOKEN_STR_NUM TOKEN_NUM
+#define TOKEN_NUM 65536
+#define TOKEN_STR_NUM 32
 
 typedef struct token
 {
@@ -310,7 +310,8 @@ word_t expr(char *e, bool *success)
 
     /* TODO: Insert codes to evaluate the expression. */
     Assert(nr_token - 1 >= 0, "expression is bad!");
-    printf("%u\n", eval(0, nr_token - 1));
+    word_t res = eval(0, nr_token - 1);
+    printf("%u\n", res);
 
-    return 0;
+    return res;
 }
