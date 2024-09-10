@@ -56,8 +56,6 @@ void test_cmd_p(){
           } 
       }
     }
-
-
     fclose(file);
     return;
 }
