@@ -21,15 +21,8 @@
 #define MAX_LINE 65536 + 1024
 
 void sdb_mainloop();
+
 extern word_t expr(char *e, bool *success);
-
-static word_t cmd_p_test(char *args) {
-
-  bool *success = false;
-  word_t res = expr(args, success);
-  return res;
-  
-}
 
 void test_cmd_p(){
     FILE *file = fopen("/home/myuser/ysyx/ysyx-workbench/nemu/tools/gen-expr/input", "r"); // 打开文件
@@ -50,8 +43,7 @@ void test_cmd_p(){
           char * endptr ;
           word_t real = (word_t) strtoul(A, &endptr, 0);
 
-          word_t res = cmd_p_test(B);
-          fprintf(stdout, "real is %u, res is %u\n", real, res);
+          word_t res = expr(B, false);
 
           if(real != res){
             fprintf(stderr, "real is %u, res is %u\n", real, res);
@@ -70,6 +62,7 @@ void engine_start() {
   #if 0
     sdb_mainloop();
   #else
+    // test expr compute 
     test_cmd_p();
   #endif
 #endif
