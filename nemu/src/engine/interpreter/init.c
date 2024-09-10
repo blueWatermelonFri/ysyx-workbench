@@ -31,7 +31,7 @@ void test_cmd_p(){
     }
 
     char line[MAX_LINE];   // 存储每一行
-    char A[10] = ""; // 存储第一个数字
+    char A[11] = ""; // 存储第一个数字
     char B[MAX_LINE] = ""; // 存储其余内容
 
     while (fgets(line, sizeof(line), file)) { // 读取每一行
