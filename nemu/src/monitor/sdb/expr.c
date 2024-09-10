@@ -192,6 +192,7 @@ static bool make_token(char *e)
     return true;
 }
 
+// 寻找主运算符
 int  check_op_positions(int p, int q)
 {
     int op = 0;
