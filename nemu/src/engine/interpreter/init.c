@@ -40,6 +40,7 @@ void test_cmd_p(){
     // 使用 sscanf 读取第一个数字
     if (sscanf(line, "%s %[^\n]", tempA, tempB) == 2) {
         printf("%s \n", tempA);
+        printf("%s \n", tempB);
         strcat(A, tempA);
         strcat(A, " "); // 保持数字之间的空格
         strcat(B, tempB);
