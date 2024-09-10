@@ -80,8 +80,8 @@ void init_regex()
     }
 }
 
-#define TOKEN_NUM 128
-#define TOKEN_STR_NUM TOKEN_NUM
+#define TOKEN_NUM 65536
+#define TOKEN_STR_NUM 32
 
 typedef struct token
 {
