@@ -309,6 +309,9 @@ word_t eval (int p, int q)
         int op = check_op_positions(p, q);
         // Assert(op > 0, "Op position must be greater than 0, but got %d", op);
 
+        if(tokens[op].type == NEG)
+            return 0 - eval(op + 1, q);                
+
         uint32_t val1 = eval(p, op - 1);
         uint32_t val2 = eval(op + 1, q);
 
@@ -317,8 +320,6 @@ word_t eval (int p, int q)
                 return val1 + val2;
             case SUB:
                 return val1 - val2;
-            case NEG:
-                return 0 - val2;                
             case MUL:
                 return val1 * val2;
                 break;
