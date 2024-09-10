@@ -29,7 +29,12 @@ enum
     DIV,             // /
     LBRACKET,        // (
     RBRACKET,        // ）
-    NUMBER,          // number
+    NUMBER,          // decimalism
+    HEXANUMBER,      // hexadecimal
+    REG,             // register
+    DEREF,           // dereference point
+    NEG,             // negtive number
+
     TK_EQ,           // ==
                      // 添加一条规则判断有任意的加减号
                      /* TODO: Add more token types */
@@ -49,9 +54,11 @@ static struct rule
     {"-", SUB},           // sub
     {"\\*", MUL},         // multiply
     {"\\/", DIV},         // divide
-    {"\\(", LBRACKET},    // divide
-    {"\\)", RBRACKET},    // divide
-    {"-?[0-9]+", NUMBER}, // decimalism integer
+    {"\\(", LBRACKET},    // (
+    {"\\)", RBRACKET},    // )
+    {"-?[0-9]+", NUMBER}, // decimalism unsigned integer
+    {"0x[0-9a-fA-F]+", HEXANUMBER}, // hexadecimal unsigned integer
+    {"\\$[a-z0-9\\$]+", REG}, // register
     {"==", TK_EQ},        // equal
 };
 
@@ -129,7 +136,16 @@ static bool make_token(char *e)
                     tokens[nr_token].type = SUB;
                     break;
                 case MUL:
-                    tokens[nr_token].type = MUL;
+                    if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == PLUS ||
+                                                            tokens[i - 1].type == SUB ||
+                                                            tokens[i - 1].type == MUL ||
+                                                            tokens[i - 1].type == DIV ||
+                                                            tokens[i - 1].type == LBRACKET)){
+                        tokens[i].type = DEREF;
+                    }
+                    else{
+                        tokens[nr_token].type = MUL;
+                    }
                     break;
                 case DIV:
                     tokens[nr_token].type = DIV;

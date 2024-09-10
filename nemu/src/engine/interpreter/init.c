@@ -42,7 +42,6 @@ void test_cmd_p(){
 
           char * endptr ;
           word_t real = (word_t) strtoul(A, &endptr, 0);
-
           word_t res = expr(B, false);
 
           if(real != res){
@@ -59,7 +58,7 @@ void engine_start() {
   cpu_exec(-1); 
 #else
   /* Receive commands from user. */
-  #if 0
+  #if 1
     sdb_mainloop();
   #else
     // test expr compute 
