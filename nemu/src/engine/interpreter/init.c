@@ -46,8 +46,8 @@ void test_cmd_p(){
     }
     }
     
-    printf("字符串 A: \n%s\n", A);
-    printf("字符串 B: \n%s\n", B);
+    // printf("字符串 A: \n%s\n", A);
+    // printf("字符串 B: \n%s\n", B);
 
     fclose(file);
     return;
