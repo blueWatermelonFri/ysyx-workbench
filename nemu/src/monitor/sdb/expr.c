@@ -32,10 +32,10 @@ enum
     NUMBER,          // decimalism
     HEXANUMBER,      // hexadecimal
     REG,             // register
-    DEREF,           // dereference point
+    DEREF,           // dereference
     NEG,             // negtive number
-
     TK_EQ,           // ==
+    AND              // &&
                      // 添加一条规则判断有任意的加减号
                      /* TODO: Add more token types */
 };
@@ -60,6 +60,8 @@ static struct rule
     {"0x[0-9a-fA-F]+", HEXANUMBER}, // hexadecimal unsigned integer
     {"\\$[a-z0-9\\$]+", REG}, // register
     {"==", TK_EQ},        // equal
+    {"&&", AND}          // logic and
+
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -171,6 +173,21 @@ static bool make_token(char *e)
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
                     tokens[nr_token].str[substr_len] = '\0';
                     break;
+                // case HEXANUMBER:
+                //     assert(substr_len < sizeof(tokens[nr_token].str));
+                //     tokens[nr_token].type = HEXANUMBER;
+                //     strncpy(tokens[nr_token].str, substr_start, substr_len);
+                //     tokens[nr_token].str[substr_len] = '\0';
+                //     break;
+                // case REG:
+                //     tokens[nr_token].type = REG;
+                //     break;                
+                // case TK_EQ:
+                //     tokens[nr_token].type = TK_EQ;
+                //     break;    
+                case AND:
+                    tokens[nr_token].type = AND;
+                    break;                        
                 default:
                     break;
                 }
@@ -202,14 +219,20 @@ int  check_op_positions(int p, int q)
     for(; p <= q; p++){
         
         switch (tokens[p].type){
-            case PLUS:
+            case AND:
                 if(!in_parentheses){
+                    op = p;
+                    has_lower = 2;
+                }
+                break;
+            case PLUS:
+                if(!in_parentheses && has_lower <= 1){
                     op = p;
                     has_lower = 1;
                 }
                 break;
             case SUB:
-                if(!in_parentheses){
+                if(!in_parentheses && has_lower <= 1){
                     op = p;
                     has_lower = 1;
                 }
@@ -326,6 +349,8 @@ word_t eval (int p, int q)
             case DIV:
                 Assert(val2 != 0, "Zero cannot be devides");
                 return val1 / val2;
+            case AND:
+                return val1 && val2;
             default:
                 Assert(0, "not support op %d", tokens[op].type);
         }
