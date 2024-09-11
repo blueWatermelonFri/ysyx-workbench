@@ -335,6 +335,10 @@ word_t eval (int p, int q)
         if(tokens[op].type == NEG)
             return 0 - eval(op + 1, q);                
 
+        if(tokens[op].type == AND)
+            if(eval(p, op - 1) == 0)
+                return 0; 
+
         uint32_t val1 = eval(p, op - 1);
         uint32_t val2 = eval(op + 1, q);
 
@@ -370,7 +374,6 @@ word_t expr(char *e, bool *success)
     /* TODO: Insert codes to evaluate the expression. */
     Assert(nr_token - 1 >= 0, "expression is bad!");
     word_t res = eval(0, nr_token - 1);
-    printf("\n");
     printf("%u\n", res);
 
     return res;
