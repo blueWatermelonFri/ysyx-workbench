@@ -335,9 +335,13 @@ word_t eval (int p, int q)
         if(tokens[op].type == NEG)
             return 0 - eval(op + 1, q);                
 
-        if(tokens[op].type == AND)
+        if(tokens[op].type == AND){
+
             if(eval(p, op - 1) == 0)
                 return 0; 
+            else
+                return eval(p, op - 1) && eval(op + 1, q);
+        }
 
         uint32_t val1 = eval(p, op - 1);
         uint32_t val2 = eval(op + 1, q);
@@ -353,8 +357,6 @@ word_t eval (int p, int q)
             case DIV:
                 Assert(val2 != 0, "Zero cannot be devides");
                 return val1 / val2;
-            case AND:
-                return val1 && val2;
             default:
                 Assert(0, "not support op %d", tokens[op].type);
         }
