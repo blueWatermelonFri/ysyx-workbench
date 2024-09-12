@@ -1,7 +1,12 @@
 #include <stdio.h>
 int main() { 
-  unsigned int result = 0x9999236u *  12345123u; 
-  printf("%u", result); 
+
+  char buf[32];
+  int num = 0xbbbbbbbb ;
+  snprintf(buf , 11, "0x%x", num);
+  printf("%s\n", buf);
+  // unsigned int result = 0x9999236u *  12345123u; 
+  // printf("%u", result); 
   return 0; 
 };
 
