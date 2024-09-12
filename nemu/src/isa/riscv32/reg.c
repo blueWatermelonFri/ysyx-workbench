@@ -57,9 +57,8 @@ void isa_reg_display(char *args) {
   printf("reg30 = 0x%08x\n", cpu.gpr[30]);
   printf("reg31 = 0x%08x\n", cpu.gpr[31]);
 
-  printf("111111111111111111\n");
-  bool *success = NULL;  // 初始化为 NULL
-  *success = false;
+//   bool *success = NULL;  // 初始化为 NULL
+  bool *success = false;
   char *str_reg = strtok(args," ");
   int reg_num = isa_reg_str2val(str_reg, success);
   printf("reg%d = 0x%08x\n", reg_num, cpu.gpr[reg_num]);
