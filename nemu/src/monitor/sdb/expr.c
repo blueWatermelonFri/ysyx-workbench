@@ -174,12 +174,12 @@ static bool make_token(char *e)
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
                     tokens[nr_token].str[substr_len] = '\0';
                     break;
-                // case HEXANUMBER:
-                //     assert(substr_len < sizeof(tokens[nr_token].str));
-                //     tokens[nr_token].type = HEXANUMBER;
-                //     strncpy(tokens[nr_token].str, substr_start, substr_len);
-                //     tokens[nr_token].str[substr_len] = '\0';
-                //     break;
+                case HEXANUMBER:
+                    assert(substr_len < sizeof(tokens[nr_token].str));
+                    tokens[nr_token].type = HEXANUMBER;
+                    strncpy(tokens[nr_token].str, substr_start, substr_len);
+                    tokens[nr_token].str[substr_len] = '\0';
+                    break;
                 // case REG:
                 //     tokens[nr_token].type = REG;
                 //     break;                
@@ -278,6 +278,8 @@ int  check_op_positions(int p, int q)
                 in_parentheses -= 1;
                 break;
             case NUMBER:
+                break;
+            case HEXANUMBER:
                 break;
             default:
                 break;

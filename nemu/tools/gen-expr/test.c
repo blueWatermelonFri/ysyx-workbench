@@ -1,6 +1,6 @@
 #include <stdio.h>
 int main() { 
-  unsigned int result = 0 && 5/0; 
+  unsigned int result = 0x9999236u *  12345123u; 
   printf("%u", result); 
   return 0; 
 };

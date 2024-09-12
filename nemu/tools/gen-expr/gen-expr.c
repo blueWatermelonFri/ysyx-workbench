@@ -64,10 +64,12 @@ static void gen(char str){
 }
 
 static void gen_num(){
-  uint32_t op =  rand() % 65536;
+
+
+  uint32_t op =  rand() ;
   // op的最大值是10位有效数字，加上'\0'字符，一共最多11个字符，
   // 但是返回值不会包括'\0'。
-  count += snprintf(buf + count, 11, "%uu", op);
+  count += snprintf(buf + count, 15, "%uu", op);
 
 }
 
