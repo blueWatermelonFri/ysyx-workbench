@@ -71,7 +71,7 @@ static void gen_num(){
   uint32_t num =  rand() % 65536 ;
   int op =  rand() % 3 ;
   switch (op) {
-    case 0: count += snprintf(buf + count, 11, "0x%uu", num);  break;
+    case 0: count += snprintf(buf + count, 11, "%uu", num);  break;
     case 1: count += snprintf(buf + count, 11, "0x%xu", num);  break;
     case 2: count += snprintf(buf + count, 11, "0X%Xu", num);  break;
 
