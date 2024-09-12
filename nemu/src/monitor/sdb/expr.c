@@ -197,7 +197,7 @@ static bool make_token(char *e)
                 case REG:
                     tokens[nr_token].type = REG;
                     // 不保存$符号
-                    strncpy(tokens[nr_token].str, substr_start+1, substr_len);
+                    strncpy(tokens[nr_token].str, substr_start+1, substr_len-1);
                     tokens[nr_token].str[substr_len] = '\0';
                     break;                                            
                 default:
