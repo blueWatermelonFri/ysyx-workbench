@@ -59,11 +59,10 @@ void isa_reg_display(char *args) {
 
   printf("11111111111111\n");
 //   bool *success = NULL;  // 初始化为 NULL
-  bool *success = false;
-  *success = true;
+  bool success = false;
   printf("11111111111111\n");
   char *str_reg = strtok(args," ");
-  int reg_num = isa_reg_str2val(str_reg, success);
+  int reg_num = isa_reg_str2val(str_reg, &success);
   printf("reg%d = 0x%08x\n", reg_num, cpu.gpr[reg_num]);
 
 }
