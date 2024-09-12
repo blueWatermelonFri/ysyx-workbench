@@ -174,7 +174,7 @@ static bool make_token(char *e)
                     assert(substr_len < sizeof(tokens[nr_token].str));
                     tokens[nr_token].type = NUMBER;
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
-                    tokens[nr_token].str[substr_len] = '\0';
+                    tokens[nr_token].str[substr_len] = '\0';                    
                     break;
                 case HEXANUMBER:
                     assert(substr_len < sizeof(tokens[nr_token].str));
@@ -193,7 +193,12 @@ static bool make_token(char *e)
                     break;                       
                 case AND:
                     tokens[nr_token].type = AND;
-                    break;                        
+                    break; 
+                case REG:
+                    tokens[nr_token].type = REG;
+                    strncpy(tokens[nr_token].str, substr_start, substr_len);
+                    tokens[nr_token].str[substr_len] = '\0';
+                    break;                                            
                 default:
                     break;
                 }
@@ -281,7 +286,6 @@ int  check_op_positions(int p, int q)
                     has_lower = 4;
                 }
                 break;
-
             case LBRACKET:
                 in_parentheses += 1;
                 break;
@@ -348,10 +352,18 @@ word_t eval (int p, int q)
     }
     else if (p == q)
     {   
-        char * endptr ;
-        uint32_t value = (uint32_t) strtoul(tokens[p].str, &endptr, 0);
-
-        return value;
+        switch (tokens[p].type){
+            case REG:
+                bool *success = NULL;  // 初始化为 NULL
+                *success = false;
+                int reg_num = isa_reg_str2val(tokens[p].str, success);
+                assert(success);
+                return  cpu.gpr[reg_num];
+            default:
+                char * endptr ;
+                uint32_t value = (uint32_t) strtoul(tokens[p].str, &endptr, 0);
+                return value;
+            }
     }
     else if (check_parentheses(p, q) == true)
     {
