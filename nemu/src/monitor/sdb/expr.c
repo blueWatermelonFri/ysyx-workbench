@@ -58,7 +58,7 @@ static struct rule
     {"\\(", LBRACKET},    // (
     {"\\)", RBRACKET},    // )
     {"-?[0-9]+", NUMBER}, // decimalism unsigned integer
-    {"0[xX][0-9a-fA-F]+", HEXANUMBER}, // hexadecimal unsigned integer
+    {"0[X][0-9a-fA-F]+", HEXANUMBER}, // hexadecimal unsigned integer
     {"\\$[a-z0-9\\$]+", REG}, // register
     {"==", TK_EQ},        // equal
     {"&&", AND}          // logic and
