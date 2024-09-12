@@ -112,8 +112,8 @@ static int cmd_x(char *args) {
 
 static int cmd_p(char *args) {
 
-  bool *success = false;
-  expr(args, success);
+  bool success = false;
+  expr(args, &success);
   return 0;
   
 }

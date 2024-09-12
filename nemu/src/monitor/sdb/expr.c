@@ -354,10 +354,9 @@ word_t eval (int p, int q)
     {   
         switch (tokens[p].type){
             case REG:
-                bool *is_succ = false;
-                int reg_num = isa_reg_str2val(tokens[p].str, is_succ);
-                printf("111111");
-                assert(*is_succ);
+                bool success = false;
+                int reg_num = isa_reg_str2val(tokens[p].str, &success);
+                assert(success);
                 return  cpu.gpr[reg_num];
             default:
                 char * endptr ;
