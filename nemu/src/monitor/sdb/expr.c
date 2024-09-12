@@ -35,6 +35,7 @@ enum
     DEREF,           // dereference
     NEG,             // negtive number
     TK_EQ,           // ==
+    TK_NEQ,           // !=
     AND              // &&
                      // 添加一条规则判断有任意的加减号
                      /* TODO: Add more token types */
@@ -61,6 +62,7 @@ static struct rule
     {"-?[0-9]+", NUMBER}, // decimalism unsigned integer
     {"\\$[a-z0-9\\$]+", REG}, // register
     {"==", TK_EQ},        // equal
+    {"!=", TK_NEQ},        // equal
     {"&&", AND}          // logic and
 
 };
@@ -186,6 +188,9 @@ static bool make_token(char *e)
                 case TK_EQ:
                     tokens[nr_token].type = TK_EQ;
                     break;    
+                case TK_NEQ:
+                    tokens[nr_token].type = TK_NEQ;
+                    break;                       
                 case AND:
                     tokens[nr_token].type = AND;
                     break;                        
@@ -216,7 +221,7 @@ static bool make_token(char *e)
 // NEG 0
 // MUL, DIV 1
 // PLUS, SUB 2
-// TK_EQ 3
+// TK_EQ, TK_NEQ 3
 // AND 4
 
 
@@ -264,6 +269,12 @@ int  check_op_positions(int p, int q)
                     has_lower = 3;
                 }
                 break;
+            case TK_NEQ:
+                if(!in_parentheses && has_lower <= 3){
+                    op = p;
+                    has_lower = 3;
+                }
+                break;                
             case AND:
                 if(!in_parentheses && has_lower <= 4){
                     op = p;
@@ -381,6 +392,9 @@ word_t eval (int p, int q)
             case TK_EQ:
                 return val1 == val2;
                 break;
+            case TK_NEQ:
+                return val1 != val2;
+                break;                
             case DIV:
                 Assert(val2 != 0, "Zero cannot be devides");
                 return val1 / val2;
