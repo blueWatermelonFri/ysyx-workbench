@@ -133,7 +133,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
     } else if (strcmp(s, "t6") == 0) {
         return 31;
     } else {
-        success = false;
+        *success = false;
         printf("The '%s' is not in registers list\n", s);
     }
 
