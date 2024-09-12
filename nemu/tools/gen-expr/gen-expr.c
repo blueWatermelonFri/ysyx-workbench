@@ -41,13 +41,15 @@ static void gen_rand_op(){
   if(count + 1 > 65000)
     return; 
 
-  int op =  rand() % 5 ;
+  int op =  rand() % 6 ;
   switch (op) {
     case 0: buf[count] = '+'; break;
     case 1: buf[count] = '-';  break;
     case 2: buf[count] = '*'; break;
     case 3: buf[count] = '/';  break;
     case 4: buf[count] = '&'; buf[count+1] = '&'; count ++ ;  break;
+    case 5: buf[count] = '='; buf[count+1] = '='; count ++ ;  break;
+
     default : assert(0);
   }
   count ++;

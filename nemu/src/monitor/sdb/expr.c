@@ -211,6 +211,15 @@ static bool make_token(char *e)
 }
 
 // 寻找主运算符
+
+// 运算符优先级排序
+// NEG 0
+// MUL, DIV 1
+// PLUS, SUB 2
+// TK_EQ 3
+// AND 4
+
+
 int  check_op_positions(int p, int q)
 {
     int op = 0;
@@ -220,44 +229,48 @@ int  check_op_positions(int p, int q)
     for(; p <= q; p++){
         
         switch (tokens[p].type){
-            case AND:
-                if(!in_parentheses){
+            case NEG:
+                if(!in_parentheses && !has_lower){
                     op = p;
-                    has_lower = 3;
                 }
                 break;
-
-            case TK_EQ:
+            case MUL:
+                if(!in_parentheses && has_lower <= 1){
+                    op = p;
+                    has_lower = 1;
+                }
+                break;
+            case DIV:
+                if(!in_parentheses && has_lower <= 1){
+                    op = p;
+                    has_lower = 1;
+                }
+                break;
+            case PLUS:
                 if(!in_parentheses && has_lower <= 2){
                     op = p;
                     has_lower = 2;
                 }
                 break;
-            case PLUS:
-                if(!in_parentheses && has_lower <= 1){
-                    op = p;
-                    has_lower = 1;
-                }
-                break;
             case SUB:
-                if(!in_parentheses && has_lower <= 1){
+                if(!in_parentheses && has_lower <= 2){
                     op = p;
-                    has_lower = 1;
+                    has_lower = 2;
                 }
                 break;
-            case NEG:
-                if(op == 0){
+            case TK_EQ:
+                if(!in_parentheses && has_lower <= 3){
                     op = p;
+                    has_lower = 3;
                 }
                 break;
-            case MUL:
-                if(!in_parentheses && !has_lower)
+            case AND:
+                if(!in_parentheses && has_lower <= 4){
                     op = p;
+                    has_lower = 4;
+                }
                 break;
-            case DIV:
-                if(!in_parentheses && !has_lower)
-                    op = p;
-                break;
+
             case LBRACKET:
                 in_parentheses += 1;
                 break;
