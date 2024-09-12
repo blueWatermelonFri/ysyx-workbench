@@ -48,6 +48,7 @@ static struct rule
 
     /* TODO: Add more rules.
      * Pay attention to the precedence level of different rules.
+     * https://en.cppreference.com/w/c/language/operator_precedence
      */
     {" +", TK_NOTYPE},    // spaces
     {"\\+", PLUS},        // plus
@@ -182,9 +183,9 @@ static bool make_token(char *e)
                 // case REG:
                 //     tokens[nr_token].type = REG;
                 //     break;                
-                // case TK_EQ:
-                //     tokens[nr_token].type = TK_EQ;
-                //     break;    
+                case TK_EQ:
+                    tokens[nr_token].type = TK_EQ;
+                    break;    
                 case AND:
                     tokens[nr_token].type = AND;
                     break;                        
@@ -221,6 +222,13 @@ int  check_op_positions(int p, int q)
         switch (tokens[p].type){
             case AND:
                 if(!in_parentheses){
+                    op = p;
+                    has_lower = 3;
+                }
+                break;
+
+            case TK_EQ:
+                if(!in_parentheses && has_lower <= 2){
                     op = p;
                     has_lower = 2;
                 }
@@ -354,6 +362,9 @@ word_t eval (int p, int q)
                 return val1 - val2;
             case MUL:
                 return val1 * val2;
+                break;
+            case TK_EQ:
+                return val1 == val2;
                 break;
             case DIV:
                 Assert(val2 != 0, "Zero cannot be devides");
