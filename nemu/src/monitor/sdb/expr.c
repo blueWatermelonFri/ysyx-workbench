@@ -120,8 +120,8 @@ static bool make_token(char *e)
                 char *substr_start = e + position;
                 int substr_len = pmatch.rm_eo;
 
-                // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-                //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
+                Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+                    i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
                 position += substr_len;
 
@@ -335,15 +335,16 @@ word_t eval (int p, int q)
         if(tokens[op].type == NEG)
             return 0 - eval(op + 1, q);                
 
-        if(tokens[op].type == AND){
+        
+        uint32_t val1 = eval(p, op - 1);
 
-            if(eval(p, op - 1) == 0)
+        if(tokens[op].type == AND){
+            if(val1 == 0)
                 return 0; 
             else
-                return eval(p, op - 1) && eval(op + 1, q);
+                return val1 && eval(op + 1, q);
         }
 
-        uint32_t val1 = eval(p, op - 1);
         uint32_t val2 = eval(op + 1, q);
 
         switch (tokens[op].type){
