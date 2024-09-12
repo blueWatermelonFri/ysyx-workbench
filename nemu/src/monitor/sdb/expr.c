@@ -354,9 +354,12 @@ word_t eval (int p, int q)
     {   
         switch (tokens[p].type){
             case REG:
+                printf("111111");
                 bool *success = NULL;  // 初始化为 NULL
+                printf("111111");
                 *success = false;
                 int reg_num = isa_reg_str2val(tokens[p].str, success);
+                printf("111111");
                 assert(success);
                 return  cpu.gpr[reg_num];
             default:
