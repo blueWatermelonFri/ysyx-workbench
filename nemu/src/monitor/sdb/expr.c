@@ -57,8 +57,8 @@ static struct rule
     {"\\/", DIV},         // divide
     {"\\(", LBRACKET},    // (
     {"\\)", RBRACKET},    // )
+    {"0[xX][0-9a-fA-F]+", HEXANUMBER}, // hexadecimal unsigned integer
     {"-?[0-9]+", NUMBER}, // decimalism unsigned integer
-    {"0X[0-9a-fA-F]+", HEXANUMBER}, // hexadecimal unsigned integer
     {"\\$[a-z0-9\\$]+", REG}, // register
     {"==", TK_EQ},        // equal
     {"&&", AND}          // logic and
