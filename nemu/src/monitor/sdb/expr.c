@@ -351,6 +351,8 @@ word_t eval (int p, int q)
     {
         /* Bad expression */
         fprintf(stderr, "No digits were found\n");
+        assert(0);
+
     }
     else if (p == q)
     {   
