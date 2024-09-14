@@ -155,6 +155,7 @@ static bool make_token(char *e)
                                            tokens[nr_token - 1].type == SUB ||
                                            tokens[nr_token - 1].type == MUL ||
                                            tokens[nr_token - 1].type == DIV ||
+                                           tokens[nr_token - 1].type == NEG ||
                                            tokens[nr_token - 1].type == LBRACKET){
                         tokens[nr_token].type = DEREF;
                     }
