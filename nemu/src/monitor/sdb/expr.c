@@ -19,6 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include <memory/paddr.h>
 
 enum
 {
@@ -381,7 +382,19 @@ word_t eval (int p, int q)
         if(tokens[op].type == NEG)
             return 0 - eval(op + 1, q);                
 
-        
+        if(tokens[op].type == DEREF){
+            
+            word_t addr = eval(op+1, q);
+            assert (addr >= 0x80000000);
+            
+            // 小端模式 数据的低字节保存在内存的低地址中
+            // 返回的是uint8的地址，为了方便起见，直接转化为
+            // uint32地址，但是必须保证地址正确对齐到 4 字节边界？
+            word_t *int32_addr = (word_t *) guest_to_host(addr);
+            
+            return *int32_addr;    
+        }
+
         uint32_t val1 = eval(p, op - 1);
 
         if(tokens[op].type == AND){

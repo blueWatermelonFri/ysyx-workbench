@@ -41,3 +41,31 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
+WP* new_wp(){
+  if(head == NULL && free_ == wp_pool){
+    head = &wp_pool[0];
+    head->next = NULL;
+
+    free_ = &wp_pool[1];
+    return head;
+  }
+  else if(free_ == NULL){
+    fprintf(stderr, "No resources in poll");
+    assert(0);
+  }
+  else{
+    WP *tmp = head;
+    while(tmp->next != NULL){
+      tmp = tmp->next;
+    }
+    tmp->next = free_;
+    free_ = free_->next ;
+    tmp->next->next = NULL;
+    return head;
+    
+  }
+}
+
+void free_wp(WP *wp){
+
+}

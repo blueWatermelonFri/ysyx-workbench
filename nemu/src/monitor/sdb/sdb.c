@@ -68,7 +68,7 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_x(char *args) {
-
+  // str_len表示从当前地址开始，打印多少个地址的值
   char *str_len = strtok(args, " ");
   args = str_len + strlen(str_len) + 1;
   char *str_addr = strtok(args, " ");
@@ -97,6 +97,9 @@ static int cmd_x(char *args) {
         exit(EXIT_FAILURE);
   }
 
+  // 小端模式 数据的低字节保存在内存的低地址中
+  // 返回的是uint8的地址，为了方便起见，直接转化为
+  // uint32地址，但是必须保证地址是32的整数倍？
   uint8_t * int8_addr =  guest_to_host(addr);
   
   for (int i = 0; i < len; i++ ) {
