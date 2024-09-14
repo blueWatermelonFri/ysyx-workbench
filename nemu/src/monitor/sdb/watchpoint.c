@@ -20,7 +20,7 @@
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-
+  char expr [65536];
   /* TODO: Add more members if necessary */
 
 } WP;
@@ -67,5 +67,7 @@ WP* new_wp(){
 }
 
 void free_wp(WP *wp){
-
+    WP *tmp = free_;
+    free_ = wp;
+    free_->next = tmp;
 }

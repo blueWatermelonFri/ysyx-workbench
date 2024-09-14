@@ -53,10 +53,19 @@ static int cmd_q(char *args) {
   return -1;
 }
 
-static int cmd_r(char *args) {
-  isa_reg_display(args);
+
+static int cmd_info(char *args) {
+  
+  if (strcmp(args, "r") == 0) {
+      isa_reg_display();
+    } else if (strcmp(args, "w") == 0) {
+        printf("It's a banana.\n");
+    } else {
+        printf("Unknown info operation.\n");
+    }
   return 0;
 }
+
 
 static int cmd_si(char *args) {
   
@@ -132,9 +141,11 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Single  step", cmd_si },
-  { "r", "print register info", cmd_r },
+  { "info", "print watchpoint/register info", cmd_info },
   { "x", "print memory info", cmd_x },
   { "p", "get expr value", cmd_p },
+  // { "w", "watchpoint", cmd_w },
+
 
   /* TODO: Add more commands */
 

@@ -23,7 +23,7 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
-void isa_reg_display(char *args) {
+void isa_reg_display() {
    printf("reg0 = 0x%08x\n", cpu.gpr[0]);
    printf("reg1 = 0x%08x\n", cpu.gpr[1]);
    printf("reg2 = 0x%08x\n", cpu.gpr[2]);
