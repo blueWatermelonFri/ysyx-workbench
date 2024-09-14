@@ -182,10 +182,7 @@ static bool make_token(char *e)
                     tokens[nr_token].type = HEXANUMBER;
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
                     tokens[nr_token].str[substr_len] = '\0';
-                    break;
-                // case REG:
-                //     tokens[nr_token].type = REG;
-                //     break;                
+                    break;              
                 case TK_EQ:
                     tokens[nr_token].type = TK_EQ;
                     break;    
@@ -225,8 +222,8 @@ static bool make_token(char *e)
 // 寻找主运算符
 
 // 运算符优先级排序
-// NEG 0
-// MUL, DIV 1
+// NEG *(deref) 0 这两个是自右向左结合
+// MUL, DIV 1     下面的是自左向右结合
 // PLUS, SUB 2
 // TK_EQ, TK_NEQ 3
 // AND 4
@@ -246,6 +243,11 @@ int  check_op_positions(int p, int q)
                     op = p;
                 }
                 break;
+            case DEREF:
+                if(!in_parentheses && !has_lower){
+                    op = p;
+                }
+                break;                
             case MUL:
                 if(!in_parentheses && has_lower <= 1){
                     op = p;
