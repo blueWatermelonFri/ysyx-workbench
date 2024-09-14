@@ -235,6 +235,7 @@ int  check_op_positions(int p, int q)
     int op = 0;
     int in_parentheses = 0;
     int has_lower = 0;
+    // 负号和解引用是从右到左计算的
     int right2lelf = 0;
 
     for(; p <= q; p++){
@@ -244,14 +245,14 @@ int  check_op_positions(int p, int q)
                 if(!in_parentheses && !has_lower && !right2lelf){
                     op = p;
                     right2lelf = 1;
-                    continue;
                 }
+                break;
             case DEREF:
                 if(!in_parentheses && !has_lower && !right2lelf){
                     op = p;
                     right2lelf = 1;
-                    continue;
                 }
+                break;
             case MUL:
                 if(!in_parentheses && has_lower <= 1){
                     op = p;
