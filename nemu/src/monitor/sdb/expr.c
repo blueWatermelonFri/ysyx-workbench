@@ -241,13 +241,13 @@ int  check_op_positions(int p, int q)
             case NEG:
                 if(!in_parentheses && !has_lower){
                     op = p;
+                    continue;
                 }
-                break;
             case DEREF:
                 if(!in_parentheses && !has_lower){
                     op = p;
+                    continue;
                 }
-                break;                
             case MUL:
                 if(!in_parentheses && has_lower <= 1){
                     op = p;
