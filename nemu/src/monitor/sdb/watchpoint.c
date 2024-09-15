@@ -62,3 +62,8 @@ void free_wp(WP *wp){
     free_ = wp;
     free_->next = tmp;
 }
+
+void difftest_wp(){
+    WP *tmp = free_;
+    free_->next = tmp;
+}
