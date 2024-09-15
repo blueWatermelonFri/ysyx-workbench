@@ -20,18 +20,6 @@
 #include <cpu/ifetch.h>
 #include <memory/paddr.h>
 
-#define EXPR_LEN 65536
-
-
-typedef struct watchpoint {
-  int NO;
-  struct watchpoint *next;
-  char expression [EXPR_LEN];
-  word_t cur_value ;
-
-  /* TODO: Add more members if necessary */
-
-} WP;
 
 word_t expr(char *e, bool *success);
 

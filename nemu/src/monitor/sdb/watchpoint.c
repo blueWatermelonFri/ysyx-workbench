@@ -17,6 +17,17 @@
 
 #define NR_WP 32
 
+#define EXPR_LEN 65536
+typedef struct watchpoint {
+  int NO;
+  struct watchpoint *next;
+  char expression [EXPR_LEN];
+  word_t cur_value ;
+
+  /* TODO: Add more members if necessary */
+
+} WP;
+
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
 
@@ -55,6 +66,23 @@ WP* new_wp(){
     tmp->next->next = NULL;
     return head;
   }
+}
+
+void wp(char * args){
+  
+  head = new_wp();
+
+  bool success = false;
+  word_t res = expr(args, &success);
+  assert(success);
+
+  WP *cur = head;
+  while(head->next!=NULL){
+    cur = cur->next;
+  }
+
+  // cur->expression = args;
+  cur->cur_value = res;
 }
 
 void free_wp(WP *wp){
