@@ -17,14 +17,6 @@
 
 #define NR_WP 32
 
-typedef struct watchpoint {
-  int NO;
-  struct watchpoint *next;
-  char expr [65536];
-  /* TODO: Add more members if necessary */
-
-} WP;
-
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
 
@@ -50,7 +42,7 @@ WP* new_wp(){
     return head;
   }
   else if(free_ == NULL){
-    fprintf(stderr, "No resources in poll");
+    fprintf(stderr, "No resources in pool");
     assert(0);
   }
   else{
@@ -62,7 +54,6 @@ WP* new_wp(){
     free_ = free_->next ;
     tmp->next->next = NULL;
     return head;
-    
   }
 }
 

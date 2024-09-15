@@ -23,6 +23,7 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+WP* new_wp();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -70,9 +71,12 @@ static int cmd_info(char *args) {
 static int cmd_si(char *args) {
   
   char *endptr;
+  uint64_t steps;
 
-  uint64_t steps = strtoul(args, &endptr, 0);
+  if(args == NULL) steps = 1;
+  else steps = strtoul(args, &endptr, 0);
   cpu_exec(steps);
+
   return 0;
 }
 
@@ -130,6 +134,25 @@ static int cmd_p(char *args) {
   
 }
 
+static int cmd_w(char *args) {
+  
+  WP *head = new_wp();
+
+  bool success = false;
+  word_t res = expr(args, &success);
+  assert(success);
+
+  WP *cur = head;
+  while(head->next!=NULL){
+    cur = cur->next;
+  }
+
+  // cur->expression = args;
+  cur->cur_value = res;
+
+  return -1;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -144,7 +167,7 @@ static struct {
   { "info", "print watchpoint/register info", cmd_info },
   { "x", "print memory info", cmd_x },
   { "p", "get expr value", cmd_p },
-  // { "w", "watchpoint", cmd_w },
+  { "w", "watchpoint", cmd_w },
 
 
   /* TODO: Add more commands */
