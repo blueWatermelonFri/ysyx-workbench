@@ -66,4 +66,5 @@ void free_wp(WP *wp){
 void difftest_wp(){
     WP *tmp = free_;
     free_->next = tmp;
+    printf("1234\n");
 }
