@@ -91,6 +91,21 @@ void wp(char * args){
   cur->cur_value = res;
 }
 
+void wp_display(){
+    WP *tmp = head;
+    int count = 1;
+    
+    printf("%-8s %-18s %s\n", "Num", "Type", "What");
+    while(tmp != NULL){
+    
+    // The %-8s (and similar) format specifiers tell printf to print a string (s)
+    // or a number (d, lx for unsigned long hex) with a width of 8, left-aligned (-).
+    printf("%-8d %-18s %s\n", count, "watchpoint", tmp->expression);
+    
+    }
+
+}
+
 void difftest_wp(){
     WP *tmp = free_;
     free_->next = tmp;

@@ -22,10 +22,9 @@
 static int is_batch_mode = false;
 
 void init_regex();
-void 
-init_wp_pool();
+void init_wp_pool();
 void wp();
-
+void wp_display();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -61,7 +60,7 @@ static int cmd_info(char *args) {
   if (strcmp(args, "r") == 0) {
       isa_reg_display();
     } else if (strcmp(args, "w") == 0) {
-        printf("It's a banana.\n");
+        wp_display();
     } else {
         printf("Unknown info operation.\n");
     }
