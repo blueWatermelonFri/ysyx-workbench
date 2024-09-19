@@ -79,6 +79,7 @@ void wp(char * args){
   head = new_wp();
 
   bool success = false;
+  printf("%s\n", args);
   word_t res = expr(args, &success);
   assert(success);
 
