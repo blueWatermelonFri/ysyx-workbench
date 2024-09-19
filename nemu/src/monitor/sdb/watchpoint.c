@@ -102,6 +102,7 @@ void wp_display(){
     // or a number (d, lx for unsigned long hex) with a width of 8, left-aligned (-).
     printf("%-8d %-18s %s\n", count, "watchpoint", tmp->expression);
     tmp = tmp->next;
+    count += 1;
     }
 
 }
