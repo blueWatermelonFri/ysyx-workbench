@@ -68,6 +68,12 @@ WP* new_wp(){
   }
 }
 
+void free_wp(WP *wp){
+    WP *tmp = free_;
+    free_ = wp;
+    free_->next = tmp;
+}
+
 void wp(char * args){
   
   head = new_wp();
@@ -77,18 +83,12 @@ void wp(char * args){
   assert(success);
 
   WP *cur = head;
-  while(head->next!=NULL){
+  while(cur->next!=NULL){
     cur = cur->next;
   }
 
   // cur->expression = args;
   cur->cur_value = res;
-}
-
-void free_wp(WP *wp){
-    WP *tmp = free_;
-    free_ = wp;
-    free_->next = tmp;
 }
 
 void difftest_wp(){

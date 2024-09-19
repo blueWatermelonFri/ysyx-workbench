@@ -22,7 +22,8 @@
 static int is_batch_mode = false;
 
 void init_regex();
-void init_wp_pool();
+void 
+init_wp_pool();
 void wp();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -156,7 +157,6 @@ static struct {
   { "x", "print memory info", cmd_x },
   { "p", "get expr value", cmd_p },
   { "w", "watchpoint", cmd_w },
-
 
   /* TODO: Add more commands */
 
