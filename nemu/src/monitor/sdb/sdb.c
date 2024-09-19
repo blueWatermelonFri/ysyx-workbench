@@ -138,7 +138,7 @@ static int cmd_w(char *args) {
   
   wp(args);
 
-  return -1;
+  return 0;
 }
 
 static int cmd_help(char *args);
