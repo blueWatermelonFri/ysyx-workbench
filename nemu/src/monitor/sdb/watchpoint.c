@@ -23,7 +23,6 @@ typedef struct watchpoint {
   struct watchpoint *next;
   char expression [EXPR_LEN];
   word_t cur_value ;
-
   /* TODO: Add more members if necessary */
 
 } WP;
@@ -79,7 +78,6 @@ void wp(char * args){
   head = new_wp();
 
   bool success = false;
-  printf("%s\n", args);
   word_t res = expr(args, &success);
   assert(success);
 
@@ -88,8 +86,9 @@ void wp(char * args){
     cur = cur->next;
   }
 
-  // cur->expression = args;
+  strcpy(cur->expression, args);
   cur->cur_value = res;
+
 }
 
 void wp_display(){
