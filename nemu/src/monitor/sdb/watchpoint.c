@@ -102,7 +102,7 @@ void wp_display(){
     // The %-8s (and similar) format specifiers tell printf to print a string (s)
     // or a number (d, lx for unsigned long hex) with a width of 8, left-aligned (-).
     printf("%-8d %-18s %s\n", count, "watchpoint", tmp->expression);
-    
+    tmp = tmp->next;
     }
 
 }
