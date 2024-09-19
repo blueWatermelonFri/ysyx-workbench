@@ -23,7 +23,8 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
-
+void wp();
+void wp_display();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -53,22 +54,34 @@ static int cmd_q(char *args) {
   return -1;
 }
 
-static int cmd_r(char *args) {
-  isa_reg_display(args);
+
+static int cmd_info(char *args) {
+  
+  if (strcmp(args, "r") == 0) {
+      isa_reg_display();
+    } else if (strcmp(args, "w") == 0) {
+        wp_display();
+    } else {
+        printf("Unknown info operation.\n");
+    }
   return 0;
 }
+
 
 static int cmd_si(char *args) {
   
   char *endptr;
+  uint64_t steps;
 
-  uint64_t steps = strtoul(args, &endptr, 0);
+  if(args == NULL) steps = 1;
+  else steps = strtoul(args, &endptr, 0);
   cpu_exec(steps);
+
   return 0;
 }
 
 static int cmd_x(char *args) {
-
+  // str_len表示从当前地址开始，打印多少个地址的值
   char *str_len = strtok(args, " ");
   args = str_len + strlen(str_len) + 1;
   char *str_addr = strtok(args, " ");
@@ -97,6 +110,9 @@ static int cmd_x(char *args) {
         exit(EXIT_FAILURE);
   }
 
+  // 小端模式 数据的低字节保存在内存的低地址中
+  // 返回的是uint8的地址，为了方便起见，直接转化为
+  // uint32地址，但是必须保证地址是32的整数倍？
   uint8_t * int8_addr =  guest_to_host(addr);
   
   for (int i = 0; i < len; i++ ) {
@@ -112,10 +128,17 @@ static int cmd_x(char *args) {
 
 static int cmd_p(char *args) {
 
-  bool *success = false;
-  expr(args, success);
+  bool success = false;
+  expr(args, &success);
   return 0;
   
+}
+
+static int cmd_w(char *args) {
+  
+  wp(args);
+
+  return 0;
 }
 
 static int cmd_help(char *args);
@@ -129,9 +152,10 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Single  step", cmd_si },
-  { "r", "print register info", cmd_r },
+  { "info", "print watchpoint/register info", cmd_info },
   { "x", "print memory info", cmd_x },
   { "p", "get expr value", cmd_p },
+  { "w", "watchpoint", cmd_w },
 
   /* TODO: Add more commands */
 

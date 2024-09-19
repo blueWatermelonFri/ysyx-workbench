@@ -23,7 +23,7 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
-void isa_reg_display(char *args) {
+void isa_reg_display() {
    printf("reg0 = 0x%08x\n", cpu.gpr[0]);
    printf("reg1 = 0x%08x\n", cpu.gpr[1]);
    printf("reg2 = 0x%08x\n", cpu.gpr[2]);
@@ -57,11 +57,12 @@ void isa_reg_display(char *args) {
   printf("reg30 = 0x%08x\n", cpu.gpr[30]);
   printf("reg31 = 0x%08x\n", cpu.gpr[31]);
 
-  bool *success = NULL;  // 初始化为 NULL
-  *success = true;
-  char *str_reg = strtok(args," ");
-  int reg_num = isa_reg_str2val(str_reg, success);
-  printf("reg%d = 0x%08x\n", reg_num, cpu.gpr[reg_num]);
+//   bool *success = NULL;  // 初始化为 NULL
+//   bool success = false;
+//   char *str_reg = strtok(args," ");
+//   int reg_num = isa_reg_str2val(str_reg, &success);
+//   assert(success == true)
+//   printf("reg%d = 0x%08x\n", reg_num, cpu.gpr[reg_num]);
 
 }
 
@@ -133,7 +134,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
     } else if (strcmp(s, "t6") == 0) {
         return 31;
     } else {
-        success = false;
+        *success = false;
         printf("The '%s' is not in registers list\n", s);
     }
 

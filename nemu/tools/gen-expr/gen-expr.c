@@ -41,12 +41,17 @@ static void gen_rand_op(){
   if(count + 1 > 65000)
     return; 
 
-  int op =  rand() % 4 ;
+  int op =  rand() % 7 ;
   switch (op) {
     case 0: buf[count] = '+'; break;
     case 1: buf[count] = '-';  break;
-    case 2: buf[count] = '*';; break;
+    case 2: buf[count] = '*'; break;
     case 3: buf[count] = '/';  break;
+    case 4: buf[count] = '&'; buf[count+1] = '&'; count ++ ;  break;
+    case 5: buf[count] = '='; buf[count+1] = '='; count ++ ;  break;
+    case 6: buf[count] = '!'; buf[count+1] = '='; count ++ ;  break;
+
+
     default : assert(0);
   }
   count ++;
@@ -61,10 +66,19 @@ static void gen(char str){
 }
 
 static void gen_num(){
-  uint32_t op =  rand() % 65536;
+
   // op的最大值是10位有效数字，加上'\0'字符，一共最多11个字符，
   // 但是返回值不会包括'\0'。
-  count += snprintf(buf + count, 11, "%uu", op);
+
+  uint32_t num =  rand() % 65536 ;
+  int op =  rand() % 3 ;
+  switch (op) {
+    case 0: count += snprintf(buf + count, 11, "%uu", num);  break;
+    case 1: count += snprintf(buf + count, 11, "0x%xu", num);  break;
+    case 2: count += snprintf(buf + count, 11, "0X%Xu", num);  break;
+
+    default : assert(0);
+  }
 
 }
 

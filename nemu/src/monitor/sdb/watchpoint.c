@@ -17,10 +17,12 @@
 
 #define NR_WP 32
 
+#define EXPR_LEN 65536
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-
+  char expression [EXPR_LEN];
+  word_t cur_value ;
   /* TODO: Add more members if necessary */
 
 } WP;
@@ -41,3 +43,72 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
+WP* new_wp(){
+  if(head == NULL && free_ == wp_pool){
+    head = &wp_pool[0];
+    head->next = NULL;
+
+    free_ = &wp_pool[1];
+    return head;
+  }
+  else if(free_ == NULL){
+    fprintf(stderr, "No resources in pool");
+    assert(0);
+  }
+  else{
+    WP *tmp = head;
+    while(tmp->next != NULL){
+      tmp = tmp->next;
+    }
+    tmp->next = free_;
+    free_ = free_->next ;
+    tmp->next->next = NULL;
+    return head;
+  }
+}
+
+void free_wp(WP *wp){
+    WP *tmp = free_;
+    free_ = wp;
+    free_->next = tmp;
+}
+
+void wp(char * args){
+  
+  head = new_wp();
+
+  bool success = false;
+  word_t res = expr(args, &success);
+  assert(success);
+
+  WP *cur = head;
+  while(cur->next!=NULL){
+    cur = cur->next;
+  }
+
+  strcpy(cur->expression, args);
+  cur->cur_value = res;
+
+}
+
+void wp_display(){
+    WP *tmp = head;
+    int count = 1;
+    
+    printf("%-8s %-18s %s\n", "Num", "Type", "What");
+    while(tmp != NULL){
+    
+    // The %-8s (and similar) format specifiers tell printf to print a string (s)
+    // or a number (d, lx for unsigned long hex) with a width of 8, left-aligned (-).
+    printf("%-8d %-18s %s\n", count, "watchpoint", tmp->expression);
+    tmp = tmp->next;
+    count += 1;
+    }
+
+}
+
+void difftest_wp(){
+    WP *tmp = free_;
+    free_->next = tmp;
+    printf("1234\n");
+}

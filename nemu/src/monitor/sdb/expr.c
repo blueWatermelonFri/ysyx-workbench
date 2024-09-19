@@ -19,6 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include <memory/paddr.h>
 
 enum
 {
@@ -29,8 +30,14 @@ enum
     DIV,             // /
     LBRACKET,        // (
     RBRACKET,        // ）
-    NUMBER,          // number
+    NUMBER,          // decimalism
+    HEXANUMBER,      // hexadecimal
+    REG,             // register
+    DEREF,           // dereference
+    NEG,             // negtive number
     TK_EQ,           // ==
+    TK_NEQ,           // !=
+    AND              // &&
                      // 添加一条规则判断有任意的加减号
                      /* TODO: Add more token types */
 };
@@ -43,6 +50,7 @@ static struct rule
 
     /* TODO: Add more rules.
      * Pay attention to the precedence level of different rules.
+     * https://en.cppreference.com/w/c/language/operator_precedence
      */
     {" +", TK_NOTYPE},    // spaces
     {"\\+", PLUS},        // plus
@@ -51,8 +59,13 @@ static struct rule
     {"\\/", DIV},         // divide
     {"\\(", LBRACKET},    // (
     {"\\)", RBRACKET},    // )
-    {"-?[0-9]+", NUMBER}, // decimalism integer
+    {"0[xX][0-9a-fA-F]+", HEXANUMBER}, // hexadecimal unsigned integer
+    {"-?[0-9]+", NUMBER}, // decimalism unsigned integer
+    {"\\$[a-z0-9\\$]+", REG}, // register
     {"==", TK_EQ},        // equal
+    {"!=", TK_NEQ},        // equal
+    {"&&", AND}          // logic and
+
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -126,10 +139,29 @@ static bool make_token(char *e)
                     tokens[nr_token].type = PLUS;
                     break;
                 case SUB:
-                    tokens[nr_token].type = SUB;
+                    if (nr_token == 0 || tokens[nr_token - 1].type == PLUS ||
+                                         tokens[nr_token - 1].type == SUB ||
+                                         tokens[nr_token - 1].type == MUL ||
+                                         tokens[nr_token - 1].type == DIV ||
+                                         tokens[nr_token - 1].type == LBRACKET){
+                        tokens[nr_token].type = NEG;
+                    }
+                    else{
+                        tokens[nr_token].type = SUB;
+                    }                
                     break;
                 case MUL:
-                    tokens[nr_token].type = MUL;
+                    if (nr_token == 0 || tokens[nr_token - 1].type == PLUS ||
+                                           tokens[nr_token - 1].type == SUB ||
+                                           tokens[nr_token - 1].type == MUL ||
+                                           tokens[nr_token - 1].type == DIV ||
+                                           tokens[nr_token - 1].type == NEG ||
+                                           tokens[nr_token - 1].type == LBRACKET){
+                        tokens[nr_token].type = DEREF;
+                    }
+                    else{
+                        tokens[nr_token].type = MUL;
+                    }
                     break;
                 case DIV:
                     tokens[nr_token].type = DIV;
@@ -144,8 +176,29 @@ static bool make_token(char *e)
                     assert(substr_len < sizeof(tokens[nr_token].str));
                     tokens[nr_token].type = NUMBER;
                     strncpy(tokens[nr_token].str, substr_start, substr_len);
-                    tokens[nr_token].str[substr_len] = '\0';
+                    tokens[nr_token].str[substr_len] = '\0';                    
                     break;
+                case HEXANUMBER:
+                    assert(substr_len < sizeof(tokens[nr_token].str));
+                    tokens[nr_token].type = HEXANUMBER;
+                    strncpy(tokens[nr_token].str, substr_start, substr_len);
+                    tokens[nr_token].str[substr_len] = '\0';
+                    break;              
+                case TK_EQ:
+                    tokens[nr_token].type = TK_EQ;
+                    break;    
+                case TK_NEQ:
+                    tokens[nr_token].type = TK_NEQ;
+                    break;                       
+                case AND:
+                    tokens[nr_token].type = AND;
+                    break; 
+                case REG:
+                    tokens[nr_token].type = REG;
+                    // 不保存$符号
+                    strncpy(tokens[nr_token].str, substr_start+1, substr_len-1);
+                    tokens[nr_token].str[substr_len] = '\0';
+                    break;                                            
                 default:
                     break;
                 }
@@ -167,34 +220,80 @@ static bool make_token(char *e)
     return true;
 }
 
+// 寻找主运算符
+
+// 运算符优先级排序
+// NEG *(deref) 0 这两个是自右向左结合
+// MUL, DIV 1     下面的是自左向右结合
+// PLUS, SUB 2
+// TK_EQ, TK_NEQ 3
+// AND 4
+
+
 int  check_op_positions(int p, int q)
 {
     int op = 0;
     int in_parentheses = 0;
     int has_lower = 0;
+    // 负号和解引用是从右到左计算的
+    int right2lelf = 0;
 
     for(; p <= q; p++){
         
         switch (tokens[p].type){
-            case PLUS:
-                if(!in_parentheses){
+            case NEG:
+                if(!in_parentheses && !has_lower && !right2lelf){
                     op = p;
-                    has_lower = 1;
+                    right2lelf = 1;
                 }
                 break;
-            case SUB:
-                if(!in_parentheses){
+            case DEREF:
+                if(!in_parentheses && !has_lower && !right2lelf){
                     op = p;
-                    has_lower = 1;
+                    right2lelf = 1;
                 }
                 break;
             case MUL:
-                if(!in_parentheses && !has_lower)
+                if(!in_parentheses && has_lower <= 1){
                     op = p;
+                    has_lower = 1;
+                }
                 break;
             case DIV:
-                if(!in_parentheses && !has_lower)
+                if(!in_parentheses && has_lower <= 1){
                     op = p;
+                    has_lower = 1;
+                }
+                break;
+            case PLUS:
+                if(!in_parentheses && has_lower <= 2){
+                    op = p;
+                    has_lower = 2;
+                }
+                break;
+            case SUB:
+                if(!in_parentheses && has_lower <= 2){
+                    op = p;
+                    has_lower = 2;
+                }
+                break;
+            case TK_EQ:
+                if(!in_parentheses && has_lower <= 3){
+                    op = p;
+                    has_lower = 3;
+                }
+                break;
+            case TK_NEQ:
+                if(!in_parentheses && has_lower <= 3){
+                    op = p;
+                    has_lower = 3;
+                }
+                break;                
+            case AND:
+                if(!in_parentheses && has_lower <= 4){
+                    op = p;
+                    has_lower = 4;
+                }
                 break;
             case LBRACKET:
                 in_parentheses += 1;
@@ -203,6 +302,8 @@ int  check_op_positions(int p, int q)
                 in_parentheses -= 1;
                 break;
             case NUMBER:
+                break;
+            case HEXANUMBER:
                 break;
             default:
                 break;
@@ -257,13 +358,22 @@ word_t eval (int p, int q)
     {
         /* Bad expression */
         fprintf(stderr, "No digits were found\n");
+        assert(0);
+
     }
     else if (p == q)
     {   
-        char * endptr ;
-        uint32_t value = (uint32_t) strtoul(tokens[p].str, &endptr, 0);
-
-        return value;
+        switch (tokens[p].type){
+            case REG:
+                bool success = false;
+                int reg_num = isa_reg_str2val(tokens[p].str, &success);
+                assert(success);
+                return  cpu.gpr[reg_num];
+            default:
+                char * endptr ;
+                uint32_t value = (uint32_t) strtoul(tokens[p].str, &endptr, 0);
+                return value;
+            }
     }
     else if (check_parentheses(p, q) == true)
     {
@@ -278,7 +388,31 @@ word_t eval (int p, int q)
         int op = check_op_positions(p, q);
         // Assert(op > 0, "Op position must be greater than 0, but got %d", op);
 
+        if(tokens[op].type == NEG)
+            return 0 - eval(op + 1, q);                
+
+        if(tokens[op].type == DEREF){
+            
+            word_t addr = eval(op+1, q);
+            assert (addr >= 0x80000000);
+            
+            // 小端模式 数据的低字节保存在内存的低地址中
+            // 返回的是uint8的地址，为了方便起见，直接转化为
+            // uint32地址，但是必须保证地址正确对齐到 4 字节边界？
+            word_t *int32_addr = (word_t *) guest_to_host(addr);
+            
+            return *int32_addr;    
+        }
+
         uint32_t val1 = eval(p, op - 1);
+
+        if(tokens[op].type == AND){
+            if(val1 == 0)
+                return 0; 
+            else
+                return val1 && eval(op + 1, q);
+        }
+
         uint32_t val2 = eval(op + 1, q);
 
         switch (tokens[op].type){
@@ -289,6 +423,12 @@ word_t eval (int p, int q)
             case MUL:
                 return val1 * val2;
                 break;
+            case TK_EQ:
+                return val1 == val2;
+                break;
+            case TK_NEQ:
+                return val1 != val2;
+                break;                
             case DIV:
                 Assert(val2 != 0, "Zero cannot be devides");
                 return val1 / val2;
@@ -311,6 +451,7 @@ word_t expr(char *e, bool *success)
     /* TODO: Insert codes to evaluate the expression. */
     Assert(nr_token - 1 >= 0, "expression is bad!");
     word_t res = eval(0, nr_token - 1);
+    *success = true;
     printf("%u\n", res);
 
     return res;
