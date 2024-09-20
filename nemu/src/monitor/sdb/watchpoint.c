@@ -49,23 +49,22 @@ WP* new_wp(){
   if(NUM_WP == 0){
     head = &wp_pool[0];
     head->next = NULL;
-
     free_ = &wp_pool[1];
     NUM_WP += 1;
     return head;
   }
   else if(NUM_WP == 32){
-    fprintf(stderr, "ERROR : No resources in wp pool\n");
+    fprintf(stderr, "ERROR : No resources in wp pool!\n");
     assert(0);
   }
   else{
-    wp_pool[NUM_WP-1].next = &(wp_pool[NUM_WP]);
-    // 必须在下面这句赋值之前，不然会导致下次迭代有free_ = NULL->next;
-    free_ = free_->next; 
-
-    wp_pool[NUM_WP].next = NULL;
-    NUM_WP += 1;
-    printf("1111111\n");
+    WP *tmp = head;
+    while(tmp->next != NULL){
+      tmp = tmp->next;
+    }
+    tmp->next = free_;
+    free_ = free_->next ;
+    tmp->next->next = NULL;
     return head;
   }
 }
