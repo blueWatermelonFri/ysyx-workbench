@@ -64,7 +64,9 @@ static int cmd_info(char *args) {
     } else if (strcmp(args, "w") == 0) {
         display_wp();
     } else {
-        printf("Unknown info operation.\n");
+        printf("cmd between 'r', 'w'\n");
+        return 0;
+
     }
   return 0;
 }
