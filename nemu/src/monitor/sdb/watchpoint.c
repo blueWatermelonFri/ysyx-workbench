@@ -155,6 +155,7 @@ void difftest_wp(){
           cur->cur_value = res;
             printf("%-8d %-18s %-18d %d\n", count, cur->expression, cur->cur_value, res);
         }
+        cur=cur->next;
     }
 
     if(flag == 1){
