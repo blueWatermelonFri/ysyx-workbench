@@ -65,6 +65,7 @@ WP* new_wp(){
     tmp->next = free_;
     free_ = free_->next ;
     tmp->next->next = NULL;
+    NUM_WP += 1;
     return head;
   }
 }
