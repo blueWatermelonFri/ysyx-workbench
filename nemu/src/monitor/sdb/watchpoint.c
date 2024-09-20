@@ -111,6 +111,25 @@ void free_wp(char *args){
   int N = (int)strtol(args, &endp, 0);
   assert(N>=1 && N <= NUM_WP);
 
+  if(N == 1){
+    head->next = free_;
+    free_ = head;
+    head = NULL;
+    NUM_WP -= 1;
+    return;
+  }
+
+  WP *prev = head;
+  WP *cur = prev->next;
+
+  while(N - 1 > 1){
+    cur = cur->next;
+  }
+
+  prev->next = NULL;
+  cur->next = free_;
+  free_ = cur;
+  NUM_WP -= 1;
   // if(N == 1){
     
   // }
