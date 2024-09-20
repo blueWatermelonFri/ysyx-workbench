@@ -124,6 +124,7 @@ void free_wp(char *args){
   WP *cur = prev->next;
 
   while(N - 1 > 1){
+    prev = prev->next;
     cur = cur->next;
     N -= 1;
   }
