@@ -59,14 +59,18 @@ static int cmd_q(char *args) {
 
 static int cmd_info(char *args) {
   
+  if(args == NULL){
+    printf("cmd between 'r', 'w'\n");
+        return 0;
+  }
+
+
   if (strcmp(args, "r") == 0) {
       isa_reg_display();
     } else if (strcmp(args, "w") == 0) {
         display_wp();
-    } else {
+    }else{
         printf("cmd between 'r', 'w'\n");
-        return 0;
-
     }
   return 0;
 }
