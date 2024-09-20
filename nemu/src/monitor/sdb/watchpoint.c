@@ -112,9 +112,10 @@ void free_wp(char *args){
   assert(N>=1 && N <= NUM_WP);
 
   if(N == 1){
-    head->next = free_;
-    free_ = head;
-    head = NULL;
+    WP *tmp = head;
+    head = head->next;
+    tmp->next = free_;
+    free_ = tmp;
     NUM_WP -= 1;
     return;
   }
