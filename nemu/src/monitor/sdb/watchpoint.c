@@ -60,6 +60,7 @@ WP* new_wp(){
   }
   else{
     wp_pool[NUM_WP-1].next = &(wp_pool[NUM_WP]);
+    wp_pool[NUM_WP].next = NULL;
     NUM_WP += 1;
     free_ = free_->next;  
     return head;
