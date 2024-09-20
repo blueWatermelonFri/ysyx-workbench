@@ -30,6 +30,8 @@ typedef struct watchpoint {
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
 
+static int NUM_WP = 0 ;
+
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
@@ -44,33 +46,24 @@ void init_wp_pool() {
 /* TODO: Implement the functionality of watchpoint */
 
 WP* new_wp(){
-  if(head == NULL && free_ == wp_pool){
+  if(NUM_WP == 0){
     head = &wp_pool[0];
     head->next = NULL;
 
     free_ = &wp_pool[1];
+    NUM_WP += 1;
     return head;
   }
-  else if(free_ == NULL){
+  else if(NUM_WP == 32){
     fprintf(stderr, "No resources in pool");
     assert(0);
   }
   else{
-    WP *tmp = head;
-    while(tmp->next != NULL){
-      tmp = tmp->next;
-    }
-    tmp->next = free_;
-    free_ = free_->next ;
-    tmp->next->next = NULL;
+    wp_pool[NUM_WP-1].next = &(wp_pool[NUM_WP]);
+    NUM_WP += 1;
+    free_ = free_->next;  
     return head;
   }
-}
-
-void free_wp(WP *wp){
-    WP *tmp = free_;
-    free_ = wp;
-    free_->next = tmp;
 }
 
 void wp(char * args){
@@ -91,7 +84,7 @@ void wp(char * args){
 
 }
 
-void wp_display(){
+void display_wp(){
     WP *tmp = head;
     int count = 1;
     
@@ -106,6 +99,24 @@ void wp_display(){
     }
 
 }
+
+void free_wp(char *args){
+  
+  // bug:从long强制转换为int可能会出现数据溢出的问题
+  char *endp;
+  int N = (int)strtol(args, &endp, 0);
+  assert(N>=1 && N <= NUM_WP);
+
+  // if(N == 1){
+    
+  // }
+  // WP *pre = head;
+  // WP *cur = head->next;
+  
+  // while(N - 1 > 1 )
+  
+}
+
 
 void difftest_wp(){
     WP *tmp = free_;

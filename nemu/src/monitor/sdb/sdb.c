@@ -24,7 +24,9 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 void wp();
-void wp_display();
+void display_wp();
+void free_wp();
+
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -60,7 +62,7 @@ static int cmd_info(char *args) {
   if (strcmp(args, "r") == 0) {
       isa_reg_display();
     } else if (strcmp(args, "w") == 0) {
-        wp_display();
+        display_wp();
     } else {
         printf("Unknown info operation.\n");
     }
@@ -141,6 +143,13 @@ static int cmd_w(char *args) {
   return 0;
 }
 
+static int cmd_d(char *args) {
+  
+  free_wp(args);
+
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -156,6 +165,7 @@ static struct {
   { "x", "print memory info", cmd_x },
   { "p", "get expr value", cmd_p },
   { "w", "watchpoint", cmd_w },
+  { "d", "delete watch point", cmd_d }
 
   /* TODO: Add more commands */
 
