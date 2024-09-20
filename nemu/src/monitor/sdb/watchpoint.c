@@ -63,6 +63,7 @@ WP* new_wp(){
     wp_pool[NUM_WP].next = NULL;
     NUM_WP += 1;
     free_ = free_->next;  
+    printf("1111111\n");
     return head;
   }
 }
