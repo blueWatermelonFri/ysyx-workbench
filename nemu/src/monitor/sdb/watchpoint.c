@@ -150,9 +150,9 @@ void difftest_wp(){
           if(flag == 0){
             printf("%-8s %-18s %-18s %s\n", "Num", "What", "Prev value", "Cur value");
           }
+          printf("%-8d %-18s %-18u %u\n", count, cur->expression, cur->cur_value, res);
           flag = 1;
           cur->cur_value = res;
-            printf("%-8d %-18s %-18d %d\n", count, cur->expression, cur->cur_value, res);
         }
         cur=cur->next;
     }
