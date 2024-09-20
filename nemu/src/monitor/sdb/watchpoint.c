@@ -60,9 +60,11 @@ WP* new_wp(){
   }
   else{
     wp_pool[NUM_WP-1].next = &(wp_pool[NUM_WP]);
+    // 必须在下面这句赋值之前，不然会导致下次迭代有free_ = NULL->next;
+    free_ = free_->next; 
+
     wp_pool[NUM_WP].next = NULL;
     NUM_WP += 1;
-    free_ = free_->next;  
     printf("1111111\n");
     return head;
   }
