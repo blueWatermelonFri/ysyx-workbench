@@ -133,19 +133,33 @@ void free_wp(char *args){
   cur->next = free_;
   free_ = cur;
   NUM_WP -= 1;
-  // if(N == 1){
-    
-  // }
-  // WP *pre = head;
-  // WP *cur = head->next;
-  
-  // while(N - 1 > 1 )
   
 }
 
 
 void difftest_wp(){
-    WP *tmp = free_;
-    free_->next = tmp;
-    printf("1234\n");
+    WP *cur = head;
+    int flag = 0;
+    int count = 1;
+    word_t res;
+    bool success;
+    while(cur != NULL){
+        success = false;
+        res = expr(cur->expression, &success);
+        assert(success);
+        if(res != cur->cur_value){
+          if(flag == 0){
+            printf("%-8s %-18s %-18s %s\n", "Num", "What", "Prev value", "Cur value");
+          }
+          flag = 1;
+          cur->cur_value = res;
+            printf("%-8d %-18s %-18d %d\n", count, cur->expression, cur->cur_value, res);
+        }
+    }
+
+    if(flag == 1){
+      nemu_state.state = NEMU_STOP;
+    }
+
+    return;
 }
