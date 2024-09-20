@@ -452,7 +452,6 @@ word_t expr(char *e, bool *success)
     Assert(nr_token - 1 >= 0, "expression is bad!");
     word_t res = eval(0, nr_token - 1);
     *success = true;
-    printf("%u\n", res);
 
     return res;
 }

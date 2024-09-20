@@ -136,7 +136,6 @@ void free_wp(char *args){
   
 }
 
-
 void difftest_wp(){
     WP *cur = head;
     int flag = 0;
@@ -157,7 +156,6 @@ void difftest_wp(){
         }
         cur=cur->next;
     }
-
     if(flag == 1){
       nemu_state.state = NEMU_STOP;
     }
