@@ -129,7 +129,7 @@ void free_wp(char *args){
     N -= 1;
   }
 
-  prev->next = NULL;
+  prev->next = cur->next;
   cur->next = free_;
   free_ = cur;
   NUM_WP -= 1;
