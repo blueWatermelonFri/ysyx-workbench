@@ -55,7 +55,7 @@ WP* new_wp(){
     return head;
   }
   else if(NUM_WP == 32){
-    fprintf(stderr, "No resources in wp pool\n");
+    fprintf(stderr, "ERROR : No resources in wp pool\n");
     assert(0);
   }
   else{
