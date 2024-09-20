@@ -139,7 +139,7 @@ static int cmd_p(char *args) {
 static int cmd_w(char *args) {
   
   if( args == NULL){
-    printf("a expr must be followed cmd w");
+    printf("a expr must be followed cmd w\n");
     return 0;
   }
   wp(args);
