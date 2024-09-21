@@ -139,7 +139,7 @@ static int cmd_p(char *args) {
   bool success = false;
   word_t res = expr(args, &success);
   printf("%-14s %-14s\n", "DEC", "HEX");
-  printf("%u\n", res);
+  printf("%14u 0x%08x\n", res, res);
   return 0;
   
 }
