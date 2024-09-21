@@ -137,6 +137,7 @@ static int cmd_x(char *args) {
 static int cmd_p(char *args) {
 
   bool success = false;
+  args = NULL;
   word_t res = expr(args, &success);
   printf("%u\n", res);
   return 0;
