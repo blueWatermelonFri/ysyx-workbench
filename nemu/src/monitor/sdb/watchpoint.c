@@ -155,7 +155,7 @@ void difftest_wp(){
         }
         cur=cur->next;
     }
-    if(flag == 1){
+    if(flag == 1 && nemu_state.state != NEMU_END){
       nemu_state.state = NEMU_STOP;
     }
 
