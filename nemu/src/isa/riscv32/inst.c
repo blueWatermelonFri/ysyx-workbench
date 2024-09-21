@@ -56,6 +56,7 @@ static int decode_exec(Decode *s) {
   __VA_ARGS__ ; \
 }
 
+    printf("%d\n", nemu_state.state);
   INSTPAT_START();
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
@@ -66,7 +67,6 @@ static int decode_exec(Decode *s) {
   INSTPAT_END();
 
   R(0) = 0; // reset $zero to 0
-    printf("%d\n", nemu_state.state);
 
   return 0;
 }
