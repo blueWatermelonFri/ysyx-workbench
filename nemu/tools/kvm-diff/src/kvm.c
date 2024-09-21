@@ -352,7 +352,7 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
 
 __EXPORT void difftest_regcpy(void *r, bool direction) {
   struct kvm_regs *ref = &(vcpu.kvm_run->s.regs.regs);
-  x86_CPU_state *x86 = r;
+  a *x86 = r;
   if (direction == DIFFTEST_TO_REF) {
     ref->rax = x86->eax;
     ref->rbx = x86->ebx;

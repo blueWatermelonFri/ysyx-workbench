@@ -368,6 +368,9 @@ word_t eval (int p, int q)
                 bool success = false;
                 int reg_num = isa_reg_str2val(tokens[p].str, &success);
                 assert(success);
+                if(reg_num == 32){
+                    return cpu.pc;
+                }
                 return  cpu.gpr[reg_num];
             default:
                 char * endptr ;
