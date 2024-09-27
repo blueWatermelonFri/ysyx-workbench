@@ -231,8 +231,6 @@ void sdb_mainloop() {
     if (args >= str_end) {
       args = NULL;
     }
-    
-    printf("%s\n", args);
 
 #ifdef CONFIG_DEVICE
     extern void sdl_clear_event_queue();
