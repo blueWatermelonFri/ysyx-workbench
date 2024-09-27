@@ -63,7 +63,7 @@ static struct rule
     {"-?[0-9]+", NUMBER}, // decimalism unsigned integer
     {"\\$[a-z0-9\\$]+", REG}, // register
     {"==", TK_EQ},        // equal
-    {"!=", TK_NEQ},        // equal
+    {"!=", TK_NEQ},        // not equal
     {"&&", AND}          // logic and
 
 };
@@ -368,6 +368,9 @@ word_t eval (int p, int q)
                 bool success = false;
                 int reg_num = isa_reg_str2val(tokens[p].str, &success);
                 assert(success);
+                if(reg_num == 32){
+                    return cpu.pc;
+                }
                 return  cpu.gpr[reg_num];
             default:
                 char * endptr ;
@@ -399,9 +402,9 @@ word_t eval (int p, int q)
             // 小端模式 数据的低字节保存在内存的低地址中
             // 返回的是uint8的地址，为了方便起见，直接转化为
             // uint32地址，但是必须保证地址正确对齐到 4 字节边界？
-            word_t *int32_addr = (word_t *) guest_to_host(addr);
+            uint8_t *int8_addr =  guest_to_host(addr);
             
-            return *int32_addr;    
+            return (word_t) (*int8_addr);    
         }
 
         uint32_t val1 = eval(p, op - 1);
@@ -452,7 +455,6 @@ word_t expr(char *e, bool *success)
     Assert(nr_token - 1 >= 0, "expression is bad!");
     word_t res = eval(0, nr_token - 1);
     *success = true;
-    printf("%u\n", res);
 
     return res;
 }

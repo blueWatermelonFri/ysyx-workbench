@@ -24,7 +24,9 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 void wp();
-void wp_display();
+void display_wp();
+void free_wp();
+
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -57,12 +59,17 @@ static int cmd_q(char *args) {
 
 static int cmd_info(char *args) {
   
+  if(args == NULL){
+    printf("cmd between 'r', 'w'\n");
+        return 0;
+  }
+
   if (strcmp(args, "r") == 0) {
       isa_reg_display();
     } else if (strcmp(args, "w") == 0) {
-        wp_display();
-    } else {
-        printf("Unknown info operation.\n");
+        display_wp();
+    }else{
+        printf("cmd between 'r', 'w'\n");
     }
   return 0;
 }
@@ -111,16 +118,12 @@ static int cmd_x(char *args) {
   }
 
   // 小端模式 数据的低字节保存在内存的低地址中
-  // 返回的是uint8的地址，为了方便起见，直接转化为
-  // uint32地址，但是必须保证地址是32的整数倍？
+  // 返回的是uint8的地址.
   uint8_t * int8_addr =  guest_to_host(addr);
-  
+
   for (int i = 0; i < len; i++ ) {
-    printf("%08x : 0x", 0x80000000 + 4 * i);
-    for (int j = 3; j >= 0 ; j --) {
-      printf("%02x", int8_addr[i * 4 + j]);
-  }
-    printf("\n");
+    printf("0x%08x : 0x", 0x80000000 + i);
+    printf("%02x\n", int8_addr[i]);
 }
 
   return 0;
@@ -129,14 +132,27 @@ static int cmd_x(char *args) {
 static int cmd_p(char *args) {
 
   bool success = false;
-  expr(args, &success);
+  word_t res = expr(args, &success);
+  printf("%10s  %10s\n", "DEC", "HEX");
+  printf("%10u  0x%08x\n", res, res);
   return 0;
   
 }
 
 static int cmd_w(char *args) {
   
+  if( args == NULL){
+    printf("a expr must be followed cmd w\n");
+    return 0;
+  }
   wp(args);
+
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  
+  free_wp(args);
 
   return 0;
 }
@@ -156,6 +172,7 @@ static struct {
   { "x", "print memory info", cmd_x },
   { "p", "get expr value", cmd_p },
   { "w", "watchpoint", cmd_w },
+  { "d", "delete watch point", cmd_d }
 
   /* TODO: Add more commands */
 

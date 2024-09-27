@@ -29,6 +29,7 @@ typedef struct watchpoint {
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+static int NUM_WP = 0 ;
 
 void init_wp_pool() {
   int i;
@@ -44,15 +45,15 @@ void init_wp_pool() {
 /* TODO: Implement the functionality of watchpoint */
 
 WP* new_wp(){
-  if(head == NULL && free_ == wp_pool){
+  if(NUM_WP == 0){
     head = &wp_pool[0];
     head->next = NULL;
-
     free_ = &wp_pool[1];
+    NUM_WP += 1;
     return head;
   }
-  else if(free_ == NULL){
-    fprintf(stderr, "No resources in pool");
+  else if(NUM_WP == 32){
+    fprintf(stderr, "ERROR : No resources in wp pool!\n");
     assert(0);
   }
   else{
@@ -63,14 +64,9 @@ WP* new_wp(){
     tmp->next = free_;
     free_ = free_->next ;
     tmp->next->next = NULL;
+    NUM_WP += 1;
     return head;
   }
-}
-
-void free_wp(WP *wp){
-    WP *tmp = free_;
-    free_ = wp;
-    free_->next = tmp;
 }
 
 void wp(char * args){
@@ -91,7 +87,7 @@ void wp(char * args){
 
 }
 
-void wp_display(){
+void display_wp(){
     WP *tmp = head;
     int count = 1;
     
@@ -107,8 +103,61 @@ void wp_display(){
 
 }
 
+void free_wp(char *args){
+  
+  // bug:从long强制转换为int可能会出现数据溢出的问题
+  char *endp;
+  int N = (int)strtol(args, &endp, 0);
+  assert(N>=1 && N <= NUM_WP);
+
+  if(N == 1){
+    WP *tmp = head;
+    head = head->next;
+    tmp->next = free_;
+    free_ = tmp;
+    NUM_WP -= 1;
+    return;
+  }
+
+  WP *prev = head;
+  WP *cur = prev->next;
+
+  while(N - 1 > 1){
+    prev = prev->next;
+    cur = cur->next;
+    N -= 1;
+  }
+
+  prev->next = cur->next;
+  cur->next = free_;
+  free_ = cur;
+  NUM_WP -= 1;
+  
+}
+
 void difftest_wp(){
-    WP *tmp = free_;
-    free_->next = tmp;
-    printf("1234\n");
+    WP *cur = head;
+    int flag = 0;
+    int count = 1;
+    word_t res;
+    bool success;
+    while(cur != NULL){
+        success = false;
+        res = expr(cur->expression, &success);
+        assert(success);
+        if(res != cur->cur_value){
+          if(flag == 0){
+            printf("%-8s %-18s %-18s %s\n", "Num", "What", "Prev value", "Cur value");
+          }
+          printf("%-8d %-18s %-18u %u\n", count, cur->expression, cur->cur_value, res);
+          flag = 1;
+          cur->cur_value = res;
+        }
+        cur=cur->next;
+    }
+    if(flag == 1 && nemu_state.state != NEMU_END){
+      nemu_state.state = NEMU_STOP;
+    }
+
+    return;
 }
