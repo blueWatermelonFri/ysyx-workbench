@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 #endif
 
   int b[5] = {1, 2, 3, 4, 5};
-  printf("%d\n", b[6]);
+  printf("%d\n", b[8]);
 
   /* Start engine. */
   engine_start();
