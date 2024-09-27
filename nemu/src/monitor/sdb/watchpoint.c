@@ -144,7 +144,6 @@ void difftest_wp(){
     while(cur != NULL){
         success = false;
         res = expr(cur->expression, &success);
-        printf("%s\n", cur->expression);
         assert(success);
         if(res != cur->cur_value){
           if(flag == 0){
