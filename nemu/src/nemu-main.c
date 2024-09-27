@@ -21,6 +21,10 @@ void engine_start();
 int is_exit_status_bad();
 
 int main(int argc, char *argv[]) {
+  
+  int b[5] = {1, 2, 3, 4, 5};
+  printf("%d\n", b[8]);
+
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
@@ -28,8 +32,6 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
 
-  int b[5] = {1, 2, 3, 4, 5};
-  printf("%d\n", b[8]);
 
   /* Start engine. */
   engine_start();
