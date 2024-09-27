@@ -23,7 +23,7 @@ int is_exit_status_bad();
 int main(int argc, char *argv[]) {
   
   int b[5] = {1, 2, 3, 4, 5};
-  printf("%d\n", b[1024]);
+  printf("%d\n", b[-1]);
 
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
