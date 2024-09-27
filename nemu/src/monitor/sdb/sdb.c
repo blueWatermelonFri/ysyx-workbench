@@ -137,8 +137,8 @@ static int cmd_p(char *args) {
 
   bool success = false;
   word_t res = expr(args, &success);
-  printf("%14s %12s\n", "DEC", "HEX");
-  printf("%14u 0x%08x\n", res, res);
+  printf("%10s %11s\n", "DEC", "HEX");
+  printf("%10u 0x%08x\n", res, res);
   return 0;
   
 }
