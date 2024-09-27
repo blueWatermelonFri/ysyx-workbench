@@ -118,17 +118,17 @@ static int cmd_x(char *args) {
   }
 
   // 小端模式 数据的低字节保存在内存的低地址中
-  // 返回的是uint8的地址，为了方便起见，直接转化为
-  // uint32地址，但是必须保证地址是32的整数倍？
+  // 返回的是uint8的地址.
   uint8_t * int8_addr =  guest_to_host(addr);
-  
-  for (int i = 0; i < len; i++ ) {
-    printf("%08x : 0x", 0x80000000 + 4 * i);
-    for (int j = 3; j >= 0 ; j --) {
-      printf("%02x", int8_addr[i * 4 + j]);
-  }
-    printf("\n");
-}
+  printf("0x%08x",(*int8_addr));
+
+//   for (int i = 0; i < len; i++ ) {
+//     printf("%08x : 0x", 0x80000000 + 4 * i);
+//     for (int j = 3; j >= 0 ; j --) {
+//       printf("%02x", int8_addr[i * 4 + j]);
+//   }
+//     printf("\n");
+// }
 
   return 0;
 }
