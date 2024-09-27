@@ -122,13 +122,10 @@ static int cmd_x(char *args) {
   uint8_t * int8_addr =  guest_to_host(addr);
   printf("0x%x\n",(*int8_addr));
 
-//   for (int i = 0; i < len; i++ ) {
-//     printf("%08x : 0x", 0x80000000 + 4 * i);
-//     for (int j = 3; j >= 0 ; j --) {
-//       printf("%02x", int8_addr[i * 4 + j]);
-//   }
-//     printf("\n");
-// }
+  for (int i = 0; i < len; i++ ) {
+    printf("%08x : 0x", 0x80000000 + i);
+    printf("%02x\n", int8_addr[i]);
+}
 
   return 0;
 }
