@@ -39,11 +39,10 @@ void test_cmd_p(){
     
       //  使用 sscanf 读取第一个数字
       if (sscanf(line, "%s %[^\n]", A, B) == 2) {
-        bool success = false;
 
           char * endptr ;
           word_t real = (word_t) strtoul(A, &endptr, 0);
-          word_t res = expr(B, &success);
+          word_t res = expr(B, false);
 
           if(real != res){
             fprintf(stderr, "real is %u, res is %u\n", real, res);
@@ -59,7 +58,7 @@ void engine_start() {
   cpu_exec(-1); 
 #else
   /* Receive commands from user. */
-  #if 1
+  #if 0
     sdb_mainloop();
   #else
     // test expr compute 
