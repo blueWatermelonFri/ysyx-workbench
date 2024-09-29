@@ -23,6 +23,22 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
+
+typedef struct {
+    const char *name;
+    word_t value;
+} RegisterMap;
+
+const RegisterMap register_map[] = {
+    {"$0", 0}, {"ra", 1}, {"sp", 2}, {"gp", 3}, {"tp", 4},
+    {"t0", 5}, {"t1", 6}, {"t2", 7}, {"s0", 8}, {"s1", 9},
+    {"a0", 10}, {"a1", 11}, {"a2", 12}, {"a3", 13}, {"a4", 14},
+    {"a5", 15}, {"a6", 16}, {"a7", 17}, {"s2", 18}, {"s3", 19},
+    {"s4", 20}, {"s5", 21}, {"s6", 22}, {"s7", 23}, {"s8", 24},
+    {"s9", 25}, {"s10", 26}, {"s11", 27}, {"t3", 28}, {"t4", 29},
+    {"t5", 30}, {"t6", 31}, {"pc", 32}
+};
+
 void isa_reg_display() {
 
     int reg_num = 32;
@@ -34,78 +50,16 @@ void isa_reg_display() {
 
 word_t isa_reg_str2val(const char *s, bool *success) {
 
-    *success = true;
-    if (strcmp(s, "$0") == 0) {
-        return 0;
-    } else if (strcmp(s, "ra") == 0) {
-        return 1;
-    } else if (strcmp(s, "sp") == 0) {
-        return 2;
-    } else if (strcmp(s, "gp") == 0) {
-        return 3;
-    } else if (strcmp(s, "tp") == 0) {
-        return 4;
-    } else if (strcmp(s, "t0") == 0) {
-        return 5;
-    } else if (strcmp(s, "t1") == 0) {
-        return 6;
-    } else if (strcmp(s, "t2") == 0) {
-        return 7;
-    } else if (strcmp(s, "s0") == 0) {
-        return 8;
-    } else if (strcmp(s, "s1") == 0) {
-        return 9;
-    } else if (strcmp(s, "a0") == 0) {
-        return 10;
-    } else if (strcmp(s, "a1") == 0) {
-        return 11;
-    } else if (strcmp(s, "a2") == 0) {
-        return 12;
-    } else if (strcmp(s, "a3") == 0) {
-        return 13;
-    } else if (strcmp(s, "a4") == 0) {
-        return 14;
-    } else if (strcmp(s, "a5") == 0) {
-        return 15;
-    } else if (strcmp(s, "a6") == 0) {
-        return 16;
-    } else if (strcmp(s, "a7") == 0) {
-        return 17;
-    } else if (strcmp(s, "s2") == 0) {
-        return 18;
-    } else if (strcmp(s, "s3") == 0) {
-        return 19;
-    } else if (strcmp(s, "s4") == 0) {
-        return 20;
-    } else if (strcmp(s, "s5") == 0) {
-        return 21;
-    } else if (strcmp(s, "s6") == 0) {
-        return 22;
-    } else if (strcmp(s, "s7") == 0) {
-        return 23;
-    } else if (strcmp(s, "s8") == 0) {
-        return 24;
-    } else if (strcmp(s, "s9") == 0) {
-        return 25;
-    } else if (strcmp(s, "s10") == 0) {
-        return 26;
-    } else if (strcmp(s, "s11") == 0) {
-        return 27;
-    } else if (strcmp(s, "t3") == 0) {
-        return 28;
-    } else if (strcmp(s, "t4") == 0) {
-        return 29;
-    } else if (strcmp(s, "t5") == 0) {
-        return 30;
-    } else if (strcmp(s, "t6") == 0) {
-        return 31;
-    } else if (strcmp(s, "pc") == 0) {
-        return 32;
-    }  
-    else {
-        *success = false;
-        printf("The '%s' is not in registers list\n", s);
+    for (size_t i = 0; register_map[i].name != NULL; i++) {
+        if (strcmp(s, register_map[i].name) == 0) {
+            *success = true;
+            return register_map[i].value;
+        }
     }
+
+    *success = false;
+    printf("The '%s' is not in registers list\n", s);
+    return 0;
 
   return 0;
 }
