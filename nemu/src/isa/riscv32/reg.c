@@ -24,45 +24,11 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-   printf("$0 = 0x%08x\n", cpu.gpr[0]);
-   printf("ra = 0x%08x\n", cpu.gpr[1]);
-   printf("sp = 0x%08x\n", cpu.gpr[2]);
-   printf("gp = 0x%08x\n", cpu.gpr[3]);
-   printf("tp = 0x%08x\n", cpu.gpr[4]);
-   printf("t0 = 0x%08x\n", cpu.gpr[5]);
-   printf("t1 = 0x%08x\n", cpu.gpr[6]);
-   printf("t2 = 0x%08x\n", cpu.gpr[7]);
-   printf("s0 = 0x%08x\n", cpu.gpr[8]);
-   printf("s1 = 0x%08x\n", cpu.gpr[9]);
-  printf("a0 = 0x%08x\n", cpu.gpr[10]);
-  printf("a1 = 0x%08x\n", cpu.gpr[11]);
-  printf("a2 = 0x%08x\n", cpu.gpr[12]);
-  printf("a3 = 0x%08x\n", cpu.gpr[13]);
-  printf("a4 = 0x%08x\n", cpu.gpr[14]);
-  printf("a5 = 0x%08x\n", cpu.gpr[15]);
-  printf("a6 = 0x%08x\n", cpu.gpr[16]);
-  printf("a7 = 0x%08x\n", cpu.gpr[17]);
-  printf("s2 = 0x%08x\n", cpu.gpr[18]);
-  printf("s3 = 0x%08x\n", cpu.gpr[19]);  
-  printf("s4 = 0x%08x\n", cpu.gpr[20]);
-  printf("s5 = 0x%08x\n", cpu.gpr[21]);
-  printf("s6 = 0x%08x\n", cpu.gpr[22]);
-  printf("s7 = 0x%08x\n", cpu.gpr[23]);
-  printf("s8 = 0x%08x\n", cpu.gpr[24]);
-  printf("s9 = 0x%08x\n", cpu.gpr[25]);
-  printf("s1 = 0x%08x\n", cpu.gpr[26]);
-  printf("s1 = 0x%08x\n", cpu.gpr[27]);
-  printf("t3 = 0x%08x\n", cpu.gpr[28]);
-  printf("t4 = 0x%08x\n", cpu.gpr[29]);
-  printf("t5 = 0x%08x\n", cpu.gpr[30]);
-  printf("t6 = 0x%08x\n", cpu.gpr[31]);
 
-//   bool *success = NULL;  // 初始化为 NULL
-//   bool success = false;
-//   char *str_reg = strtok(args," ");
-//   int reg_num = isa_reg_str2val(str_reg, &success);
-//   assert(success == true)
-//   printf("reg%d = 0x%08x\n", reg_num, cpu.gpr[reg_num]);
+    int reg_num = 32;
+    for(int i = 0; i < reg_num; i++){
+        printf("%s = 0x%08x\n",regs[i], cpu.gpr[i]);
+    }
 
 }
 

@@ -39,7 +39,6 @@ void test_cmd_p(){
     
       //  使用 sscanf 读取第一个数字
       if (sscanf(line, "%s %[^\n]", A, B) == 2) {
-
           bool *suceess = NULL;
           suceess =  (bool *)malloc(sizeof(bool)*1);
           *suceess = false;
