@@ -38,3 +38,5 @@ mconf:
 	@$(MAKE) -s NAME=mconf
 
 .PHONY: conf mconf
+
+# mconf是个伪目标，执行 @$(MAKE) -s NAME=mconf的时候实际上是构建$(NEMU_HOME)/scripts/build.mk的默认目标
