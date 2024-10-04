@@ -61,7 +61,7 @@ void engine_start() {
   cpu_exec(-1); 
 #else
   /* Receive commands from user. */
-  #if 1
+  #if 0
     sdb_mainloop();
   #else
     // test expr compute 
