@@ -81,6 +81,7 @@ static inline void pattern_decode_hex(const char *str, int len,
 #undef macro
 finish:
   printf("%lx", __key);
+  printf("111111111111111");
   *key = __key >> __shift;
   *mask = __mask >> __shift;
   *shift = __shift;
