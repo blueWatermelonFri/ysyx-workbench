@@ -2832,7 +2832,7 @@ static inline void pattern_decode(const char *str, int len,
   do { if (!(0)) { (fflush(stdout), fprintf(stderr, "\33[1;31m" "pattern too long" "\33[0m" "\n")); extern FILE* log_fp; fflush(log_fp); extern void assert_fail_msg(); assert_fail_msg(); ((void) sizeof ((0) ? 1 : 0), __extension__ ({ if (0) ; else __assert_fail ("0", "/home/myuser/ysyx/ysyx-workbench/nemu/include/cpu/decode.h", 54, __extension__ __PRETTY_FUNCTION__); })); } } while (0);
 #undef macro
 finish:
-  printf("%lx", __key);
+  printf("%lx\n", __key);
   printf("111111111111111");
   *key = __key >> __shift;
   *mask = __mask >> __shift;

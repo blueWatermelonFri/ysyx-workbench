@@ -55,7 +55,7 @@ static inline void pattern_decode(const char *str, int len,
 #undef macro
 finish:
 
-  printf("%lx", __key);
+  printf("%lx\n", __key);
   printf("111111111111111");
   *key = __key >> __shift;
   *mask = __mask >> __shift;
