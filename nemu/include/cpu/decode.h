@@ -80,6 +80,7 @@ static inline void pattern_decode_hex(const char *str, int len,
   panic("pattern too long");
 #undef macro
 finish:
+  printf("%lx", __key);
   *key = __key >> __shift;
   *mask = __mask >> __shift;
   *shift = __shift;
