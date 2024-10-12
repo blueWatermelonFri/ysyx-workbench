@@ -41,6 +41,7 @@ static inline void pattern_decode(const char *str, int len,
       __key  = (__key  << 1) | (c == '1' ? 1 : 0); \
       __mask = (__mask << 1) | (c == '?' ? 0 : 1); \
       __shift = (c == '?' ? __shift + 1 : 0); \
+      printf("%lu\n", __shift); \
     } \
   }
 
@@ -54,11 +55,6 @@ static inline void pattern_decode(const char *str, int len,
   panic("pattern too long");
 #undef macro
 finish:
-
-  printf("%lx\n", __key >> __shift);
-  printf("%lu\n", __shift);
-  // printf("%c\n", str[0]);
-  printf("111111111111111\n");
   *key = __key >> __shift;
   *mask = __mask >> __shift;
   *shift = __shift;
