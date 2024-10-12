@@ -2812,6 +2812,7 @@ static inline void pattern_decode(const char *str, int len,
 finish:
   printf("%lx\n", __key >> __shift);
   printf("%lu\n", __shift);
+  printf("%s\n", str);
   printf("111111111111111");
   *key = __key >> __shift;
   *mask = __mask >> __shift;
