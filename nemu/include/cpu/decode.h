@@ -57,7 +57,7 @@ finish:
 
   printf("%lx\n", __key >> __shift);
   printf("%lu\n", __shift);
-  printf("%s\n", str);
+  printf("%c\n", str[0]);
   printf("111111111111111");
   *key = __key >> __shift;
   *mask = __mask >> __shift;
