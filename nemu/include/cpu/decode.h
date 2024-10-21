@@ -87,6 +87,8 @@ finish:
 
 
 // --- pattern matching wrappers for decode ---
+// ## 是预处理器中的一个“token 粘贴操作符”，它的作用是把前面的内容和 __VA_ARGS__ 连接起来。
+// 如果没有传递任何可变参数，##__VA_ARGS__ 会自动忽略前面的逗号，防止语法错误
 #define INSTPAT(pattern, ...) do { \
   uint64_t key, mask, shift; \
   pattern_decode(pattern, STRLEN(pattern), &key, &mask, &shift); \

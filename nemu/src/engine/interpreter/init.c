@@ -66,6 +66,7 @@ void engine_start() {
   #else
     // test expr compute 
     test_cmd_p();
+    nemu_state.state = NEMU_QUIT;
   #endif
 #endif
 }

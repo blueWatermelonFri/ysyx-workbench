@@ -28,10 +28,13 @@ LDFLAGS := -O2 $(LDFLAGS)
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
 # Compilation patterns
+# call_fixdep这个调用在menuconfig中没有执行
+# gcc -P 隐藏linemark
 $(OBJ_DIR)/%.o: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c -o $@ $<
+	@$(CC) $(CFLAGS) -E -P $< -o $(patsubst %.o, %_i.c, $@)
 	$(call call_fixdep, $(@:.o=.d), $@)
 
 $(OBJ_DIR)/%.o: %.cc

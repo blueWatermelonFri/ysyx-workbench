@@ -38,7 +38,7 @@ static int choose(int n){
 
 static void gen_rand_op(){
   // 防止出现一个运算符后面没有表达式这种情况
-  if(count + 1 > 65000)
+  if(count + 1 > 60000)
     return; 
 
   int op =  rand() % 7 ;
@@ -59,7 +59,7 @@ static void gen_rand_op(){
 
 static void gen(char str){
   // 防止出现()这种情况
-  if(count + 1 > 65000)
+  if(count + 1 > 60000)
     return; 
   buf[count] = str;
   count ++;
@@ -84,7 +84,7 @@ static void gen_num(){
 
 
 static void gen_rand_expr() {
-  if (count > 65000)
+  if (count > 60000)
     return;
 
   switch (choose(5)) {
