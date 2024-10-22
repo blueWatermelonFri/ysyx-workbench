@@ -28,7 +28,7 @@ enum {
   TYPE_N, // none
 };
 
-// I U S J r B ok
+// I U S J R B ok
 // SEXT(BITS(i, 31, 12), 20) << 12，用到了C语言复合语句相关的东西
 #define src1R() do { *src1 = R(rs1); } while (0)
 #define src2R() do { *src2 = R(rs2); } while (0)
