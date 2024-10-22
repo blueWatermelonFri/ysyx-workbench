@@ -24,7 +24,9 @@
 
 enum {
   TYPE_R, TYPE_I, TYPE_S, TYPE_B, TYPE_U, TYPE_J,
-  TYPE_USI,
+  TYPE_USI,// 用于I型指令的立即数无符号展开
+  TYPE_SI,// 用于I型指令的移位指令，只提取最后的5bit立即数
+
   TYPE_N, // none
 };
 
@@ -38,6 +40,7 @@ enum {
 #define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 20) | (USEXT(BITS(i, 19, 12), 8) << 12) | (USEXT(BITS(i, 20, 20), 1) << 11) | (USEXT(BITS(i, 30, 21), 10) << 1); } while(0)
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define USimmU() do { *imm = USEXT(BITS(i, 31, 12), 20) << 12; } while(0)
+#define SimmI() do { *imm = USEXT(BITS(i, 25, 20), 5); } while(0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
@@ -52,6 +55,8 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_U:                   immU(); break;
     case TYPE_J:                   immJ(); break;
     case TYPE_USI: src1R();        USimmU(); break;
+    case TYPE_SI: src1R();         SimmI(); break;
+
   }
 }
 
@@ -75,9 +80,10 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 100 ????? 00100 11", xori   , I, R(rd) = src1 ^ imm);
   INSTPAT("??????? ????? ????? 110 ????? 00100 11", ori    , I, R(rd) = src1 | imm);
   INSTPAT("??????? ????? ????? 111 ????? 00100 11", andi   , I, R(rd) = src1 & imm);
-
+  INSTPAT("0000000 ????? ????? 001 ????? 00100 11", slli   , SI, R(rd) = src1 << imm);
+  INSTPAT("0100000 ????? ????? 101 ????? 00100 11", srli   , SI, R(rd) = src1 >> imm);
   // srai是算数右移
-  INSTPAT("0100000 ????? ????? 101 ????? 00100 11", srai   , I, R(rd) = (int)src1 >> imm);
+  INSTPAT("0100000 ????? ????? 101 ????? 00100 11", srai   , SI, R(rd) = (int)src1 >> imm);
 
   INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     , I, R(rd) = Mr(src1 + imm, 4));
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
