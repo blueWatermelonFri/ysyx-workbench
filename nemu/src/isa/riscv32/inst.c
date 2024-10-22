@@ -40,7 +40,7 @@ enum {
 #define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 20) | (USEXT(BITS(i, 19, 12), 8) << 12) | (USEXT(BITS(i, 20, 20), 1) << 11) | (USEXT(BITS(i, 30, 21), 10) << 1); } while(0)
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define USimmU() do { *imm = USEXT(BITS(i, 31, 12), 20) << 12; } while(0)
-#define SimmI() do { *imm = USEXT(BITS(i, 25, 20), 5); } while(0)
+#define SimmI() do { *imm = USEXT(BITS(i, 24, 20), 5); } while(0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
