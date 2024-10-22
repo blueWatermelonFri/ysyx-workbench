@@ -81,6 +81,7 @@ static int cmd_si(char *args) {
   uint64_t steps;
 
   if(args == NULL) steps = 1;
+  // si 10有问题
   else steps = strtoul(args, &endptr, 0);
   cpu_exec(steps);
 
