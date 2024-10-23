@@ -24,7 +24,6 @@
 
 enum {
   TYPE_R, TYPE_I, TYPE_S, TYPE_B, TYPE_U, TYPE_J,
-  TYPE_USI,// 用于I型指令的立即数无符号展开
   TYPE_SI,// 用于I型指令的移位指令，只提取最后的5bit立即数
 
   TYPE_N, // none
@@ -39,7 +38,6 @@ enum {
 #define immB() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 12) | (USEXT(BITS(i, 8, 7), 1) << 11) | (USEXT(BITS(i, 30, 25), 6) << 5) | (USEXT(BITS(i, 11, 8), 4) << 1); } while(0)
 #define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 20) | (USEXT(BITS(i, 19, 12), 8) << 12) | (USEXT(BITS(i, 20, 20), 1) << 11) | (USEXT(BITS(i, 30, 21), 10) << 1); } while(0)
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
-#define USimmU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define SimmI() do { *imm = USEXT(BITS(i, 24, 20), 5); } while(0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
@@ -54,7 +52,6 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_B: src1R(); src2R(); immB(); break;
     case TYPE_U:                   immU(); break;
     case TYPE_J:                   immJ(); break;
-    case TYPE_USI: src1R();        USimmU(); break;
     case TYPE_SI: src1R();         SimmI(); break;
 
   }
@@ -95,6 +92,7 @@ static int decode_exec(Decode *s) {
   // srai是算数右移
   INSTPAT("0100000 ????? ????? 101 ????? 00100 11", srai   , SI, R(rd) = (int)src1 >> imm);
   INSTPAT("??????? ????? ????? 010 ????? 00100 11", slti   , I, R(rd) = ((int)src1 < (int)imm) ? 1 : 0);
+  // SLTIU是对imm做符号拓展，但是比较的时候是按照无符号数比较
   INSTPAT("??????? ????? ????? 011 ????? 00100 11", sltiu  , I, R(rd) = (src1 < imm) ? 1 : 0);
 
   INSTPAT("??????? ????? ????? 000 ????? 00000 11", lb     , I, R(rd) = SEXT(Mr(src1 + imm, 1), 8));
