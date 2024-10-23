@@ -122,6 +122,7 @@ static int decode_exec(Decode *s) {
   
   // RV32M
   INSTPAT("0000001 ????? ????? 000 ????? 01100 11", mul    , R, R(rd) = (int)src1 * (int)src2);
+  // 必须加一个int，因为src1和src2是unsigned int类型，直接转为long数据类型得到的一定是个正数，得不到负数
   INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, long tmp = (long) ((int)src1) * (long)((int)src2); ; R(rd) = (uint32_t)(((uint64_t) tmp) >> 32));
 
   INSTPAT("0000001 ????? ????? 100 ????? 01100 11", Div    , R, R(rd) = (int)src1 / (int)src2);
