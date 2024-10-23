@@ -62,11 +62,6 @@ static int decode_exec(Decode *s) {
   word_t src1 = 0, src2 = 0, imm = 0;
   s->dnpc = s->snpc;
 
-    int a = 0xaeb1c2aa;
-    int b = 0xaeb1c2aa;
-    long c = (long) a* (long)b;
-    printf("%lx\n", c);
-
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
 #define INSTPAT_MATCH(s, name, type, ... /* execute body */ ) { \
   decode_operand(s, &rd, &src1, &src2, &imm, concat(TYPE_, type)); \
@@ -127,7 +122,7 @@ static int decode_exec(Decode *s) {
   
   // RV32M
   INSTPAT("0000001 ????? ????? 000 ????? 01100 11", mul    , R, R(rd) = (int)src1 * (int)src2);
-  INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, int64_t tmp = (int64_t)src1 * (int64_t)src2; printf("%lx\n",tmp); R(rd) = (uint32_t)(((uint64_t) tmp) >> 32));
+  INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, int64_t tmp = (int64_t)src1 * (int64_t)src2; printf("%x\n",src2); printf("%x\n",src1); printf("%lx\n",tmp); R(rd) = (uint32_t)(((uint64_t) tmp) >> 32));
 
   INSTPAT("0000001 ????? ????? 100 ????? 01100 11", Div    , R, R(rd) = (int)src1 / (int)src2);
   INSTPAT("0000001 ????? ????? 101 ????? 01100 11", DivU   , R, R(rd) = src1 / src2);
