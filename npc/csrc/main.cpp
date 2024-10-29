@@ -6,12 +6,28 @@
 #define PG_ALIGN __attribute((aligned(4096)))
 static TOP_NAME top;
 
+// INSTPAT("0000000 00001 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
+// INSTPAT("0000000 00010 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
+// INSTPAT("0000000 00011 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
+// INSTPAT("0000000 00110 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
+// INSTPAT("0000000 00111 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
+// INSTPAT("0000000 01000 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
+// INSTPAT("0000000 01001 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
+
+
+    // 00100093
+    // 00200093
+    // 00300093
+    // 00600093
+    // 00700093
+    // 00800093
+    // 00900093
 static const uint32_t img [] = {
-  0x1c00000c,  // pcaddu12i $t0,0
-  0x29804180,  // st.w $zero,$t0,16
-  0x28804184,  // ld.w $a0,$t0,16
-  0x002a0000,  // break 0 (used as nemu_trap)
-  0xdeadbeef,  // some data
+  0x00100093,  // pcaddu12i $t0,0
+  0x00200093,  // st.w $zero,$t0,16
+  0x00300093,  // ld.w $a0,$t0,16
+  0x00600093,  // break 0 (used as nemu_trap)
+  0x00700093,  // some data
 };
 
 
