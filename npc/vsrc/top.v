@@ -19,9 +19,6 @@ module ysyx_24100005_top(
 
   always @(posedge clk) begin
     $display("inst=%h, ", inst);
-    $display("PC=%h, ", PC);
-    $display("Next_PC=%h, ", Next_PC);
-
 
   end
 

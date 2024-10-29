@@ -48,7 +48,6 @@ int main() {
 
   reset(10);
 
-  printf("1111111111111111111\n");
   int tmp = 4;
   while (tmp) {
     top.inst = pmem_read(top.PC);
