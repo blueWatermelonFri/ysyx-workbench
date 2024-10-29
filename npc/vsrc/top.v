@@ -9,7 +9,6 @@ module ysyx_24100005_top(
   wire [31:0] wdata;
   wire [31:0] rdata;
 
-
   wire [6:0] Opcode;
   wire [2:0] funct3;
   wire [4:0] rs1;
@@ -46,7 +45,6 @@ module ysyx_24100005_top(
 
   // 执行
   assign wdata = rdata + {20'd0, imm};
-
 
   always @(posedge clk) begin
     $display("inst=%h, ", inst);
