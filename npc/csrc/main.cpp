@@ -46,7 +46,7 @@ int main() {
   // nvboard_init();
   memcpy(guest_to_host(0x80000000), img, sizeof(img));
 
-  reset(10);
+  reset(5);
 
   int tmp = 4;
   while (tmp) {

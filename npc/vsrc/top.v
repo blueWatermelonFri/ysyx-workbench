@@ -21,8 +21,6 @@ module ysyx_24100005_top(
     $display("inst=%h, ", inst);
     $display("PC=%h, ", PC);
     $display("Next_PC=%h, ", Next_PC);
-
-
   end
 
 endmodule
