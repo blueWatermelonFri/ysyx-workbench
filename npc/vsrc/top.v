@@ -6,21 +6,24 @@ module ysyx_24100005_top(
   output reg [31:0] PC
 );
   wire [31:0] Next_PC;
-
+  wire [6:0] Opcode;
   ysyx_24100005_Reg #(32, 32'h8000_0000) i0 (.clk(clk), 
                                               .rst(rst), 
                                               .din(Next_PC), 
                                               .dout(PC), 
                                               .wen(1'b1));
-  
-
   assign Next_PC = PC + 32'h0000_0004;
+  assign Opcode = inst[6:0];
+
+
+
+
 
 
   always @(posedge clk) begin
     $display("inst=%h, ", inst);
-    $display("PC=%h, ", PC);
-    $display("Next_PC=%h, ", Next_PC);
+    $display("Opcode=%h, ", Opcode);
+
   end
 
 endmodule

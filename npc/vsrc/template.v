@@ -67,3 +67,15 @@ module ysyx_24100005_Reg #(WIDTH = 1, RESET_VAL = 0) (
     else if (wen) dout <= din;
   end
 endmodule
+
+module RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
+  input clk,
+  input [DATA_WIDTH-1:0] wdata,
+  input [ADDR_WIDTH-1:0] waddr,
+  input wen
+);
+  reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
+  always @(posedge clk) begin
+    if (wen) rf[waddr] <= wdata;
+  end
+endmodule
