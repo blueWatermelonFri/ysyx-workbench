@@ -53,6 +53,8 @@ int main() {
   while (tmp) {
     top.inst = pmem_read(top.PC);
     top.eval();
+    printf("1111111111111111111\n");
+
     tmp --;
   }
 }
