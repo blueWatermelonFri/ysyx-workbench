@@ -3,7 +3,8 @@ module ysyx_24100005_top(
   input rst,
   input clk,
 
-  output reg [31:0] PC
+  output reg [31:0] PC,
+  output over
 );
   wire [31:0] Next_PC;
   wire [31:0] wdata;
@@ -41,8 +42,10 @@ module ysyx_24100005_top(
   assign rd = inst[11:7];
 
   // 执行
-  assign wdata = rdata + {20'd0, imm};
 
+  assign wdata = rdata + {20'd0, imm};
+  assign over = Opcode == 7'b1110011;
+  
   always @(posedge clk) begin
     $display("inst=%h, ", inst);
     $display("Opcode=%h, ", Opcode);
