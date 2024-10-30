@@ -27,10 +27,10 @@ static const uint32_t img [] = {
   0x00200093,  // st.w $zero,$t0,16
   0x00300093,  // ld.w $a0,$t0,16
   0x00600093,  // break 0 (used as nemu_trap)
-  0x00100073,
   0x00700093,  // some data
   0x00800093,
   0x00900093,
+  0x00100073,
 };
 
 
