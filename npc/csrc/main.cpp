@@ -67,7 +67,7 @@ int main() {
 
   reset(5);
 
-  int tmp = 6;
+  int tmp = 10;
   while (tmp) {
     top.inst = pmem_read(top.PC);
     single_cycle();
