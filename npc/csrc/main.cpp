@@ -71,7 +71,10 @@ int main() {
   while (tmp) {
     top.inst = pmem_read(top.PC);
     single_cycle();
-    if(top.over == 1) break;
+    if(top.over == 1) {
+      printf("over");
+      break;
+    }
     tmp --;
   }
 }
