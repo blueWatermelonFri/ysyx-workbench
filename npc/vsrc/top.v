@@ -1,5 +1,4 @@
-import "DPI-C" function void ebreak();
-
+import "DPI-C" function void add();
 module ysyx_24100005_top(
   input [31:0] inst,
   input rst,
@@ -43,13 +42,17 @@ module ysyx_24100005_top(
   assign rd = inst[11:7];
 
 
-  
+  assign wdata = rdata + {20'd0, imm};
+
 
   always @(*) begin
     if(Opcode == 7'b1110011) begin
-      ebreak();
+      add();
     end
   end
+
+
+
 
   // 执行
   always @(posedge clk) begin

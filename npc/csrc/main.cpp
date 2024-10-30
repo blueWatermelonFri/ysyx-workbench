@@ -34,7 +34,7 @@ static const uint32_t img [] = {
 };
 
 
-extern "C" void ebreak() {
+extern "C" void add() {
   printf("hit at goog trap\n");
   exit(0);
 }
