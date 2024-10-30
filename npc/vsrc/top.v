@@ -42,14 +42,14 @@ module ysyx_24100005_top(
   assign rd = inst[11:7];
 
   // 执行
-
-  assign wdata = rdata + {20'd0, imm};
-  assign over = Opcode == 7'b1110011;
-  
   always @(posedge clk) begin
     $display("inst=%h, ", inst);
     $display("Opcode=%h, ", Opcode);
 
   end
+
+  assign wdata = rdata + {20'd0, imm};
+  assign over = Opcode == 7'b1110011;
+  
 
 endmodule
