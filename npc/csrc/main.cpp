@@ -30,6 +30,7 @@ static const uint32_t img [] = {
   0x00700093,  // some data
   0x00800093,
   0x00900093,
+  0x00100073,
 };
 
 
@@ -70,6 +71,7 @@ int main() {
   while (tmp) {
     top.inst = pmem_read(top.PC);
     single_cycle();
+    if(top.over == 1) break;
     tmp --;
   }
 }
