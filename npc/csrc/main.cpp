@@ -34,6 +34,12 @@ static const uint32_t img [] = {
 };
 
 
+extern "C" void ebreak() {
+  printf("hit at goog trap\n");
+  exit(0);
+}
+
+
 static uint8_t pmem[4*10] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
@@ -71,10 +77,6 @@ int main() {
   while (tmp) {
     top.inst = pmem_read(top.PC);
     single_cycle();
-    if(top.over == 1) {
-      printf("over");
-      break;
-    }
     tmp --;
   }
 }

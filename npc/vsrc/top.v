@@ -1,10 +1,11 @@
+import "DPI-C" function void ebreak();
+
 module ysyx_24100005_top(
   input [31:0] inst,
   input rst,
   input clk,
 
-  output reg [31:0] PC,
-  output over
+  output reg [31:0] PC
 );
   wire [31:0] Next_PC;
   wire [31:0] wdata;
@@ -41,15 +42,19 @@ module ysyx_24100005_top(
   assign imm = inst[31:20];
   assign rd = inst[11:7];
 
+
+  
+
+  always @(*) begin
+    if(Opcode == 7'b1110011) begin
+      ebreak();
+    end
+  end
+
   // 执行
   always @(posedge clk) begin
     $display("inst=%h, ", inst);
     $display("Opcode=%h, ", Opcode);
-
   end
-
-  assign wdata = rdata + {20'd0, imm};
-  assign over = Opcode == 7'b1110011;
-  
 
 endmodule
