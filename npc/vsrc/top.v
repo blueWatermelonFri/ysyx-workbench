@@ -15,7 +15,6 @@ module ysyx_24100005_top(
   wire [11:0] imm;
   wire [4:0] rd;
 
-
   // 初始化寄存器堆
   ysyx_24100005_RegisterFile #(5, 32) RegFile(
   .clk(clk),
@@ -25,7 +24,6 @@ module ysyx_24100005_top(
   .wen(1'b1),
   .rdata(rdata)
   );
-
 
   // 取值
   ysyx_24100005_Reg #(32, 32'h8000_0000) i0 (.clk(clk), 
@@ -41,7 +39,6 @@ module ysyx_24100005_top(
   assign rs1 = inst[19:15];
   assign imm = inst[31:20];
   assign rd = inst[11:7];
-
 
   // 执行
   assign wdata = rdata + {20'd0, imm};
