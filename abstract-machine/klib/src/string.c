@@ -94,8 +94,7 @@ int memcmp(const void *s1, const void *s2, size_t n) {
       n --;
       c1 = (unsigned char) *p1++;
       c2 = (unsigned char) *p2++;
-      if (c1 == '\0')
-	      return c1 - c2;
+
     }
   while (c1 == c2 && n > 0);
 
