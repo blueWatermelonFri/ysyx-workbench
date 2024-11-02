@@ -8,9 +8,7 @@ size_t strlen(const char *s) {
   panic("Not implemented");
 }
 
-char *strcpy(char *dst, const char *src) {
-  panic("Not implemented");
-}
+
 
 char *strncpy(char *dst, const char *src, size_t n) {
   panic("Not implemented");
