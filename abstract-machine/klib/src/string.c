@@ -44,8 +44,8 @@ char *strcat(char *dst, const char *src) {
 }
 
 int strcmp(const char *s1, const char *s2) {
-  register const unsigned char *p1 = (const unsigned char *) s1;
-  register const unsigned char *p2 = (const unsigned char *) s2;
+  const unsigned char *p1 = (const unsigned char *) s1;
+  const unsigned char *p2 = (const unsigned char *) s2;
   unsigned int c1, c2;
 
   do
@@ -65,7 +65,12 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
-  panic("Not implemented");
+  char *p1 = (char *) s;
+  size_t i;
+  for(i = 0; i < n; i++){
+    p1[i] = (char) c;
+  }
+  return s;
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
@@ -77,7 +82,24 @@ void *memcpy(void *out, const void *in, size_t n) {
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  panic("Not implemented");
+  
+  if(n == 0) return 0;
+
+  const unsigned char *p1 = (const unsigned char *) s1;
+  const unsigned char *p2 = (const unsigned char *) s2;
+  unsigned int c1, c2;
+
+  do
+    { 
+      n --;
+      c1 = (unsigned char) *p1++;
+      c2 = (unsigned char) *p2++;
+      if (c1 == '\0')
+	      return c1 - c2;
+    }
+  while (c1 == c2 && n > 0);
+
+  return c1 - c2;
 }
 
 #endif
