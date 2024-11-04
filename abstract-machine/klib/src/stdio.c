@@ -52,7 +52,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 int sprintf(char *out, const char *fmt, ...) {
      va_list ap;
      char *s;
-     char d_s[128];
+     char d_s[64];
      int d;
      va_start(ap, fmt);
      int j = 0;
