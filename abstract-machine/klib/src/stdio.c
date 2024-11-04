@@ -13,76 +13,42 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   panic("Not implemented");
 }
 
-// int sprintf(char *out, const char *fmt, ...) {
-//     va_list ap;
-//     char *s;
-//     char d_s[128];
-
-//     int d;
-
-//     va_start(ap, fmt);
-//     int j = 0;
-//     while (*fmt){
-//         if(*(fmt++) == '%'){    
-//           switch (*fmt++) {
-//             case 's':              /* string */
-//                 s = va_arg(ap, char *);
-//                 for(size_t k=0; s[k]; k++){
-//                   out[j++] = s[k];
-//                 }
-//                 break;
-//             case 'd':              /* int */
-//                 d = va_arg(ap, int);
-//                 itoa(d, d_s);
-//                 for(size_t k=0; d_s[k]; k++){
-//                   out[j++] = d_s[k];
-//                 }
-//                 break;
-//           }
-//         }
-//         else{
-//           out[j++] = *(fmt-1);
-//         }
-//     }
-//     va_end(ap);
-//     out[j] = '\0';
-//     return strlen(out);
-// }
-
 int sprintf(char *out, const char *fmt, ...) {
-     va_list ap;
-     char *s;
-     char d_s[64];
-     int d;
-     va_start(ap, fmt);
-     int j = 0;
-     while (*fmt){
-         if(*(fmt++) == '%'){
-           switch (*fmt++) {
-             case 's':              /* string */
-                 s = va_arg(ap, char *);
-                 for(size_t k=0; s[k]; k++){
-                   out[j++] = s[k];
-                 }
-                 break;
-             case 'd':              /* int */
-                 d = va_arg(ap, int);
-                 s = itoa(d, d_s);
-                 for(size_t k=0; s[k]; k++){
-                   out[j++] = s[k];
-                 }
-                 break;
-           }
-         }
-         else{
-           out[j++] = *(fmt-1);
-         }
-     }
+    va_list ap;
+    char *s;
+    char d_s[128];
 
-     va_end(ap);
+    int d;
+
+    va_start(ap, fmt);
+    int j = 0;
+    while (*fmt){
+        if(*(fmt++) == '%'){    
+          switch (*fmt++) {
+            case 's':              /* string */
+                s = va_arg(ap, char *);
+                for(size_t k=0; s[k]; k++){
+                  out[j++] = s[k];
+                }
+                break;
+            case 'd':              /* int */
+                d = va_arg(ap, int);
+                itoa(d, d_s);
+                for(size_t k=0; d_s[k]; k++){
+                  out[j++] = d_s[k];
+                }
+                break;
+          }
+        }
+        else{
+          out[j++] = *(fmt-1);
+        }
+    }
+    va_end(ap);
     out[j] = '\0';
     return strlen(out);
 }
+
 
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
