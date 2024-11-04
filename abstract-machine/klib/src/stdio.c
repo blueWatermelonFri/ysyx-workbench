@@ -33,9 +33,9 @@ int sprintf(char *out, const char *fmt, ...) {
                 break;
             case 'd':              /* int */
                 d = va_arg(ap, int);
-                s = itoa(d, d_s);
-                for(size_t k=0; s[k]; k++){
-                  out[j++] = s[k];
+                itoa(d, d_s);
+                for(size_t k=0; d_s[k]; k++){
+                  out[j++] = d_s[k];
                 }
                 break;
           }
