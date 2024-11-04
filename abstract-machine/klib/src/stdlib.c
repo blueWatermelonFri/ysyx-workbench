@@ -29,7 +29,7 @@ int atoi(const char* nptr) {
   return x;
 }
 
-char* itoa(int value, char* string ){
+char* itoa(int value, char*string ){
   
   int i = 0;
   int remainder;
@@ -65,6 +65,7 @@ char* itoa(int value, char* string ){
   return string;
 
 }
+
 
 //value: 要转换的整数，string: 转换后的字符串,
 
