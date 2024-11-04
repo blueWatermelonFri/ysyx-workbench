@@ -79,7 +79,6 @@ int sprintf(char *out, const char *fmt, ...) {
          }
      }
 
-
      va_end(ap);
     out[j] = '\0';
     return strlen(out);
