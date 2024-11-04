@@ -78,7 +78,7 @@ char* itoa(int value, char*string ){
 	  value = abs(value);
   }
 
-  for(; value % 10 > 0; ){
+  for(; value % 10 >= 0 && value > 0; ){
     remainder = value % 10;
     value = value / 10;
 	  
