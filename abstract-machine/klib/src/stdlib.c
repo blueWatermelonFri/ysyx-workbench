@@ -48,7 +48,7 @@ char* itoa(int value, char*string ){
   }
   
   string[i] = '\0';
-	printf("%s\n", string);
+
   int end = strlen(string) - 1;
   int start = string[0] == '-' ? 1 : 0;
   int middle = string[0] == '-' ? (end - start) / 2 + 1 : (end - start) / 2;
