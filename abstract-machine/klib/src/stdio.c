@@ -44,8 +44,6 @@ int sprintf(char *out, const char *fmt, ...) {
           out[j++] = *(fmt-1);
         }
     }
-        
-    
     va_end(ap);
     out[j] = '\0';
     return strlen(out);
