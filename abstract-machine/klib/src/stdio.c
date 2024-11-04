@@ -16,7 +16,10 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 int sprintf(char *out, const char *fmt, ...) {
     va_list ap;
     char *s;
+    char d_s[128];
+
     int d;
+
     va_start(ap, fmt);
     int j = 0;
     while (*fmt){
@@ -29,10 +32,8 @@ int sprintf(char *out, const char *fmt, ...) {
                 }
                 break;
             case 'd':              /* int */
-
                 d = va_arg(ap, int);
-                s = TOSTRING(11111111111111111);
-                s = itoa(d, s);
+                s = itoa(d, d_s);
                 for(size_t k=0; s[k]; k++){
                   out[j++] = s[k];
                 }
