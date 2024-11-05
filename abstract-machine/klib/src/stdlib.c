@@ -29,44 +29,6 @@ int atoi(const char* nptr) {
   return x;
 }
 
-// char* itoa(int value, char*string ){
-  
-//   int i = 0;
-//   int remainder;
-//   char tmp;
-
-//   if(value < 0){
-//     string[i++] = '-';
-// 	  value = abs(value);
-//   }
-
-//   for(; value % 10 > 0; ){
-//     remainder = value % 10;
-//     value = value / 10;
-	  
-//     string[i++] = remainder + 48;
-//   }
-  
-//   string[i] = '\0';
-
-//   int end = strlen(string) - 1;
-//   int start = string[0] == '-' ? 1 : 0;
-//   int middle = string[0] == '-' ? (end - start) / 2 + 1 : (end - start) / 2;
-
-//   while(start <= middle){
-//     tmp = string[end];
-//     string[end] = string[start];
-//     string[start] = tmp;
-	  
-// 	  start += 1;
-// 	  end -=1;
-//   }
-
-//   return string;
-
-// }
-
-
 char* itoa(int value, char*string ){
   
   int i = 0;
@@ -102,9 +64,6 @@ char* itoa(int value, char*string ){
   return string;
 
 }
-
-
-//value: 要转换的整数，string: 转换后的字符串,
 
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.

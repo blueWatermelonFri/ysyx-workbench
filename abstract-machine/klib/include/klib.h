@@ -32,7 +32,6 @@ int    abs       (int x);
 int    atoi      (const char *nptr);
 char   *itoa     (int value, char *string );
 
-
 // stdio.h
 int    printf    (const char *format, ...);
 int    sprintf   (char *str, const char *format, ...);
