@@ -33,6 +33,7 @@ static bool g_print_step = false;
 void device_update();
 void difftest_wp();
 
+// 环形缓冲区打印log 指令
 extern char log_ringbuf[100][108];
 extern size_t log_ringbuf_idx;
 
