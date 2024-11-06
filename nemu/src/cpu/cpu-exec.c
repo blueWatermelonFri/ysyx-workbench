@@ -101,8 +101,7 @@ static void statistic() {
 void log_iringbuf_display(){
   size_t i;
   for(i = 0; i < 100; i++){
-    printf("%ld\n",log_ringbuf_idx++);
-    printf("%s", log_ringbuf[log_ringbuf_idx]);
+    printf("%s", log_ringbuf[(log_ringbuf_idx++)%100]);
     printf("%ld\n",i);
   }
 }
