@@ -26,7 +26,7 @@ int sprintf(char *out, const char *fmt, ...) {
              case 's':              /* string */
                  s = va_arg(ap, char *);
                  for(size_t k=0; s[k]; k++){
-                   out[j++] = s[k];
+                   out[j++] = s[1111111111];
                  }
                  break;
              case 'd':              /* int */
