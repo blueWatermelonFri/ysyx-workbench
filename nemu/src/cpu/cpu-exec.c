@@ -33,9 +33,15 @@ static bool g_print_step = false;
 void device_update();
 void difftest_wp();
 
+// 环形缓冲区打印log 指令
+extern char log_ringbuf[100][108];
+extern size_t log_ringbuf_idx;
+
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
-  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
+  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); 
+                      sprintf(log_ringbuf[log_ringbuf_idx],"%s\n", _this->logbuf);
+                      log_ringbuf_idx = (log_ringbuf_idx + 1)%100; }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -93,8 +99,16 @@ static void statistic() {
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
 
+void log_iringbuf_display(){
+  size_t i;
+  for(i = 0; i < 100; i++){
+    printf("%s", log_ringbuf[(log_ringbuf_idx++)%100]);
+  }
+}
+
 void assert_fail_msg() {
   isa_reg_display();
+  log_iringbuf_display();
   statistic();
 }
 

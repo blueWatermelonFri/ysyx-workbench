@@ -19,6 +19,8 @@ extern uint64_t g_nr_guest_inst;
 
 #ifndef CONFIG_TARGET_AM
 FILE *log_fp = NULL;
+char log_ringbuf[100][128];
+size_t log_ringbuf_idx = 0;
 
 void init_log(const char *log_file) {
   log_fp = stdout;
