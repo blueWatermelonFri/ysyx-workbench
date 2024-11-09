@@ -29,6 +29,7 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
+// static uint64_t ftrace_cnt = 0; // unit: us
 
 void device_update();
 void difftest_wp();
@@ -61,15 +62,13 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
-  int ilen = MUXDEF(CONFIG_RV64, 8, 4);
-  // int i;
-  // uint8_t *inst = (uint8_t *)&s->isa.inst.val;
-  // 按照小端模式打印，i从3开始，但是这里直接 %x 打印就好了，不需要这么麻烦
-  // for (i = ilen - 1; i >= 0; i --) {
-  //   p += snprintf(p, 4, " %02x", inst[i]);
-  // }
-  p += snprintf(p, 16, " %08x", s->isa.inst.val);
-
+  int ilen = s->snpc - s->pc;
+  int i;
+  uint8_t *inst = (uint8_t *)&s->isa.inst.val;
+  // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
+  for (i = ilen - 1; i >= 0; i --) {
+    p += snprintf(p, 4, " %02x", inst[i]);
+  }
   int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
   int space_len = ilen_max - ilen;
   if (space_len < 0) space_len = 0;
@@ -78,11 +77,17 @@ static void exec_once(Decode *s, vaddr_t pc) {
   p += space_len;
 
 // #ifdef CONFIG_FTRACE
-  // word_t opcode = BITS(s->isa.inst.val, 6, 0);
-  // if(opcode == 0x0000006f || opcode == 0x00000067){
-  //   printf("j or jr\n");
-  //   printf("%08x\n",s->isa.inst.val);
-  // }
+  word_t opcode = BITS(s->isa.inst.val, 6, 0);
+  if(opcode == 0x0000006f || opcode == 0x00000067){
+    printf("%08x\n",s->isa.inst.val);
+    //s->dnpc表示跳转的下一条指令
+    for(i = 0 ; i < func_count; i++){
+      if(s->dnpc == func_begin[i]){
+        printf("call %s\n", func_name[i]);
+      }
+    }
+
+  }
 // #endif
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
