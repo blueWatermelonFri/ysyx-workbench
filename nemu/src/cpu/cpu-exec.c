@@ -75,11 +75,11 @@ static void exec_once(Decode *s, vaddr_t pc) {
   p += space_len;
 
 // #ifdef CONFIG_FTRACE
-  // word_t opcode = BITS(s->isa.inst.val, 6, 0);
-  // if(opcode == 0x0000006f || opcode == 0x00000067){
-  //   printf("j or jr\n");
-  //   printf("%x\n",s->isa.inst.val);
-  // }
+  word_t opcode = BITS(s->isa.inst.val, 6, 0);
+  if(opcode == 0x0000006f || opcode == 0x00000067){
+    printf("j or jr\n");
+    printf("%x\n",s->isa.inst.val);
+  }
 // #endif
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
