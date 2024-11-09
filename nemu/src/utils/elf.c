@@ -9,6 +9,7 @@ char func_name[FUNC_NUM][128];
 
 void init_elf(const char *filename) {
     FILE *file = fopen(filename, "rb");
+    // printf("%s\n", *filename)
     if (file == NULL) {
         perror("无法打开文件");
         exit(EXIT_FAILURE);
