@@ -66,7 +66,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       else{ 
         for(int i = 0 ; i < func_count; i++){
           if(_this->dnpc == func_begin[i]){
-            printf("%*s pc: %08x, call %s\n",ftrace_cnt, "", _this->dnpc, func_name[i]);
+            printf("0x%08x: %*scall [%s@0x%08x]\n",_this->pc, ftrace_cnt, "",  func_name[i], _this->dnpc);
             ftrace_cnt ++;
             break;
           }
