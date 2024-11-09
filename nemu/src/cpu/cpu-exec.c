@@ -54,13 +54,13 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       // printf("%08x\n",_this->isa.inst.val);
       //s->dnpc表示跳转的下一条指令
       if(_this->isa.inst.val == 0x00008067){ 
-          for(int i = 0 ; i < func_count; i++){
-            if(_this->pc >= func_begin[i] && _this->pc <= func_end[i]){
-                printf("0x%08x: %*sret %s\n",_this->pc, ftrace_cnt, "", func_name[i]);
-                ftrace_cnt --;
-                break;
-            }
+        for(int i = 0 ; i < func_count; i++){
+          if(_this->pc >= func_begin[i] && _this->pc <= func_end[i]){
+              printf("0x%08x: %*s ret %s\n",_this->pc, ftrace_cnt, "", func_name[i]);
+              ftrace_cnt --;
+              break;
           }
+        }
 
       }
       else{ 
