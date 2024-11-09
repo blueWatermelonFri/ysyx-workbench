@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include <common.h>
 #include <elf.h>
 
 #define FUNC_NUM 100
@@ -19,7 +16,7 @@ void init_elf(const char *filename) {
     
     size_t         ret;
     Elf32_Ehdr elf_header;
-    
+
     ret = fread(&elf_header, 1, sizeof(Elf32_Ehdr), file);
     if (ret != sizeof(Elf32_Ehdr)) {
         fprintf(stderr, "fread() failed: %zu\n", ret);
@@ -70,14 +67,22 @@ void init_elf(const char *filename) {
     Elf32_Shdr symtab_header = section_headers[symtab_index];
     Elf32_Sym *symbols = malloc(symtab_header.sh_size);
     fseek(file, symtab_header.sh_offset, SEEK_SET);
-    fread(symbols, 1, symtab_header.sh_size, file);
+    ret = fread(symbols, 1, symtab_header.sh_size, file);
+    if (ret != symtab_header.sh_size) {
+        fprintf(stderr, "fread() failed: %zu\n", ret);
+        exit(EXIT_FAILURE);
+    }
 
     // 读取字符串表
     Elf32_Shdr strtab_header = section_headers[strtab_index];
     char *strtab = malloc(strtab_header.sh_size);
     fseek(file, strtab_header.sh_offset, SEEK_SET);
-    fread(strtab, 1, strtab_header.sh_size, file);
-
+    ret = fread(strtab, 1, strtab_header.sh_size, file);
+    if (ret != strtab_header.sh_size) {
+        fprintf(stderr, "fread() failed: %zu\n", ret);
+        exit(EXIT_FAILURE);
+    }
+    
     // 打印符号表信息
     int num_symbols = symtab_header.sh_size / sizeof(Elf32_Sym);
     for (int i = 0; i < num_symbols; i++) {
@@ -97,15 +102,4 @@ void init_elf(const char *filename) {
     free(strtab);
     free(section_headers);
     fclose(file);
-}
-
-int main() {
-    const char *filename = "/home/myuser/ysyx/ysyx-workbench/am-kernels/tests/cpu-tests/build/add-riscv32-nemu.elf";  // 替换为你的 ELF 文件名
-    init_elf(filename);
-    for(int i = 0 ; i < func_count; i++){
-        printf("%s  ", func_name[i]);
-        printf("%x  ", func_begin[i]);
-        printf("%x \n", func_end[i]);
-    }
-    return 0;
 }
