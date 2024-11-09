@@ -29,7 +29,7 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
-// static uint64_t ftrace_cnt = 0; // unit: us
+static int ftrace_cnt = 0; // unit: us
 
 void device_update();
 void difftest_wp();
@@ -53,12 +53,15 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     if(opcode == 0x0000006f || opcode == 0x00000067){
       // printf("%08x\n",_this->isa.inst.val);
       //s->dnpc表示跳转的下一条指令
-      if(_this->isa.inst.val == 0x00008067)
-          printf("ret\n");
+      if(_this->isa.inst.val == 0x00008067){ 
+          printf("%*sret\n", ftrace_cnt, "");
+          ftrace_cnt --;
+      }
       else{ 
         for(int i = 0 ; i < func_count; i++){
           if(_this->dnpc == func_begin[i]){
-            printf("pc: %08x, call %s\n",_this->dnpc, func_name[i]);
+            printf("%*s pc: %08x, call %s\n",ftrace_cnt, "", _this->dnpc, func_name[i]);
+            ftrace_cnt ++;
             break;
           }
         }
