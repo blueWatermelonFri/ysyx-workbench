@@ -55,7 +55,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       //s->dnpc表示跳转的下一条指令
       for(int i = 0 ; i < func_count; i++){
         if(_this->dnpc == func_begin[i]){
-          printf("call %s\n", func_name[i]);
+          printf("pc: %08x, call %s\n",_this->dnpc, func_name[i]);
         }
       }
 
