@@ -1,11 +1,10 @@
 #include <common.h>
 #include <elf.h>
 
-#define FUNC_NUM 100
-uint32_t func_begin[FUNC_NUM];
-uint32_t func_end[FUNC_NUM];
+uint32_t func_begin[100];
+uint32_t func_end[100];
 uint32_t func_count = 0;
-char func_name[FUNC_NUM][128];
+char func_name[100][128];
 
 void init_elf(const char *filename) {
     FILE *file = fopen(filename, "rb");

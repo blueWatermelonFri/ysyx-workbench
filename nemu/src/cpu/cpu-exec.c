@@ -36,6 +36,11 @@ void difftest_wp();
 // 环形缓冲区打印log 指令
 extern char log_ringbuf[100][108];
 extern size_t log_ringbuf_idx;
+// 用于ftrace
+extern uint32_t func_begin[100];
+extern uint32_t func_end[100];
+extern uint32_t func_count;
+extern char func_name[100][128];
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -69,6 +74,12 @@ static void exec_once(Decode *s, vaddr_t pc) {
   memset(p, ' ', space_len);
   p += space_len;
 
+// #ifdef CONFIG_FTRACE
+  word_t opcode = BITS(s->isa.inst.val, 6, 0);
+  if(opcode == 0x0000006f || opcode == 0x00000067){
+    printf("j or jr\n");
+  }
+// #endif
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
@@ -114,6 +125,7 @@ void assert_fail_msg() {
 
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
+  // 每次最多只打印9条指令
   g_print_step = (n < MAX_INST_TO_PRINT);
   switch (nemu_state.state) {
     case NEMU_END: case NEMU_ABORT:
