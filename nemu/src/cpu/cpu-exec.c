@@ -64,6 +64,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   int ilen = MUXDEF(CONFIG_RV64, 8, 4);
   int i;
   uint8_t *inst = (uint8_t *)&s->isa.inst.val;
+  // 按照小端模式打印，i从3开始
   for (i = ilen - 1; i >= 0; i --) {
     p += snprintf(p, 4, " %02x", inst[i]);
   }
@@ -78,7 +79,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   word_t opcode = BITS(s->isa.inst.val, 6, 0);
   if(opcode == 0x0000006f || opcode == 0x00000067){
     printf("j or jr\n");
-    printf("%x\n",s->isa.inst.val);
+    printf("%08x\n",s->isa.inst.val);
   }
 // #endif
 #ifndef CONFIG_ISA_loongarch32r
