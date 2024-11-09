@@ -55,7 +55,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       //s->dnpc表示跳转的下一条指令
       if(_this->isa.inst.val == 0x00008067){ 
           for(int i = 0 ; i < func_count; i++){
-            if(_this->dnpc >= func_begin[i] && _this->dnpc >= func_end[i]){
+            if(cpu.gpr[1] >= func_begin[i] && _this->dnpc >= func_end[i]){
                 printf("%*sret %s\n", ftrace_cnt, "", func_name[i]);
                 ftrace_cnt --;
                 break;
