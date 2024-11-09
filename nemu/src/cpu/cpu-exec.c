@@ -48,6 +48,19 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); 
                       sprintf(log_ringbuf[log_ringbuf_idx],"%s\n", _this->logbuf);
                       log_ringbuf_idx = (log_ringbuf_idx + 1)%100; }
+  if(1){
+    word_t opcode = BITS(_this->isa.inst.val, 6, 0);
+    if(opcode == 0x0000006f || opcode == 0x00000067){
+      printf("%08x\n",_this->isa.inst.val);
+      //s->dnpc表示跳转的下一条指令
+      for(int i = 0 ; i < func_count; i++){
+        if(_this->dnpc == func_begin[i]){
+          printf("call %s\n", func_name[i]);
+        }
+      }
+
+    }
+  }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -77,17 +90,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   p += space_len;
 
 // #ifdef CONFIG_FTRACE
-  word_t opcode = BITS(s->isa.inst.val, 6, 0);
-  if(opcode == 0x0000006f || opcode == 0x00000067){
-    printf("%08x\n",s->isa.inst.val);
-    //s->dnpc表示跳转的下一条指令
-    for(i = 0 ; i < func_count; i++){
-      if(s->dnpc == func_begin[i]){
-        printf("call %s\n", func_name[i]);
-      }
-    }
 
-  }
 // #endif
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
