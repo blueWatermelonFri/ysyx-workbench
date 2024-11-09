@@ -98,6 +98,11 @@ void init_elf(const char *filename) {
         }
     }
 
+    for(int i = 0 ; i < func_count; i++){
+        printf("%s  ", func_name[i]);
+        printf("%x  ", func_begin[i]);
+        printf("%x \n", func_end[i]);
+    }
     // 清理
     free(symbols);
     free(strtab);
