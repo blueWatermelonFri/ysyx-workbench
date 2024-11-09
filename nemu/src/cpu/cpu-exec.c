@@ -31,7 +31,7 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 static int ftrace_cnt = 0; // unit: us
 
-void device_update();
+void device_update(); 
 void difftest_wp();
 
 // 环形缓冲区打印log 指令
@@ -54,8 +54,16 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       // printf("%08x\n",_this->isa.inst.val);
       //s->dnpc表示跳转的下一条指令
       if(_this->isa.inst.val == 0x00008067){ 
-          printf("%*sret\n", ftrace_cnt, "");
-          ftrace_cnt --;
+          for(int i = 0 ; i < func_count; i++){
+            if(_this->dnpc >= func_begin[i] && _this->dnpc >= func_end[i]){
+                printf("%*sret %s\n", ftrace_cnt, "", func_name[i]);
+                ftrace_cnt --;
+                break;
+            }
+          }
+
+
+
       }
       else{ 
         for(int i = 0 ; i < func_count; i++){
