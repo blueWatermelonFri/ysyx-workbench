@@ -53,9 +53,14 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     if(opcode == 0x0000006f || opcode == 0x00000067){
       // printf("%08x\n",_this->isa.inst.val);
       //s->dnpc表示跳转的下一条指令
-      for(int i = 0 ; i < func_count; i++){
-        if(_this->dnpc == func_begin[i]){
-          printf("pc: %08x, call %s\n",_this->dnpc, func_name[i]);
+      if(_this->isa.inst.val == 0x00008067)
+          printf("ret\n");
+      else{ 
+        for(int i = 0 ; i < func_count; i++){
+          if(_this->dnpc == func_begin[i]){
+            printf("pc: %08x, call %s\n",_this->dnpc, func_name[i]);
+            break;
+          }
         }
       }
 
