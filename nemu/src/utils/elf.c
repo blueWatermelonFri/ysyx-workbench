@@ -97,11 +97,11 @@ void init_elf(const char *filename) {
         }
     }
 
-    for(int i = 0 ; i < ftrace_func_count; i++){
-        printf("%s  ", ftrace_func_name[i]);
-        printf("%x  ", ftrace_func_begin[i]);
-        printf("%x \n", ftrace_func_end[i]);
-    }
+    // for(int i = 0 ; i < ftrace_func_count; i++){
+    //     printf("%s  ", ftrace_func_name[i]);
+    //     printf("%x  ", ftrace_func_begin[i]);
+    //     printf("%x \n", ftrace_func_end[i]);
+    // }
     // 清理
     free(symbols);
     free(strtab);
