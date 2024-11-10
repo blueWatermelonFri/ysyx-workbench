@@ -79,11 +79,6 @@ OBJDUMP   = $(CROSS_COMPILE)objdump
 OBJCOPY   = $(CROSS_COMPILE)objcopy
 READELF   = $(CROSS_COMPILE)readelf
 
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
-
 ### Compilation flags
 INC_PATH += $(WORK_DIR)/include $(addsuffix /include/, $(addprefix $(AM_HOME)/, $(LIBS)))
 INCFLAGS += $(addprefix -I, $(INC_PATH))
@@ -104,11 +99,6 @@ LDFLAGS  += -z noexecstack
 
 ### Paste in arch-specific configurations (e.g., from `scripts/x86_64-qemu.mk`)
 -include $(AM_HOME)/scripts/$(ARCH).mk
-
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
 
 ### Fall back to native gcc/binutils if there is no cross compiler
 ifeq ($(wildcard $(shell which $(CC))),)
@@ -158,6 +148,10 @@ $(ARCHIVE): $(OBJS)
 ## 6. Miscellaneous
 
 ### Build order control
+# 如果多条规则中只有一条规则有命令，那么直接合并成一条规则，目标不变，依赖叠加；
+# 如果有多条规则有命令，那么后面的规则会覆盖前面的规则，且会爆告警
+# native.mk和这里都有iamge目标
+
 image: image-dep
 archive: $(ARCHIVE)
 image-dep: $(OBJS) $(LIBS)
