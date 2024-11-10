@@ -58,7 +58,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     if(_this->isa.inst.val == 0x00008067){ 
       for(int i = 0 ; i < ftrace_func_count; i++){
         if(_this->pc >= ftrace_func_begin[i] && _this->pc <= ftrace_func_end[i]){
-            printf("0x%08x:%*sret  [%s]\n",_this->pc, ftrace_func_count, "", ftrace_func_name[i]);
+            printf("0x%08x:%*sret  [%s]\n",_this->pc, ftrace_cnt, "", ftrace_func_name[i]);
             ftrace_cnt --;
             break;
         }
