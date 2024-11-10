@@ -53,6 +53,8 @@ void init_mem() {
 word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
+  printf("read address = " FMT_PADDR, addr);
+
 #ifdef CONFIG_MTRACE
   printf("read address = " FMT_PADDR, addr);
 #endif
