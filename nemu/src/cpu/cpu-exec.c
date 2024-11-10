@@ -49,7 +49,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
                       log_ringbuf_idx = (log_ringbuf_idx + 1)%100; }
 #endif
 
-#ifdef CONFIG_FTRACE_COND
+#ifdef CONFIG_FTRACE
   static int ftrace_cnt = 0; // unit: us
   word_t opcode = BITS(_this->isa.inst.val, 6, 0);
   if(opcode == 0x0000006f || opcode == 0x00000067){
