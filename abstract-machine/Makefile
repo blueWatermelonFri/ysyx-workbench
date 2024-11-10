@@ -36,6 +36,7 @@ ISA        = $(word 1,$(ARCH_SPLIT))
 PLATFORM   = $(word 2,$(ARCH_SPLIT))
 
 ### Check if there is something to build
+# flavor 返回变量的类型
 ifeq ($(flavor SRCS), undefined)
   $(error Nothing to build)
 endif
@@ -63,6 +64,9 @@ LINKAGE   = $(OBJS) \
     $(addsuffix /build/, $(addprefix $(AM_HOME)/, $(LIBS))), \
     $(LIBS) ))
 
+# $(info  $(LINKAGE) )
+# $(info  $(LINKAGE) )
+
 ## 3. General Compilation Flags
 
 ### (Cross) compilers, e.g., mips-linux-gnu-g++
@@ -74,6 +78,11 @@ AR        = $(CROSS_COMPILE)ar
 OBJDUMP   = $(CROSS_COMPILE)objdump
 OBJCOPY   = $(CROSS_COMPILE)objcopy
 READELF   = $(CROSS_COMPILE)readelf
+
+$(info  $(CROSS_COMPILE) )
+$(info  $(CROSS_COMPILE) )
+$(info  $(CROSS_COMPILE) )
+
 
 ### Compilation flags
 INC_PATH += $(WORK_DIR)/include $(addsuffix /include/, $(addprefix $(AM_HOME)/, $(LIBS)))
