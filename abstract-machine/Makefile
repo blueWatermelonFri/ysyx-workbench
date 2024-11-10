@@ -106,6 +106,11 @@ ifeq ($(wildcard $(shell which $(CC))),)
   CROSS_COMPILE :=
 endif
 
+$(info  $(wildcard $(shell which $(CC))) )
+$(info  $(wildcard $(shell which $(CC))) )
+$(info  $(wildcard $(shell which $(CC))) )
+$(info  $(wildcard $(shell which $(CC))) )
+
 ## 5. Compilation Rules
 
 ### Rule (compile): a single `.c` -> `.o` (gcc)
