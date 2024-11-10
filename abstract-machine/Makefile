@@ -79,11 +79,6 @@ OBJDUMP   = $(CROSS_COMPILE)objdump
 OBJCOPY   = $(CROSS_COMPILE)objcopy
 READELF   = $(CROSS_COMPILE)readelf
 
-$(info  $(CROSS_COMPILE) )
-$(info  $(CROSS_COMPILE) )
-$(info  $(CROSS_COMPILE) )
-
-
 ### Compilation flags
 INC_PATH += $(WORK_DIR)/include $(addsuffix /include/, $(addprefix $(AM_HOME)/, $(LIBS)))
 INCFLAGS += $(addprefix -I, $(INC_PATH))
