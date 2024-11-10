@@ -29,7 +29,6 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
-static int ftrace_cnt = 0; // unit: us
 
 void device_update(); 
 void difftest_wp();
@@ -48,28 +47,30 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); 
                       sprintf(log_ringbuf[log_ringbuf_idx],"%s\n", _this->logbuf);
                       log_ringbuf_idx = (log_ringbuf_idx + 1)%100; }
-  if(1){
-    word_t opcode = BITS(_this->isa.inst.val, 6, 0);
-    if(opcode == 0x0000006f || opcode == 0x00000067){
-      // printf("%08x\n",_this->isa.inst.val);
-      //s->dnpc表示跳转的下一条指令
-      if(_this->isa.inst.val == 0x00008067){ 
-        for(int i = 0 ; i < func_count; i++){
-          if(_this->pc >= func_begin[i] && _this->pc <= func_end[i]){
-              printf("0x%08x: %*sret  [%s]\n",_this->pc, ftrace_cnt, "", func_name[i]);
-              ftrace_cnt --;
-              break;
-          }
-        }
+#endif
 
-      }
-      else{ 
-        for(int i = 0 ; i < func_count; i++){
-          if(_this->dnpc == func_begin[i]){
-            ftrace_cnt ++;
-            printf("0x%08x: %*scall [%s@0x%08x]\n",_this->pc, ftrace_cnt, "",  func_name[i], _this->dnpc);
+#ifdef CONFIG_FTRACE_COND
+  static int ftrace_cnt = 0; // unit: us
+  word_t opcode = BITS(_this->isa.inst.val, 6, 0);
+  if(opcode == 0x0000006f || opcode == 0x00000067){
+    // printf("%08x\n",_this->isa.inst.val);
+    //s->dnpc表示跳转的下一条指令
+    if(_this->isa.inst.val == 0x00008067){ 
+      for(int i = 0 ; i < func_count; i++){
+        if(_this->pc >= func_begin[i] && _this->pc <= func_end[i]){
+            printf("0x%08x: %*sret  [%s]\n",_this->pc, ftrace_cnt, "", func_name[i]);
+            ftrace_cnt --;
             break;
-          }
+        }
+      }
+
+    }
+    else{ 
+      for(int i = 0 ; i < func_count; i++){
+        if(_this->dnpc == func_begin[i]){
+          ftrace_cnt ++;
+          printf("0x%08x: %*scall [%s@0x%08x]\n",_this->pc, ftrace_cnt, "",  func_name[i], _this->dnpc);
+          break;
         }
       }
     }
