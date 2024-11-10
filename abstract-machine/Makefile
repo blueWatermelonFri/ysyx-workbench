@@ -79,6 +79,11 @@ OBJDUMP   = $(CROSS_COMPILE)objdump
 OBJCOPY   = $(CROSS_COMPILE)objcopy
 READELF   = $(CROSS_COMPILE)readelf
 
+$(info  $(wildcard $(shell which $(CC))) )
+$(info  $(wildcard $(shell which $(CC))) )
+$(info  $(wildcard $(shell which $(CC))) )
+$(info  $(wildcard $(shell which $(CC))) )
+
 ### Compilation flags
 INC_PATH += $(WORK_DIR)/include $(addsuffix /include/, $(addprefix $(AM_HOME)/, $(LIBS)))
 INCFLAGS += $(addprefix -I, $(INC_PATH))
@@ -106,10 +111,7 @@ ifeq ($(wildcard $(shell which $(CC))),)
   CROSS_COMPILE :=
 endif
 
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
-$(info  $(wildcard $(shell which $(CC))) )
+
 
 ## 5. Compilation Rules
 
