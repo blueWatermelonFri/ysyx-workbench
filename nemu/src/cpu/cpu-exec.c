@@ -37,10 +37,10 @@ void difftest_wp();
 extern char log_ringbuf[100][108];
 extern size_t log_ringbuf_idx;
 // 用于ftrace
-extern uint32_t func_begin[100];
-extern uint32_t func_end[100];
-extern uint32_t func_count;
-extern char func_name[100][128];
+extern uint32_t ftrace_func_begin[100];
+extern uint32_t ftrace_func_end[100];
+extern uint32_t ftrace_func_count;
+extern char ftrace_func_name[100][128];
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -54,11 +54,11 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   word_t opcode = BITS(_this->isa.inst.val, 6, 0);
   if(opcode == 0x0000006f || opcode == 0x00000067){
     // printf("%08x\n",_this->isa.inst.val);
-    //s->dnpc表示跳转的下一条指令
+    // s->dnpc表示跳转的下一条指令
     if(_this->isa.inst.val == 0x00008067){ 
-      for(int i = 0 ; i < func_count; i++){
-        if(_this->pc >= func_begin[i] && _this->pc <= func_end[i]){
-            printf("0x%08x:%*sret  [%s]\n",_this->pc, ftrace_cnt, "", func_name[i]);
+      for(int i = 0 ; i < ftrace_func_count; i++){
+        if(_this->pc >= ftrace_func_begin[i] && _this->pc <= ftrace_func_end[i]){
+            printf("0x%08x:%*sret  [%s]\n",_this->pc, ftrace_func_count, "", ftrace_func_name[i]);
             ftrace_cnt --;
             break;
         }
@@ -66,10 +66,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
     }
     else{ 
-      for(int i = 0 ; i < func_count; i++){
-        if(_this->dnpc == func_begin[i]){
+      for(int i = 0 ; i < ftrace_func_count; i++){
+        if(_this->dnpc == ftrace_func_begin[i]){
           ftrace_cnt ++;
-          printf("0x%08x:%*scall [%s@0x%08x]\n",_this->pc, ftrace_cnt, "",  func_name[i], _this->dnpc);
+          printf("0x%08x:%*scall [%s@0x%08x]\n",_this->pc, ftrace_cnt, "",  ftrace_func_name[i], _this->dnpc);
           break;
         }
       }

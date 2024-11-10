@@ -1,10 +1,10 @@
 #include <common.h>
 #include <elf.h>
 
-uint32_t func_begin[100];
-uint32_t func_end[100];
-uint32_t func_count = 0;
-char func_name[100][128];
+uint32_t ftrace_func_begin[100];
+uint32_t ftrace_func_end[100];
+uint32_t ftrace_func_count = 0;
+char ftrace_func_name[100][128];
 
 void init_elf(const char *filename) {
     FILE *file = fopen(filename, "rb");
@@ -89,18 +89,18 @@ void init_elf(const char *filename) {
         Elf32_Sym sym = symbols[i];
         if(ELF32_ST_TYPE(sym.st_info) == STT_FUNC){
             if(sym.st_size != 0){
-                strcpy(func_name[func_count], &strtab[sym.st_name]);
-                func_begin[func_count] = sym.st_value;
-                func_end[func_count] = sym.st_value + sym.st_size - 4;
-                func_count ++;
+                strcpy(ftrace_func_name[ftrace_func_count], &strtab[sym.st_name]);
+                ftrace_func_begin[ftrace_func_count] = sym.st_value;
+                ftrace_func_end[ftrace_func_count] = sym.st_value + sym.st_size - 4;
+                ftrace_func_count ++;
             }
         }
     }
 
-    for(int i = 0 ; i < func_count; i++){
-        printf("%s  ", func_name[i]);
-        printf("%x  ", func_begin[i]);
-        printf("%x \n", func_end[i]);
+    for(int i = 0 ; i < ftrace_func_count; i++){
+        printf("%s  ", ftrace_func_name[i]);
+        printf("%x  ", ftrace_func_begin[i]);
+        printf("%x \n", ftrace_func_end[i]);
     }
     // 清理
     free(symbols);
