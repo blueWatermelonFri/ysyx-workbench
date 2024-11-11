@@ -157,6 +157,108 @@ static int cmd_d(char *args) {
   return 0;
 }
 
+
+static int cmd_info(char *args) {
+  
+  if(args == NULL){
+    printf("cmd between 'r', 'w'\n");
+        return 0;
+  }
+
+  if (strcmp(args, "r") == 0) {
+      isa_reg_display();
+    } else if (strcmp(args, "w") == 0) {
+        display_wp();
+    }else{
+        printf("cmd between 'r', 'w'\n");
+    }
+  return 0;
+}
+
+
+static int cmd_si(char *args) {
+  
+  char *endptr;
+  uint64_t steps;
+
+  if(args == NULL) steps = 1;
+  // si每次最多只打印9条指令
+  else steps = strtoul(args, &endptr, 0);
+  cpu_exec(steps);
+
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  // str_len表示从当前地址开始，打印多少个地址的值
+  char *str_len = strtok(args, " ");
+  args = str_len + strlen(str_len) + 1;
+  char *str_addr = strtok(args, " ");
+
+  assert(str_len != NULL && str_addr != NULL);
+
+  // 只支持0x开始32位的地址，以字符串的形式输入，所以是10位数字
+  assert(strlen(str_addr) == 10);
+
+  char *endptr;
+  // if  base is zero or 16, the string may then include a "0x" prefix, and  the
+  //  number  will  be read in base 16; 
+  uint32_t addr = (uint32_t) strtoul(str_addr, &endptr, 0);
+  assert (addr >= 0x80000000);
+  /* Check for various possible errors , from man 3 strtol*/
+  if (endptr == str_addr) {
+        fprintf(stderr, "No digits were found\n");
+        exit(EXIT_FAILURE);
+  }
+
+  int len = (int) strtoul(str_len, &endptr, 0);
+  assert(len > 0);
+
+  if (endptr == str_len) {
+        fprintf(stderr, "No digits were found\n");
+        exit(EXIT_FAILURE);
+  }
+
+  // 小端模式 数据的低字节保存在内存的低地址中
+  // 返回的是uint8的地址.
+  uint8_t * int8_addr =  guest_to_host(addr);
+
+  for (int i = 0; i < len; i++ ) {
+    printf("0x%08x : 0x", 0x80000000 + i);
+    printf("%02x\n", int8_addr[i]);
+}
+
+  return 0;
+}
+
+static int cmd_p(char *args) {
+
+  bool success = false;
+  word_t res = expr(args, &success);
+  printf("%10s  %10s\n", "DEC", "HEX");
+  printf("%10u  0x%08x\n", res, res);
+  return 0;
+  
+}
+
+static int cmd_w(char *args) {
+  
+  if( args == NULL){
+    printf("a expr must be followed cmd w\n");
+    return 0;
+  }
+  wp(args);
+
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  
+  free_wp(args);
+
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {

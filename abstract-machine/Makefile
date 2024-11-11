@@ -36,6 +36,7 @@ ISA        = $(word 1,$(ARCH_SPLIT))
 PLATFORM   = $(word 2,$(ARCH_SPLIT))
 
 ### Check if there is something to build
+# flavor 返回变量的类型
 ifeq ($(flavor SRCS), undefined)
   $(error Nothing to build)
 endif
@@ -62,6 +63,9 @@ LINKAGE   = $(OBJS) \
   $(addsuffix -$(ARCH).a, $(join \
     $(addsuffix /build/, $(addprefix $(AM_HOME)/, $(LIBS))), \
     $(LIBS) ))
+
+# $(info  $(LINKAGE) )
+# $(info  $(LINKAGE) )
 
 ## 3. General Compilation Flags
 
@@ -144,6 +148,10 @@ $(ARCHIVE): $(OBJS)
 ## 6. Miscellaneous
 
 ### Build order control
+# 如果多条规则中只有一条规则有命令，那么直接合并成一条规则，目标不变，依赖叠加；
+# 如果有多条规则有命令，那么后面的规则会覆盖前面的规则，且会爆告警
+# native.mk和这里都有iamge目标
+
 image: image-dep
 archive: $(ARCHIVE)
 image-dep: $(OBJS) $(LIBS)
