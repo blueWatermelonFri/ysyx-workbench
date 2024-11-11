@@ -57,6 +57,7 @@ static int cmd_q(char *args) {
 }
 
 
+
 static int cmd_info(char *args) {
   
   if(args == NULL){
@@ -81,6 +82,7 @@ static int cmd_si(char *args) {
   uint64_t steps;
 
   if(args == NULL) steps = 1;
+  // si每次最多只打印9条指令
   else steps = strtoul(args, &endptr, 0);
   cpu_exec(steps);
 
