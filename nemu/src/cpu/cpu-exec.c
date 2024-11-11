@@ -36,45 +36,12 @@ void difftest_wp();
 // 环形缓冲区打印log 指令
 extern char log_ringbuf[100][108];
 extern size_t log_ringbuf_idx;
-// 用于ftrace
-extern uint32_t ftrace_func_begin[100];
-extern uint32_t ftrace_func_end[100];
-extern uint32_t ftrace_func_count;
-extern char ftrace_func_name[100][128];
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); 
                       sprintf(log_ringbuf[log_ringbuf_idx],"%s\n", _this->logbuf);
                       log_ringbuf_idx = (log_ringbuf_idx + 1)%100; }
-#endif
-
-#ifdef CONFIG_FTRACE
-  static int ftrace_cnt = 0; // unit: us
-  word_t opcode = BITS(_this->isa.inst.val, 6, 0);
-  if(opcode == 0x0000006f || opcode == 0x00000067){
-    // printf("%08x\n",_this->isa.inst.val);
-    // s->dnpc表示跳转的下一条指令
-    if(_this->isa.inst.val == 0x00008067){ 
-      for(int i = 0 ; i < ftrace_func_count; i++){
-        if(_this->pc >= ftrace_func_begin[i] && _this->pc <= ftrace_func_end[i]){
-            printf("0x%08x:%*sret  [%s]\n",_this->pc, ftrace_cnt, "", ftrace_func_name[i]);
-            ftrace_cnt --;
-            break;
-        }
-      }
-
-    }
-    else{ 
-      for(int i = 0 ; i < ftrace_func_count; i++){
-        if(_this->dnpc == ftrace_func_begin[i]){
-          ftrace_cnt ++;
-          printf("0x%08x:%*scall [%s@0x%08x]\n",_this->pc, ftrace_cnt, "",  ftrace_func_name[i], _this->dnpc);
-          break;
-        }
-      }
-    }
-  }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -92,7 +59,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
   int ilen = s->snpc - s->pc;
   int i;
   uint8_t *inst = (uint8_t *)&s->isa.inst.val;
-  // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
   for (i = ilen - 1; i >= 0; i --) {
     p += snprintf(p, 4, " %02x", inst[i]);
   }
@@ -148,7 +114,6 @@ void assert_fail_msg() {
 
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
-  // 每次最多只打印9条指令
   g_print_step = (n < MAX_INST_TO_PRINT);
   switch (nemu_state.state) {
     case NEMU_END: case NEMU_ABORT:

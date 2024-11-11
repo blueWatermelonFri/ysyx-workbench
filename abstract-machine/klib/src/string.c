@@ -16,7 +16,6 @@ char *strcpy(char *dst, const char *src) {
   
   for (i = 0; src[i] != '\0'; i++)
     dst[i] = src[i];
-  dst[i] = '\0';
   return dst;
 }
 
@@ -78,15 +77,8 @@ void *memmove(void *dst, const void *src, size_t n) {
   panic("Not implemented");
 }
 
-// 在函数的返回值中, void 是没有任何返回值, 而 void * 是返回任意类型的值的指针.
 void *memcpy(void *out, const void *in, size_t n) {
-      size_t i;
-    const unsigned char *p1 = (const unsigned char *) in;
-    unsigned char *p2 = (unsigned char *) out;
-    for (i = 0; i < n ; i++){
-      p2[i] = p1[i];
-    }
-    return p2;
+  panic("Not implemented");
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {

@@ -1,4 +1,4 @@
-TOPNAME = ysyx_24100005_top
+TOPNAME = light
 NXDC_FILES = constr/top.nxdc
 INC_PATH ?=
 
@@ -36,8 +36,7 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
                 --top-module $(TOPNAME) $^ \
                 $(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-                --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) \
-		-I/home/myuser/ysyx/ysyx-workbench/npc/vsrc
+                --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN))
 
 sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
