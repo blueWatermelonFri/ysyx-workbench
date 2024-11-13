@@ -39,6 +39,9 @@ int sprintf(char *out, const char *fmt, ...) {
               case '%':              /* escape % */
                  out[j++] = '%';
                  break;
+              default:              /* %后面没有构成格式化字符串的话，打印% */
+                 out[j++] = '%';
+                 break;
            }
          }
          else{
