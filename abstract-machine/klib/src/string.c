@@ -5,10 +5,7 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-  size_t i = 0;
 
-  while(s[i] != '\0') i++;
-  return i;
   size_t i = 0;
 
   while(s[i] != '\0') i++;
@@ -24,6 +21,9 @@ char *strcpy(char *dst, const char *src) {
   return dst;
 }
 
+// No null-character is implicitly appended at the end of destination if source is longer than num. 
+// Thus, in this case, destination shall not be considered a null terminated C string 
+// (reading it as such would overflow).
 char *strncpy(char *dst, const char *src, size_t n) {
     size_t i;
 
