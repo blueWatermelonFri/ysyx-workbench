@@ -36,6 +36,9 @@ int sprintf(char *out, const char *fmt, ...) {
                    out[j++] = s[k];
                  }
                  break;
+              case '%':              /* escape % */
+                 out[j++] = '%';
+                 break;
            }
          }
          else{
