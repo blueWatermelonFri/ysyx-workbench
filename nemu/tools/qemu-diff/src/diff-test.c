@@ -37,7 +37,6 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
 
 __EXPORT void difftest_regcpy(void *dut, bool direction) {
   union isa_gdb_regs qemu_r;
-  printf("diff_testdiff_testdiff_testdiff_testdiff_testdiff_test\n");
   gdb_getregs(&qemu_r);
   if (direction == DIFFTEST_TO_REF) {
     memcpy(&qemu_r, dut, DIFFTEST_REG_SIZE);
