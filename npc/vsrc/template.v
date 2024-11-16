@@ -86,3 +86,4 @@ module ysyx_24100005_RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   assign rdata = wen?(raddr == 0 ? 32'd0: rf[raddr]) : 32'd0;
 
 endmodule
+
