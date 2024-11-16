@@ -6,7 +6,9 @@ module ysyx_24100005_top(
 
   output reg [31:0] PC
 );
-  wire [31:0] Next_PC;
+  wire [31:0] SPC;
+  wire [31:0] DPC;
+
   wire wen;
   wire [31:0] wdata;
   wire [31:0] rdata;
@@ -42,10 +44,11 @@ module ysyx_24100005_top(
   // PC更新
   ysyx_24100005_Reg #(32, 32'h8000_0000) i0 (.clk(clk), 
                                               .rst(rst), 
-                                              .din(Next_PC), 
+                                              .din(SPC), 
                                               .dout(PC), 
                                               .wen(1'b1));
-  assign Next_PC = PC + 32'h0000_0004;
+  // stact next pc
+  assign SPC = PC + 32'h0000_0004;
 
   // decode 
   assign opcode = inst[6:0];
@@ -109,6 +112,13 @@ module ysyx_24100005_top(
                                                               7'b010_0011, 1'b0  // S type
                                                               }));
 
+  // ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_PC (.out(DPC), 
+  //                                                     .key(opcode), 
+  //                                                     .default_out(SPC), 
+  //                                                     .lut({
+  //                                                           7'b110_0011, add_output, // B type
+  //                                                           7'b010_0011, SPC         // S type
+  //                                                           }));
 
 
   // ebreak
