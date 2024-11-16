@@ -152,8 +152,8 @@ module ysyx_24100005_top(
     $display("inst=%h, ", inst);
     $display("Opcode=%h, ", opcode);
     $display("PC=%h, ", PC);
-    $display("PC=%h, ", add_input1);
-    $display("PC=%h, ", add_input2);
+    $display("add1=%h, ", add_input1);
+    $display("add2=%h, ", add_input2);
 
 
   end
