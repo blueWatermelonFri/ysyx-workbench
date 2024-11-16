@@ -14,7 +14,7 @@ static const uint32_t img [] = {
     0x00000413, //  li	s0,0 load immedate
     0x00009117, //  auipc	sp,0x9 ; rd = PC + (imm << 12)
     0xffc10113, //  addi	sp,sp,-4 # 80009000 <_end>
-    // 0x00c000ef, //  jal	80000018 <_trm_init>
+    0x00c000ef, //  jal	80000018 <_trm_init>
     // 0x00000513, //  li	a0,0
     // 0x00008067, //  ret
     // 0xff010113, //  addi	sp,sp,-16
