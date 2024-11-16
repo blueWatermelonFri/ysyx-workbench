@@ -151,6 +151,8 @@ module ysyx_24100005_top(
   always @(posedge clk) begin
     $display("inst=%h, ", inst);
     $display("Opcode=%h, ", opcode);
+    $display("PC=%h, ", PC);
+
   end
 
 endmodule
