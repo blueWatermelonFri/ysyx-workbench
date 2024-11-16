@@ -26,7 +26,7 @@ module ysyx_24100005_top(
   .rdata(rdata)
   );
 
-  // 取值
+  // PC更新
   ysyx_24100005_Reg #(32, 32'h8000_0000) i0 (.clk(clk), 
                                               .rst(rst), 
                                               .din(Next_PC), 
@@ -41,7 +41,6 @@ module ysyx_24100005_top(
   assign imm = inst[31:20];
   assign rd = inst[11:7];
 
-
   assign wdata = rdata + {20'd0, imm};
 
 
@@ -50,9 +49,6 @@ module ysyx_24100005_top(
       add();
     end
   end
-
-
-
 
   // 执行
   always @(posedge clk) begin
