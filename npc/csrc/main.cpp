@@ -12,7 +12,7 @@ static const uint32_t img [] = {
   0x00100093,
   0x00200093,
   0x00300093,
-  0x00100073, //  ebreak
+  // 0x00100073, //  ebreak
 
     // 0x00000413, //  li	s0,0
     // 0x00009117, //  auipc	sp,0x9
@@ -64,7 +64,7 @@ static const uint32_t img [] = {
 // INSTPAT("0000000 01001 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
 
 
-extern "C" void add() {
+extern "C" void ebreak() {
   printf("hit at goog trap\n");
   exit(0);
 }

@@ -1,4 +1,4 @@
-import "DPI-C" function void add();
+import "DPI-C" function void ebreak();
 module ysyx_24100005_top(
   input [31:0] inst,
   input rst,
@@ -46,7 +46,7 @@ module ysyx_24100005_top(
 
   always @(*) begin
     if(Opcode == 7'b1110011) begin
-      add();
+      ebreak();
     end
   end
 
