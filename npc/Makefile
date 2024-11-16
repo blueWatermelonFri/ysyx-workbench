@@ -37,7 +37,7 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
                 --top-module $(TOPNAME) $^ \
                 $(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
                 --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) \
-		-I/home/myuser/ysyx/ysyx-workbench/npc/vsrc
+				-I/home/myuser/ysyx/ysyx-workbench/npc/vsrc
 
 sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
