@@ -101,12 +101,13 @@ module ysyx_24100005_top(
                                                                 }));
 
   // mux for adder input1 (reg/pc)
-  ysyx_24100005_MuxKeyWithDefault #(2, 7, 32) Mux_input1 (.out(add_input1), 
+  ysyx_24100005_MuxKeyWithDefault #(3, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, rdata,
-                                                                7'b001_0111, PC // lui
+                                                                7'b001_0111, PC, // lui
+                                                                7'b110_1111, PC       // jal
                                                                 }));
 
 
