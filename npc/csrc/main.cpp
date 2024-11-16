@@ -78,7 +78,7 @@ static inline uint32_t host_read(void *addr) {
 }
 
 static uint32_t pmem_read(uint32_t addr) {
-  printf("%x\n", addr);
+  printf("addr = %x\n", addr);
   uint32_t ret = host_read(guest_to_host(addr));
   return ret;
 }
