@@ -62,7 +62,6 @@ static const uint32_t img [] = {
 // INSTPAT("0000000 01000 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
 // INSTPAT("0000000 01001 00000 000 00001 00100 11", addi   , I, R(rd) = src1 + imm);
 
-
 extern "C" void ebreak() {
   printf("hit at goog trap\n");
   exit(0);

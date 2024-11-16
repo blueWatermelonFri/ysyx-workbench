@@ -83,8 +83,8 @@ module ysyx_24100005_top(
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Jimm_SEXT (.key(inst[31]),
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
-                                                                1'b0, {12'h000, inst[31], inst[19:12], inst[20], inst[30:21]},
-                                                                1'b1, {12'hfff, inst[31], inst[19:12], inst[20], inst[30:21]}
+                                                                1'b0, {11'h000, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0},
+                                                                1'b1, {11'hfff, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0}
                                                               }),
                                                           .out(immJ));
 
