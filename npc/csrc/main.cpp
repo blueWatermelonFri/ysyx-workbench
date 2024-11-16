@@ -20,7 +20,6 @@ static const uint32_t img [] = {
     0xff010113, //  addi	sp,sp,-16
     0x00000517, //  auipc	a0,0x0
     0x01c50513, //  addi	a0,a0,28 # 80000038 <_etext>
-
     0x00100073, //  ebreak
 
     // 0x00112623, //  sw	ra,12(sp)
@@ -79,6 +78,7 @@ static inline uint32_t host_read(void *addr) {
 }
 
 static uint32_t pmem_read(uint32_t addr) {
+  printf("%x\n", addr);
   uint32_t ret = host_read(guest_to_host(addr));
   return ret;
 }

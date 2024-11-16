@@ -110,7 +110,6 @@ module ysyx_24100005_top(
                                                                 }));
 
 
-
   // assign wdata = rdata + {20'd0, imm};
   assign add_output = add_input1 + add_input2;
 
