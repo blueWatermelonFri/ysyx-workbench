@@ -23,8 +23,8 @@ static const uint32_t img [] = {
     0x00112623, //  sw	ra,12(sp) //行为位实现
     0xfe9ff0ef, //  jal	80000010 <main>
     0x00050513, //  mv	a0,a0
-    0x00100073, //  ebreak
-    // 0x0000006f, //  j	80000034 <_trm_init+0x1c>
+    0x0000006f, //  j	80000034 <_trm_init+0x1c>
+    // 0x00100073, //  ebreak
 };
 
 
@@ -101,7 +101,7 @@ int main() {
   reset(3);
 
   int tmp = 10;
-  while (14) {
+  while (1) {
     top.inst = pmem_read(top.PC);
     single_cycle();
     tmp --;
