@@ -101,7 +101,7 @@ int main() {
   reset(3);
 
   int tmp = 10;
-  while (tmp) {
+  while (14) {
     top.inst = pmem_read(top.PC);
     single_cycle();
     tmp --;
