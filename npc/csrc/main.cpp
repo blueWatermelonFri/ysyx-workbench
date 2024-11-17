@@ -67,14 +67,10 @@ static long load_img() {
   return size;
 }
 
-
 extern "C" void ebreak() {
   printf("hit at goog trap\n");
   exit(0);
 }
-
-
-
 
 // void nvboard_bind_all_pins(TOP_NAME* top);
 
@@ -95,6 +91,8 @@ int main(int argc, char *argv[]) {
   memcpy(guest_to_host(0x80000000), img, sizeof(img));
   printf("%s\n", argv[0]);
   printf("%s\n", argv[1]);
+  printf("%s\n", argv[2]);
+
   
 
   load_img();
