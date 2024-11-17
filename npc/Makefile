@@ -39,9 +39,12 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
                 --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) \
 				-I/home/myuser/ysyx/ysyx-workbench/npc/vsrc
 
+IMG ?= 
+NPC_EXEC := $(BIN) $(IMG)
+
 sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	@$^
+	$(NPC_EXEC)
 
 clean:
 	rm -rf $(BUILD_DIR)
