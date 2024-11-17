@@ -35,7 +35,7 @@ module ysyx_24100005_top(
   // 初始化寄存器堆
   ysyx_24100005_RegisterFile #(5, 32) RegFile(
   .clk(clk),
-  .wdata(add_output),
+  .wdata(wdata),
   .waddr(rd),
   .raddr(rs1),
   .wen(wen),
@@ -116,7 +116,7 @@ module ysyx_24100005_top(
 
   // write back 
   // mux for weather write back 
-  ysyx_24100005_MuxKeyWithDefault #(4, 7, 1) Mux_write (.out(wen), 
+  ysyx_24100005_MuxKeyWithDefault #(4, 7, 1) Mux_iswrite (.out(wen), 
                                                         .key(opcode), 
                                                         .default_out(1'b1), 
                                                         .lut({
@@ -141,6 +141,14 @@ module ysyx_24100005_top(
                                                             7'b110_0111, add_output  // jalr                                                            
                                                             }));
 
+  // mux for write back in [add_output , SNPC]
+  ysyx_24100005_MuxKeyWithDefault #(2, 7, 32) Mux_writedata (.out(wdata), 
+                                                              .key(opcode), 
+                                                              .default_out(add_output), 
+                                                              .lut({
+                                                                    7'b110_1111, SPC,  // jal
+                                                                    7'b110_0111, SPC  // jalr                                                            
+                                                                    }));
 
   // ebreak
   always @(*) begin
