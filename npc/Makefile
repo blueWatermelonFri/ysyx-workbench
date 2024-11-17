@@ -1,6 +1,6 @@
 TOPNAME = ysyx_24100005_top
 NXDC_FILES = constr/top.nxdc
-INC_PATH ?=
+INC_PATH ?= /home/myuser/ysyx/ysyx-workbench/npc/include
 
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc  \
@@ -31,11 +31,14 @@ include $(NVBOARD_HOME)/scripts/nvboard.mk
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
 
+# LDFLAGS += lreadline -ldl -pie
+
 $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	@rm -rf $(OBJ_DIR)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
                 --top-module $(TOPNAME) $^ \
                 $(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
+				-LDFLAGS -lreadline\
                 --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) \
 				-I/home/myuser/ysyx/ysyx-workbench/npc/vsrc
 
