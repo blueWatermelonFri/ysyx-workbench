@@ -122,8 +122,8 @@ module ysyx_24100005_top(
                                                         .lut({
                                                               7'b110_0011, 1'b0, // B type
                                                               7'b010_0011, 1'b0,  // S type
-                                                              7'b110_1111, 1'b0,  // jal
-                                                              7'b110_0111, 1'b0   // jalr
+                                                              7'b110_1111, 1'b1,  // jal
+                                                              7'b110_0111, 1'b1   // jalr
                                                               }));
 
   // mux for update PC
