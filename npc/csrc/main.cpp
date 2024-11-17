@@ -89,9 +89,8 @@ int main(int argc, char *argv[]) {
   // nvboard_bind_all_pins(&top);
   // nvboard_init();
   memcpy(guest_to_host(0x80000000), img, sizeof(img));
-  printf("%s\n", argv[0]);
-  printf("%s\n", argv[1]);
-  printf("%d\n", argc);
+  img_file = argv[1];
+  load_img();
 
   
 
