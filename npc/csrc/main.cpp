@@ -21,10 +21,9 @@ static const uint32_t img [] = {
     0x00000517, //  auipc	a0,0x0
     0x01c50513, //  addi	a0,a0,28 # 80000038 <_etext>
     0x00112623, //  sw	ra,12(sp) //行为位实现
-
-    // 0xfe9ff0ef, //  jal	80000010 <main>
-    // 0x00050513, //  mv	a0,a0
-    // 0x00100073, //  ebreak
+    0xfe9ff0ef, //  jal	80000010 <main>
+    0x00050513, //  mv	a0,a0
+    0x00100073, //  ebreak
     // 0x0000006f, //  j	80000034 <_trm_init+0x1c>
 };
 
