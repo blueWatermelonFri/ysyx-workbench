@@ -90,32 +90,32 @@ module ysyx_24100005_top(
 
 
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(4, 7, 32) Mux_input2 (.out(add_input2), 
+  ysyx_24100005_MuxKeyWithDefault #(5, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, immI,
                                                                 7'b001_0111, shiftimmU, // aipuc
                                                                 7'b011_0111, shiftimmU, // lui
-                                                                7'b110_1111, immJ       // jal
+                                                                7'b110_1111, immJ,      // jal
+                                                                7'b110_0111, immI       // jalr
                                                                 }));
 
   // mux for adder input1 (reg/pc)
-  ysyx_24100005_MuxKeyWithDefault #(3, 7, 32) Mux_input1 (.out(add_input1), 
+  ysyx_24100005_MuxKeyWithDefault #(4, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b001_0011, rdata,
+                                                                7'b001_0011, rdata, // partial I type
                                                                 7'b001_0111, PC, // lui
-                                                                7'b110_1111, PC       // jal
+                                                                7'b110_1111, PC, // jal
+                                                                7'b110_0111, rdata  // jalr
                                                                 }));
 
-
-  // assign wdata = rdata + {20'd0, imm};
   assign add_output = add_input1 + add_input2;
 
   // write back 
-  // mux for adder input 1 
+  // mux for weather write back 
   ysyx_24100005_MuxKeyWithDefault #(4, 7, 1) Mux_write (.out(wen), 
                                                         .key(opcode), 
                                                         .default_out(1'b1), 
@@ -123,9 +123,10 @@ module ysyx_24100005_top(
                                                               7'b110_0011, 1'b0, // B type
                                                               7'b010_0011, 1'b0,  // S type
                                                               7'b110_1111, 1'b0,  // jal
-                                                              7'b110_0111, 1'b0  // jalr
+                                                              7'b110_0111, 1'b0   // jalr
                                                               }));
 
+  // mux for update PC
   ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_PC (.out(DPC), 
                                                       .key(opcode), 
                                                       .default_out(SPC), 
