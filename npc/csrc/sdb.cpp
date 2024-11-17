@@ -69,18 +69,18 @@ static int cmd_c(char *args) {
 //   return -1;
 // }
 
-// static int cmd_si(char *args) {
+static int cmd_si(char *args) {
   
-//   char *endptr;
-//   uint64_t steps;
+  char *endptr;
+  uint64_t steps;
 
-//   if(args == NULL) steps = 1;
-//   // si每次最多只打印9条指令
-//   else steps = strtoul(args, &endptr, 0);
-//   cpu_exec(steps);
+  if(args == NULL) steps = 1;
+  // si每次最多只打印9条指令
+  else steps = strtoul(args, &endptr, 0);
+  npc_exec(steps);
 
-//   return 0;
-// }
+  return 0;
+}
 
 // static int cmd_info(char *args) {
   
@@ -105,9 +105,9 @@ static struct {
   const char *description;
   int (*handler) (char *);
 } cmd_table [] = {
-  { "c", "Continue the execution of the program", cmd_c }
+  { "c", "Continue the execution of the program", cmd_c },
 //   { "q", "Exit npc_sdb", cmd_q },
-//   { "si", "Single  step", cmd_si },
+  { "si", "Single  step", cmd_si },
 //   { "info", "print watchpoint/register info", cmd_info },
   /* TODO: Add more commands */
 
