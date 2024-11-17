@@ -57,7 +57,7 @@ static long load_img() {
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
 
-  printf("The image is %s, size = %ld", img_file, size);
+  printf("The image is %s, size = %ld\n", img_file, size);
 
   fseek(fp, 0, SEEK_SET);
   int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
@@ -90,10 +90,6 @@ int main(int argc, char *argv[]) {
   // nvboard_init();
   memcpy(guest_to_host(0x80000000), img, sizeof(img));
   img_file = argv[1];
-  load_img();
-
-  
-
   load_img();
 
   reset(3);
