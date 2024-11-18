@@ -33,9 +33,6 @@ void npc_execute(__uint64_t n){
   }
 }
 
-void npc_exec(__uint64_t n){
-    npc_execute(n);
-}
 
 // x 2 0x80000000
 // static int cmd_help(char *args) {
@@ -62,7 +59,7 @@ void npc_exec(__uint64_t n){
 // }
 
 static int cmd_c(char *args) {
-  npc_exec(-1);
+  npc_execute(-1);
   return 0;
 }
 
@@ -129,7 +126,7 @@ static int cmd_si(char *args) {
   // si每次最多只打印9条指令
   else steps = strtoul(args, &endptr, 0);
 
-  npc_exec(steps);
+  npc_execute(steps);
 
   return 0;
 }
