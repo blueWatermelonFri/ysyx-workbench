@@ -37,7 +37,6 @@ static uint32_t pmem_read(uint32_t addr) {
 }
 
 
-
 void single_cycle() {
   top.clk = 0; top.eval();
   top.clk = 1; top.eval();
