@@ -157,14 +157,12 @@ module ysyx_24100005_top(
     end
   end
 
-  always @(posedge clk) begin
-    $display("inst=%h, ", inst);
-    $display("Opcode=%h, ", opcode);
-    $display("PC=%h, ", PC);
-    $display("add1=%h, ", add_input1);
-    $display("add2=%h, ", add_input2);
-
-
-  end
+  // always @(posedge clk) begin
+  //   $display("inst=%h, ", inst);
+  //   $display("Opcode=%h, ", opcode);
+  //   $display("PC=%h, ", PC);
+  //   $display("add1=%h, ", add_input1);
+  //   $display("add2=%h, ", add_input2);
+  // end
 
 endmodule

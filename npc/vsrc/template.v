@@ -79,8 +79,8 @@ module ysyx_24100005_RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
   always @(posedge clk) begin
     if (wen) rf[waddr] <= wdata;
-    $display("xxxx=%h, ", rf[5'b00001]);
-    $display("**************************************");
+    // $display("xxxx=%h, ", rf[5'b00001]);
+    // $display("**************************************");
   end
 
   assign rdata = wen?(raddr == 0 ? 32'd0: rf[raddr]) : 32'd0;
