@@ -113,7 +113,7 @@ static int cmd_x(char *args) {
     printf("%02x\n", int8_addr[i]);
   }
   
-  return 0;
+  // return 0;
 }
 
 static int cmd_si(char *args) {
