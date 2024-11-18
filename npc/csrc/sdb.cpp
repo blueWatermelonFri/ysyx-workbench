@@ -104,12 +104,12 @@ static int cmd_x(char *args) {
   uint8_t * int8_addr =  guest_to_host(addr);
 
   printf("%d\n", len);
-  printf("%d\n", len);
 
-  // for (int i = 0; i < len; i++ ) {
-  //   printf("0x%08x : 0x", 0x80000000 + i);
-  //   printf("%02x\n", int8_addr[i]);
-  // }
+  for (int i = 0; i < len; i++ ) {
+    printf("0x%08x : 0x", 0x80000000 + i);
+    printf("%02x\n", int8_addr[i]);
+  }
+  printf("%d\n", len);
 }
 
 static int cmd_si(char *args) {
