@@ -70,7 +70,6 @@ static int cmd_c(char *args) {
 
 static int cmd_x(char *args) {
   // str_len表示从当前地址开始，打印多少个地址的值
-  printf("%x\n", args);
   char *str_len = strtok(args, " ");
   args = str_len + strlen(str_len) + 1;
   char *str_addr = strtok(args, " ");
@@ -115,7 +114,7 @@ static int cmd_x(char *args) {
     printf("0x%08x : 0x", 0x80000000 + i);
     printf("%02x\n", int8_addr[i]);
   }
-  printf("%d\n", len);
+  printf("len = %d\n", len);
 }
 
 static int cmd_si(char *args) {
