@@ -25,17 +25,12 @@ static char* rl_gets() {
 }
 
 void npc_execute(__uint64_t n){
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
     for (;n > 0; n --) {
       npc_execute_once();
   }
 }
 
 
-// x 2 0x80000000
 // static int cmd_help(char *args) {
 //   /* extract the first argument */
 //   char *arg = strtok(NULL, " ");
@@ -60,10 +55,6 @@ void npc_execute(__uint64_t n){
 // }
 
 static int cmd_c(char *args) {
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
   npc_execute(-1);
   return 0;
 }
@@ -112,7 +103,6 @@ static int cmd_x(char *args) {
     printf("%02x\n", int8_addr[i]);
   }
 
-  
   return 0;
 }
 
