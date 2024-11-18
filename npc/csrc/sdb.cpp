@@ -25,6 +25,10 @@ static char* rl_gets() {
 }
 
 void npc_execute(__uint64_t n){
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
     for (;n > 0; n --) {
       npc_execute_once();
   }
@@ -122,9 +126,6 @@ static int cmd_si(char *args) {
   if(args == NULL) steps = 1;
   // si每次最多只打印9条指令
   else steps = strtoul(args, &endptr, 0);
-
-      printf("888888888\n");
-    printf("888888888\n");
   npc_execute(steps);
 
   return 0;
