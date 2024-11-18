@@ -7,7 +7,6 @@
 #define NR_CMD ARRLEN(cmd_table)
 
 
-
 static char* rl_gets() {
   static char *line_read = NULL;
 
@@ -69,6 +68,46 @@ static int cmd_c(char *args) {
 //   return -1;
 // }
 
+static int cmd_x(char *args) {
+  // str_len表示从当前地址开始，打印多少个地址的值
+  char *str_len = strtok(args, " ");
+  args = str_len + strlen(str_len) + 1;
+  char *str_addr = strtok(args, " ");
+
+  assert(str_len != NULL && str_addr != NULL);
+
+  // 只支持0x开始32位的地址，以字符串的形式输入，所以是10位数字
+  assert(strlen(str_addr) == 10);
+
+  char *endptr;
+  // if  base is zero or 16, the string may then include a "0x" prefix, and  the
+  //  number  will  be read in base 16; 
+  uint32_t addr = (uint32_t) strtoul(str_addr, &endptr, 0);
+  assert (addr >= 0x80000000);
+  /* Check for various possible errors , from man 3 strtol*/
+  if (endptr == str_addr) {
+        fprintf(stderr, "No digits were found\n");
+        exit(EXIT_FAILURE);
+  }
+
+  int len = (int) strtoul(str_len, &endptr, 0);
+  assert(len > 0);
+
+  if (endptr == str_len) {
+        fprintf(stderr, "No digits were found\n");
+        exit(EXIT_FAILURE);
+  }
+
+  // 小端模式 数据的低字节保存在内存的低地址中
+  // 返回的是uint8的地址.
+  uint8_t * int8_addr =  guest_to_host(addr);
+
+  for (int i = 0; i < len; i++ ) {
+    printf("0x%08x : 0x", 0x80000000 + i);
+    printf("%02x\n", int8_addr[i]);
+  }
+}
+
 static int cmd_si(char *args) {
   
   char *endptr;
@@ -109,6 +148,8 @@ static struct {
 //   { "q", "Exit npc_sdb", cmd_q },
   { "si", "Single  step", cmd_si },
 //   { "info", "print watchpoint/register info", cmd_info },
+  { "x", "print memory info", cmd_x }
+
   /* TODO: Add more commands */
 
 };

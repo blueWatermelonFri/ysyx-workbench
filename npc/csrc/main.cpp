@@ -3,10 +3,6 @@
 #include "sdb.h"
 #include "tool.h"
 
-// #include <stdio.>
-
-
-
 
 extern "C" void ebreak() {
   printf("hit at goog trap\n");
@@ -25,8 +21,4 @@ int main(int argc, char *argv[]) {
 
   npc_sdb_mainloop();
 
-  // while (1) {
-  //   top.inst = pmem_read(top.PC);
-  //   single_cycle();
-  // }
 }

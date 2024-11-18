@@ -2,7 +2,7 @@
 
 #define PG_ALIGN __attribute((aligned(4096)))
 #define RESET_VECTOR 0x80000000
-
+#define NPC_MSIZE 0x8000000
 static TOP_NAME top;
 // dummy 
 static const uint32_t img [] = {
@@ -22,7 +22,7 @@ static const uint32_t img [] = {
 	0x0000006f
 };
 
-static uint8_t pmem[4*1000] PG_ALIGN = {};
+static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
 
