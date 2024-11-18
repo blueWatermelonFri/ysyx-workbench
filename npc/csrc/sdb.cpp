@@ -25,9 +25,6 @@ static char* rl_gets() {
 }
 
 void npc_execute(__uint64_t n){
-          
-    printf("888888888\n");
-    printf("888888888\n");
     for (;n > 0; n --) {
       npc_execute_once();
   }
@@ -59,6 +56,8 @@ void npc_execute(__uint64_t n){
 // }
 
 static int cmd_c(char *args) {
+      printf("888888888\n");
+    printf("888888888\n");
   npc_execute(-1);
   return 0;
 }
