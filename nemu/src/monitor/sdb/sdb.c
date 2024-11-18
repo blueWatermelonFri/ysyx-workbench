@@ -126,7 +126,7 @@ static int cmd_x(char *args) {
   for (int i = 0; i < len; i++ ) {
     printf("0x%08x : 0x", 0x80000000 + i);
     printf("%02x\n", int8_addr[i]);
-}
+  }
 
   return 0;
 }

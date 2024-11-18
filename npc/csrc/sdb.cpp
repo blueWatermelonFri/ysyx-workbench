@@ -120,6 +120,8 @@ static int cmd_x(char *args) {
     printf("%02x\n", int8_addr[i]);
   }
   printf("len = %d\n", len);
+  
+  return 0;
 }
 
 static int cmd_si(char *args) {
@@ -165,7 +167,9 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "si", "Single  step", cmd_si },
   { "x", "print memory info", cmd_x }
-
+//   { "info", "print watchpoint/register info", cmd_info },
+//   { "q", "Exit npc_sdb", cmd_q },
+  /* TODO: Add more commands */
 
 };
 
