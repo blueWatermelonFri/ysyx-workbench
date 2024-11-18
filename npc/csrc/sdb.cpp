@@ -189,8 +189,6 @@ void npc_sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
-
-
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
       args = NULL;
@@ -199,7 +197,7 @@ void npc_sdb_mainloop() {
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
-        printf("%s\n", cmd);
+        printf("cmd = %s\n", cmd);
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
       }
