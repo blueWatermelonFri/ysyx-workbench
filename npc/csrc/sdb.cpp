@@ -26,18 +26,18 @@ static char* rl_gets() {
 
 void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
+        
+    printf("888888888\n");
+    printf("888888888\n");
       npc_execute_once();
   }
 }
 
 void npc_exec(__uint64_t n){
-  
-    printf("888888888\n");
-    printf("888888888\n");
     npc_execute(n);
 }
 
-
+// x 2 0x80000000
 // static int cmd_help(char *args) {
 //   /* extract the first argument */
 //   char *arg = strtok(NULL, " ");
