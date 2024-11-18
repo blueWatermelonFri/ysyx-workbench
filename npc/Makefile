@@ -49,6 +49,10 @@ sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(NPC_EXEC)
 
+gdb:$(BIN)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	gdb -s $(NPC_EXEC)
+
 clean:
 	rm -rf $(BUILD_DIR)
 
