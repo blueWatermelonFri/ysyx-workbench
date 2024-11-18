@@ -107,19 +107,11 @@ static int cmd_x(char *args) {
   // 返回的是uint8的地址.
   uint8_t * int8_addr =  guest_to_host(addr);
 
-  printf("%d\n", len);
 
   for (int i = 0; i < len; i++ ) {
-    if(i < len){
-      printf("len = %d\n", len);
-      printf("i = %d\n", i);
-
-    }
-
     printf("0x%08x : 0x", 0x80000000 + i);
     printf("%02x\n", int8_addr[i]);
   }
-  printf("len = %d\n", len);
   
   return 0;
 }
@@ -132,10 +124,7 @@ static int cmd_si(char *args) {
   if(args == NULL) steps = 1;
   // si每次最多只打印9条指令
   else steps = strtoul(args, &endptr, 0);
-    printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+
   npc_execute(steps);
 
   return 0;
@@ -199,7 +188,7 @@ void npc_sdb_mainloop() {
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
-        printf("cmd = %s\n", cmd);
+        printf("return value = %d\n", cmd_table[i].handler(args));
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
       }
