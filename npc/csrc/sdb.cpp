@@ -125,6 +125,9 @@ static int cmd_si(char *args) {
   if(args == NULL) steps = 1;
   // si每次最多只打印9条指令
   else steps = strtoul(args, &endptr, 0);
+
+    printf("888888888\n");
+    printf("888888888\n");
   npc_exec(steps);
 
   return 0;
@@ -180,9 +183,7 @@ void npc_sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
-    printf("888888888\n");
-    printf("%s\n", cmd);
-    printf("888888888\n");
+
 
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
