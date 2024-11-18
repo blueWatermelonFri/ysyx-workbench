@@ -163,11 +163,9 @@ static struct {
   int (*handler) (char *);
 } cmd_table [] = {
   { "c", "Continue the execution of the program", cmd_c },
-//   { "q", "Exit npc_sdb", cmd_q },
   { "si", "Single  step", cmd_si },
-//   { "info", "print watchpoint/register info", cmd_info },
   { "x", "print memory info", cmd_x }
-  /* TODO: Add more commands */
+
 
 };
 
