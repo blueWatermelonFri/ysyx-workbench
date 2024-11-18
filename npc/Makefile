@@ -49,6 +49,7 @@ sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(NPC_EXEC)
 
+## gdb有问题，传递的参数要加 --args参数
 gdb:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	gdb -s $(NPC_EXEC)

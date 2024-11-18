@@ -158,7 +158,6 @@ static struct {
   { "si", "Single  step", cmd_si },
 //   { "info", "print watchpoint/register info", cmd_info },
   { "x", "print memory info", cmd_x }
-
   /* TODO: Add more commands */
 
 };
@@ -189,6 +188,7 @@ void npc_sdb_mainloop() {
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
+        printf("%s\n", cmd);
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
       }
