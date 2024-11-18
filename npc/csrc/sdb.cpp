@@ -60,6 +60,10 @@ void npc_execute(__uint64_t n){
 // }
 
 static int cmd_c(char *args) {
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
   npc_execute(-1);
   return 0;
 }
@@ -126,6 +130,10 @@ static int cmd_si(char *args) {
   if(args == NULL) steps = 1;
   // si每次最多只打印9条指令
   else steps = strtoul(args, &endptr, 0);
+    printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
   npc_execute(steps);
 
   return 0;
