@@ -120,22 +120,22 @@ static int cmd_si(char *args) {
   return 0;
 }
 
-// static int cmd_info(char *args) {
+static int cmd_info(char *args) {
   
-//   if(args == NULL){
-//     printf("cmd between 'r', 'w'\n");
-//         return 0;
-//   }
+  if(args == NULL){
+    printf("cmd between 'r', 'w'\n");
+        return 0;
+  }
 
-//   if (strcmp(args, "r") == 0) {
-//       isa_reg_display();
-//     } else if (strcmp(args, "w") == 0) {
-//         display_wp();
-//     }else{
-//         printf("cmd between 'r', 'w'\n");
-//     }
-//   return 0;
-// }
+  if (strcmp(args, "r") == 0) {
+      npc_reg_display();
+    } else if (strcmp(args, "w") == 0) {
+        npc_reg_display();
+    }else{
+        printf("cmd between 'r', 'w'\n");
+    }
+  return 0;
+}
 
 
 static struct {
@@ -145,8 +145,8 @@ static struct {
 } cmd_table [] = {
   { "c", "Continue the execution of the program", cmd_c },
   { "si", "Single  step", cmd_si },
-  { "x", "print memory info", cmd_x }
-//   { "info", "print watchpoint/register info", cmd_info },
+  { "x", "print memory info", cmd_x },
+  { "info", "print watchpoint/register info", cmd_info }
 //   { "q", "Exit npc_sdb", cmd_q },
   /* TODO: Add more commands */
 

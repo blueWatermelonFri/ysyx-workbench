@@ -1,5 +1,5 @@
 #include "npc_common.h"
-
+#include "Vysyx_24100005_top___024root.h"
 #define PG_ALIGN __attribute((aligned(4096)))
 #define RESET_VECTOR 0x80000000
 #define NPC_MSIZE 0x8000000
@@ -25,6 +25,12 @@ static const uint32_t img [] = {
 static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
+
+void npc_reg_display(){
+  for (int i = 0;  i< 32; i ++){
+    printf("%08x\n", top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i]);
+  }
+}
 
 static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;
