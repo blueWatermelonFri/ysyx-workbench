@@ -14,7 +14,7 @@
 ***************************************************************************************/
 #include <npc_common.h>
 
-void npc_execute_once();
+void npc_execute(__uint64_t n);
 void single_cycle();
 void reset(int n);
 

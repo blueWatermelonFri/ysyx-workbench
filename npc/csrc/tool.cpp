@@ -4,6 +4,7 @@
 #define RESET_VECTOR 0x80000000
 #define NPC_MSIZE 0x8000000
 static TOP_NAME top;
+static int state = 1;
 // dummy 
 static const uint32_t img [] = {
 	0x00000413,
@@ -34,6 +35,7 @@ void npc_reg_display(){
 
 extern "C" void ebreak() {
   printf("hit at goog trap\n");
+  state = 0;
 }
 
 static inline uint32_t host_read(void *addr) {
@@ -58,9 +60,17 @@ void reset(int n) {
   top.rst = 0;
 }
 
+
 void npc_execute_once(){
     top.inst = pmem_read(top.PC);
     single_cycle();
+}
+
+void npc_execute(__uint64_t n){
+    for (;n > 0; n --) {
+      npc_execute_once();
+      if(state == 0) break;
+  }
 }
 
 static long load_img(char* img_file) {

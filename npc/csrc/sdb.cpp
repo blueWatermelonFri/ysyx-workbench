@@ -24,12 +24,6 @@ static char* rl_gets() {
   return line_read;
 }
 
-void npc_execute(__uint64_t n){
-    for (;n > 0; n --) {
-      npc_execute_once();
-  }
-}
-
 
 // static int cmd_help(char *args) {
 //   /* extract the first argument */
