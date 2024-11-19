@@ -25,7 +25,7 @@ static const uint32_t img [] = {
 
 typedef struct {
     const char *name;
-    word_t value;
+    __uint32_t value;
 } RegisterMap;
 
 const RegisterMap register_map[] = {
@@ -38,18 +38,17 @@ const RegisterMap register_map[] = {
     {"t5", 30}, {"t6", 31}, {"pc", 32}
 };
 
+const char *regs[] = {
+"zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
+  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
+  "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
+  "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
+};
+
+
 static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
-
-
-void isa_reg_display() {
-
-    int reg_num = 32;
-    for(int i = 0; i < reg_num; i++){
-    }
-
-}
 
 void npc_reg_display(){
   for (int i = 0;  i< 32; i ++){
