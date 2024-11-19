@@ -4,10 +4,6 @@
 #include "tool.h"
 
 
-extern "C" void ebreak() {
-  printf("hit at goog trap\n");
-}
-
 // void nvboard_bind_all_pins(TOP_NAME* top);
 
 

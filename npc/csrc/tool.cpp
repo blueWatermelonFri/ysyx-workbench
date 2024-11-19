@@ -32,6 +32,10 @@ void npc_reg_display(){
   }
 }
 
+extern "C" void ebreak() {
+  printf("hit at goog trap\n");
+}
+
 static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;
 }
