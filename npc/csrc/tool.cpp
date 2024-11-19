@@ -5,6 +5,8 @@
 #define NPC_MSIZE 0x8000000
 static TOP_NAME top;
 static int state = 1;
+char logbuf[128];
+unsigned int pre_pc;
 // dummy 
 static const uint32_t img [] = {
 	0x00000413,
@@ -86,12 +88,33 @@ void reset(int n) {
 
 void npc_execute_once(){
     top.inst = pmem_read(top.PC);
+    pre_pc = top.PC;
     single_cycle();
 }
 
 void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
       npc_execute_once();
+#if 1
+    char *p = logbuf;
+    p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
+    int ilen = top.PC - pre_pc;
+    int i;
+    uint8_t *inst = (uint8_t *)&(top.inst);
+    // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
+    for (i = ilen - 1; i >= 0; i --) {
+      p += snprintf(p, 4, " %02x", inst[i]);
+    }
+    int ilen_max = 4;
+    int space_len = ilen_max - ilen;
+    if (space_len < 0) space_len = 0;
+    space_len = space_len * 3 + 1;
+    memset(p, ' ', space_len);
+    p += space_len;
+    void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+    // disassemble(p, logbuf + sizeof(logbuf) - p,
+    //     pre_pc, (uint8_t *)&(top.inst), ilen);
+#endif
       if(state == 0) break;
   }
 }

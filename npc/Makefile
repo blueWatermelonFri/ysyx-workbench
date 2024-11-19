@@ -31,16 +31,23 @@ include $(NVBOARD_HOME)/scripts/nvboard.mk
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CXXFLAGS += $(INCFLAGS) -g -DTOP_NAME="\"V$(TOPNAME)\"" -Wall -Werror
 
-# LDFLAGS += lreadline -ldl -pie
+LDFLAGS += -lreadline
+
+CSRCS += /home/myuser/ysyx/ysyx-workbench/nemu/src/utils/disasm.cc
+LIBS += $(shell llvm-config --libs)
+CXXFLAGS += -I/usr/lib/llvm-18/include -std=c++17   -fno-exceptions -funwind-tables -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS
+
+
 
 $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	@rm -rf $(OBJ_DIR)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
                 --top-module $(TOPNAME) $^ \
                 $(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-				-LDFLAGS -lreadline\
+				-LDFLAGS $(LIBS) \
                 --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) \
 				-I/home/myuser/ysyx/ysyx-workbench/npc/vsrc
+
 
 IMG ?= 
 NPC_EXEC := $(BIN) $(IMG)
