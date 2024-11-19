@@ -1,5 +1,5 @@
 #include "npc_common.h"
-#include "Vysyx_24100005_top___024root.h"ak
+#include "Vysyx_24100005_top___024root.h"
 #define PG_ALIGN __attribute((aligned(4096)))
 #define RESET_VECTOR 0x80000000
 #define NPC_MSIZE 0x8000000

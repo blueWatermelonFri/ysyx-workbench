@@ -6,7 +6,6 @@
 
 extern "C" void ebreak() {
   printf("hit at goog trap\n");
-  exit(0);
 }
 
 // void nvboard_bind_all_pins(TOP_NAME* top);
