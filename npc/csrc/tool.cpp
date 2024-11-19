@@ -23,13 +23,37 @@ static const uint32_t img [] = {
 	0x0000006f
 };
 
+typedef struct {
+    const char *name;
+    word_t value;
+} RegisterMap;
+
+const RegisterMap register_map[] = {
+    {"$0", 0}, {"ra", 1}, {"sp", 2}, {"gp", 3}, {"tp", 4},
+    {"t0", 5}, {"t1", 6}, {"t2", 7}, {"s0", 8}, {"s1", 9},
+    {"a0", 10}, {"a1", 11}, {"a2", 12}, {"a3", 13}, {"a4", 14},
+    {"a5", 15}, {"a6", 16}, {"a7", 17}, {"s2", 18}, {"s3", 19},
+    {"s4", 20}, {"s5", 21}, {"s6", 22}, {"s7", 23}, {"s8", 24},
+    {"s9", 25}, {"s10", 26}, {"s11", 27}, {"t3", 28}, {"t4", 29},
+    {"t5", 30}, {"t6", 31}, {"pc", 32}
+};
+
 static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
 
+
+void isa_reg_display() {
+
+    int reg_num = 32;
+    for(int i = 0; i < reg_num; i++){
+    }
+
+}
+
 void npc_reg_display(){
   for (int i = 0;  i< 32; i ++){
-    printf("%08x\n", top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i]);
+    printf("%-4s =  0x%08x\n",regs[i], top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i]);
   }
 }
 
