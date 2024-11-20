@@ -13,13 +13,12 @@ int main(int argc, char *argv[]) {
   // nvboard_bind_all_pins(&top);
   // nvboard_init();
   printf("%s\n", argv[1]);
-  printf("%s\n", argv[2]);
 
   init_img(argv[1]);
 
   init_elf(argv[2]);
 
-  init_disasm("riscv32" "-pc-linux-gnu");
+  init_disasm("riscv32-pc-linux-gnu");
 
   reset(3);
 
