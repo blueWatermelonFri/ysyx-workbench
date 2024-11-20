@@ -3,30 +3,25 @@
 #include "sdb.h"
 #include "tool.h"
 
-// #include <stdio.>
-
-
-
-
-extern "C" void ebreak() {
-  printf("hit at goog trap\n");
-  exit(0);
-}
 
 // void nvboard_bind_all_pins(TOP_NAME* top);
+extern "C" void init_disasm(const char *triple);
+void init_elf(const char *filename);
 
 
 int main(int argc, char *argv[]) {
   // nvboard_bind_all_pins(&top);
   // nvboard_init();
+  printf("%s\n", argv[1]);
+
   init_img(argv[1]);
+
+  init_elf(argv[2]);
+
+  init_disasm("riscv32-pc-linux-gnu");
 
   reset(3);
 
   npc_sdb_mainloop();
 
-  // while (1) {
-  //   top.inst = pmem_read(top.PC);
-  //   single_cycle();
-  // }
 }

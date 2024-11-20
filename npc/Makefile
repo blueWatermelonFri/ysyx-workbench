@@ -29,25 +29,38 @@ include $(NVBOARD_HOME)/scripts/nvboard.mk
 
 # rules for verilator
 INCFLAGS = $(addprefix -I, $(INC_PATH))
-CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
+CXXFLAGS += $(INCFLAGS) -g -DTOP_NAME="\"V$(TOPNAME)\"" -Wall -Werror
 
-# LDFLAGS += lreadline -ldl -pie
+LDFLAGS += -lreadline
+
+LIBS += $(shell llvm-config --libs)
+CXXFLAGS += -I/usr/lib/llvm-18/include -std=c++17   -fno-exceptions -funwind-tables -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS
+
+CSRCS += /home/myuser/ysyx/ysyx-workbench/nemu/src/utils/disasm.cc
 
 $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	@rm -rf $(OBJ_DIR)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
                 --top-module $(TOPNAME) $^ \
                 $(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-				-LDFLAGS -lreadline\
+				-LDFLAGS $(LIBS) \
                 --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) \
 				-I/home/myuser/ysyx/ysyx-workbench/npc/vsrc
 
+
 IMG ?= 
-NPC_EXEC := $(BIN) $(IMG)
+ELF ?= 
+
+NPC_EXEC := $(BIN) $(IMG) $(ELF)
 
 sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(NPC_EXEC)
+
+## gdb有问题，传递的参数要加 --args参数
+gdb:$(BIN)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	gdb -s $(NPC_EXEC)
 
 clean:
 	rm -rf $(BUILD_DIR)

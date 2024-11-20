@@ -1,9 +1,23 @@
 #include "npc_common.h"
-
+#include "Vysyx_24100005_top___024root.h"
 #define PG_ALIGN __attribute((aligned(4096)))
 #define RESET_VECTOR 0x80000000
+#define NPC_MSIZE 0x8000000
+#define BITMASK(bits) ((1ull << (bits)) - 1)
+#define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
 
 static TOP_NAME top;
+static int state = 1;
+unsigned int pre_pc;
+
+extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+
+// 用于ftrace
+extern uint32_t ftrace_func_begin[100];
+extern uint32_t ftrace_func_end[100];
+extern uint32_t ftrace_func_count;
+extern char ftrace_func_name[100][128];
+
 // dummy 
 static const uint32_t img [] = {
 	0x00000413,
@@ -22,16 +36,50 @@ static const uint32_t img [] = {
 	0x0000006f
 };
 
-static uint8_t pmem[4*1000] PG_ALIGN = {};
+typedef struct {
+    const char *name;
+    __uint32_t value;
+} RegisterMap;
+
+const RegisterMap register_map[] = {
+    {"$0", 0}, {"ra", 1}, {"sp", 2}, {"gp", 3}, {"tp", 4},
+    {"t0", 5}, {"t1", 6}, {"t2", 7}, {"s0", 8}, {"s1", 9},
+    {"a0", 10}, {"a1", 11}, {"a2", 12}, {"a3", 13}, {"a4", 14},
+    {"a5", 15}, {"a6", 16}, {"a7", 17}, {"s2", 18}, {"s3", 19},
+    {"s4", 20}, {"s5", 21}, {"s6", 22}, {"s7", 23}, {"s8", 24},
+    {"s9", 25}, {"s10", 26}, {"s11", 27}, {"t3", 28}, {"t4", 29},
+    {"t5", 30}, {"t6", 31}, {"pc", 32}
+};
+
+const char *regs[] = {
+"zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
+  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
+  "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
+  "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
+};
+
+
+static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
+
+void npc_reg_display(){
+  for (int i = 0;  i< 32; i ++){
+    printf("%-4s =  0x%08x\n",regs[i], top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i]);
+  }
+}
+
+extern "C" void ebreak() {
+  printf("hit at goog trap\n");
+  state = 0;
+}
 
 static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;
 }
 
 static uint32_t pmem_read(uint32_t addr) {
-  printf("addr = %x\n", addr);
+  // printf("addr = %x\n", addr);
   uint32_t ret = host_read(guest_to_host(addr));
   return ret;
 }
@@ -50,7 +98,65 @@ void reset(int n) {
 
 void npc_execute_once(){
     top.inst = pmem_read(top.PC);
+    pre_pc = top.PC;
     single_cycle();
+}
+
+void npc_execute(__uint64_t n){
+    for (;n > 0; n --) {
+      npc_execute_once();
+#if 0
+    char logbuf[128];
+    char *p = logbuf;
+    p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
+    int ilen = 4; // 优化一下？
+    int i;
+    uint8_t *inst = (uint8_t *)&(top.inst);
+    // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
+    for (i = ilen - 1; i >= 0; i --) {
+      p += snprintf(p, 4, " %02x", inst[i]);
+    }
+    int ilen_max = 4;
+    int space_len = ilen_max - ilen;
+    if (space_len < 0) space_len = 0;
+    space_len = space_len * 3 + 1;
+    memset(p, ' ', space_len);
+    p += space_len;
+    
+    disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
+    printf("%s\n", logbuf);
+#endif
+
+#if 1
+  static int ftrace_cnt = 0; // unit: us
+  unsigned int opcode = BITS(top.inst, 6, 0);
+  if(opcode == 0x0000006f || opcode == 0x00000067){
+    // printf("%08x\n",_this->isa.inst.val);
+    // s->dnpc表示跳转的下一条指令
+    if(top.inst == 0x00008067){ 
+      for(int i = 0 ; i < ftrace_func_count; i++){
+        if(pre_pc >= ftrace_func_begin[i] && pre_pc <= ftrace_func_end[i]){
+            printf("0x%08x:%*sret  [%s]\n",pre_pc, ftrace_cnt, "", ftrace_func_name[i]);
+            ftrace_cnt --;
+            break;
+        }
+      }
+
+    }
+    else{ 
+      for(int i = 0 ; i < ftrace_func_count; i++){
+        if(top.PC == ftrace_func_begin[i]){
+          ftrace_cnt ++;
+          printf("0x%08x:%*scall [%s@0x%08x]\n",pre_pc, ftrace_cnt, "",  ftrace_func_name[i], top.PC);
+          break;
+        }
+      }
+    }
+  }
+#endif
+
+      if(state == 0) break;
+  }
 }
 
 static long load_img(char* img_file) {

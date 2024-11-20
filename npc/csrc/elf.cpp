@@ -1,4 +1,4 @@
-#include <common.h>
+#include <npc_common.h>
 #include <elf.h>
 
 uint32_t ftrace_func_begin[100];
@@ -11,7 +11,7 @@ void init_elf(const char *filename) {
     // printf("%s\n", *filename)
     if (file == NULL) {
         perror("Can not open ELF file!");
-        exit(EXIT_FAILURE);
+        exit(1);
     }
     
     size_t         ret;
@@ -20,7 +20,7 @@ void init_elf(const char *filename) {
     ret = fread(&elf_header, 1, sizeof(Elf32_Ehdr), file);
     if (ret != sizeof(Elf32_Ehdr)) {
         fprintf(stderr, "fread() failed: %zu\n", ret);
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
     // 验证 ELF 文件格式
@@ -30,18 +30,18 @@ void init_elf(const char *filename) {
         elf_header.e_ident[EI_MAG3] != ELFMAG3) {
         fprintf(stderr, "不是有效的 ELF 文件\n");
         fclose(file);
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
     // 定位节头表
     fseek(file, elf_header.e_shoff, SEEK_SET);
 
     // 读取节头表
-    Elf32_Shdr *section_headers = malloc(sizeof(Elf32_Shdr) * elf_header.e_shnum);
+    Elf32_Shdr *section_headers = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * elf_header.e_shnum);
     ret = fread(section_headers, sizeof(Elf32_Shdr), elf_header.e_shnum, file);
     if (ret != elf_header.e_shnum) {
         fprintf(stderr, "fread() failed: %zu\n", ret);
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
     // 找到符号表和字符串表的索引
@@ -60,27 +60,27 @@ void init_elf(const char *filename) {
         fprintf(stderr, "找不到符号表或字符串表\n");
         free(section_headers);
         fclose(file);
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
     // 读取符号表
     Elf32_Shdr symtab_header = section_headers[symtab_index];
-    Elf32_Sym *symbols = malloc(symtab_header.sh_size);
+    Elf32_Sym *symbols = (Elf32_Sym *)malloc(symtab_header.sh_size);
     fseek(file, symtab_header.sh_offset, SEEK_SET);
     ret = fread(symbols, 1, symtab_header.sh_size, file);
     if (ret != symtab_header.sh_size) {
         fprintf(stderr, "fread() failed: %zu\n", ret);
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
     // 读取字符串表
     Elf32_Shdr strtab_header = section_headers[strtab_index];
-    char *strtab = malloc(strtab_header.sh_size);
+    char *strtab = (char *)malloc(strtab_header.sh_size);
     fseek(file, strtab_header.sh_offset, SEEK_SET);
     ret = fread(strtab, 1, strtab_header.sh_size, file);
     if (ret != strtab_header.sh_size) {
         fprintf(stderr, "fread() failed: %zu\n", ret);
-        exit(EXIT_FAILURE);
+        exit(1);
     }
     
     // 打印符号表信息

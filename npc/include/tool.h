@@ -14,10 +14,12 @@
 ***************************************************************************************/
 #include <npc_common.h>
 
-void npc_execute_once();
+void npc_execute(__uint64_t n);
 void single_cycle();
 void reset(int n);
 
 void init_img(char* img_file);
 
+uint8_t* guest_to_host(uint32_t paddr);
 
+void npc_reg_display();
