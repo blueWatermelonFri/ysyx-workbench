@@ -111,9 +111,9 @@ void npc_execute(__uint64_t n){
     space_len = space_len * 3 + 1;
     memset(p, ' ', space_len);
     p += space_len;
-    void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-    // disassemble(p, logbuf + sizeof(logbuf) - p,
-    //     pre_pc, (uint8_t *)&(top.inst), ilen);
+    // extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+    // // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+    // disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
 #endif
       if(state == 0) break;
   }
