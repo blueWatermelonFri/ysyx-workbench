@@ -3,11 +3,20 @@
 #define PG_ALIGN __attribute((aligned(4096)))
 #define RESET_VECTOR 0x80000000
 #define NPC_MSIZE 0x8000000
+#define BITMASK(bits) ((1ull << (bits)) - 1)
+#define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
+
 static TOP_NAME top;
 static int state = 1;
 unsigned int pre_pc;
 
 extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+
+// 用于ftrace
+extern uint32_t ftrace_func_begin[100];
+extern uint32_t ftrace_func_end[100];
+extern uint32_t ftrace_func_count;
+extern char ftrace_func_name[100][128];
 
 // dummy 
 static const uint32_t img [] = {
@@ -117,6 +126,35 @@ void npc_execute(__uint64_t n){
     disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
     printf("%s\n", logbuf);
 #endif
+
+#if 1
+  static int ftrace_cnt = 0; // unit: us
+  unsigned int opcode = BITS(top.inst, 6, 0);
+  if(opcode == 0x0000006f || opcode == 0x00000067){
+    // printf("%08x\n",_this->isa.inst.val);
+    // s->dnpc表示跳转的下一条指令
+    if(top.inst == 0x00008067){ 
+      for(int i = 0 ; i < ftrace_func_count; i++){
+        if(pre_pc >= ftrace_func_begin[i] && pre_pc <= ftrace_func_end[i]){
+            printf("0x%08x:%*sret  [%s]\n",pre_pc, ftrace_cnt, "", ftrace_func_name[i]);
+            ftrace_cnt --;
+            break;
+        }
+      }
+
+    }
+    else{ 
+      for(int i = 0 ; i < ftrace_func_count; i++){
+        if(top.PC == ftrace_func_begin[i]){
+          ftrace_cnt ++;
+          printf("0x%08x:%*scall [%s@0x%08x]\n",pre_pc, ftrace_cnt, "",  ftrace_func_name[i], top.PC);
+          break;
+        }
+      }
+    }
+  }
+#endif
+
       if(state == 0) break;
   }
 }
