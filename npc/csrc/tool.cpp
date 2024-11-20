@@ -5,7 +5,6 @@
 #define NPC_MSIZE 0x8000000
 static TOP_NAME top;
 static int state = 1;
-char logbuf[128];
 unsigned int pre_pc;
 
 extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
@@ -71,7 +70,7 @@ static inline uint32_t host_read(void *addr) {
 }
 
 static uint32_t pmem_read(uint32_t addr) {
-  printf("addr = %x\n", addr);
+  // printf("addr = %x\n", addr);
   uint32_t ret = host_read(guest_to_host(addr));
   return ret;
 }
@@ -98,6 +97,7 @@ void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
       npc_execute_once();
 #if 1
+    char logbuf[128];
     char *p = logbuf;
     p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
     int ilen = top.PC - pre_pc;
