@@ -115,6 +115,7 @@ void npc_execute(__uint64_t n){
     p += space_len;
     
     disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
+    printf("%s\n", logbuf);
 #endif
       if(state == 0) break;
   }
