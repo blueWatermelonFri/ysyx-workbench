@@ -100,7 +100,7 @@ void npc_execute(__uint64_t n){
     char logbuf[128];
     char *p = logbuf;
     p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
-    int ilen = 4;
+    int ilen = top.PC - pre_pc;
     int i;
     uint8_t *inst = (uint8_t *)&(top.inst);
     // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
