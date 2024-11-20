@@ -10,7 +10,6 @@ unsigned int pre_pc;
 
 extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 
-
 // dummy 
 static const uint32_t img [] = {
 	0x00000413,
@@ -89,7 +88,6 @@ void reset(int n) {
   top.rst = 0;
 }
 
-
 void npc_execute_once(){
     top.inst = pmem_read(top.PC);
     pre_pc = top.PC;
@@ -115,7 +113,7 @@ void npc_execute(__uint64_t n){
     space_len = space_len * 3 + 1;
     memset(p, ' ', space_len);
     p += space_len;
-    // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+    
     disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
 #endif
       if(state == 0) break;
