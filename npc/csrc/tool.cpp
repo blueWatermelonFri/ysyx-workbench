@@ -116,7 +116,7 @@ void npc_execute_once(){
 void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
       npc_execute_once();
-#if 0
+#if 1
     char logbuf[128];
     char *p = logbuf;
     p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
