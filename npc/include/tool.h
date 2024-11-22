@@ -20,8 +20,8 @@
 #define RESET_VECTOR 0x80000000
 #define RGE_NUM 16
 typedef struct {
-  word_t gpr[RGE_NUM];
-  vaddr_t pc;
+  unsigned int gpr[RGE_NUM];
+  unsigned int pc;
 } CPU_state;
 
 void npc_execute(__uint64_t n);

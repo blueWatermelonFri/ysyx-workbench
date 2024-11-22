@@ -23,19 +23,19 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   handle = dlopen(ref_so_file, RTLD_LAZY);
   assert(handle);
 
-  ref_difftest_memcpy = dlsym(handle, "difftest_memcpy");
+  ref_difftest_memcpy = (void (*)(unsigned int, void*, size_t, bool)) dlsym(handle, "difftest_memcpy");
   assert(ref_difftest_memcpy);
 
-  ref_difftest_regcpy = dlsym(handle, "difftest_regcpy");
+  ref_difftest_regcpy = (void (*)(void *dut, bool direction))dlsym(handle, "difftest_regcpy");
   assert(ref_difftest_regcpy);
 
-  ref_difftest_exec = dlsym(handle, "difftest_exec");
+  ref_difftest_exec = (void (*)(uint64_t n))dlsym(handle, "difftest_exec");
   assert(ref_difftest_exec);
 
 //   ref_difftest_raise_intr = dlsym(handle, "difftest_raise_intr");
 //   assert(ref_difftest_raise_intr);
 
-  void (*ref_difftest_init)(int) = dlsym(handle, "difftest_init");
+  void (*ref_difftest_init)(int) = (void (*)(int))dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
 
   printf("Differential testing: ON");
@@ -50,7 +50,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
 }
 
-bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
+bool isa_difftest_checkregs(CPU_state *ref_r) {
     if(ref_r->pc != cpu.pc) return false;
     for(int i = 0; i < 16; i++){
       if(ref_r->gpr[i] != cpu.gpr[i]){
@@ -62,16 +62,16 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 
 static void checkregs(CPU_state *ref) {
   if (!isa_difftest_checkregs(ref)) {
-    isa_reg_display();
+    npc_reg_display();
   }
 }
 
-void difftest_step(unsigned int pc, unsigned int npc) {
+void difftest_step() {
   CPU_state ref_r;
 
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
-  update_cpu()
-  checkregs(&ref_r, pc);
+  update_cpu();
+  checkregs(&ref_r);
 }

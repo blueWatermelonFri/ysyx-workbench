@@ -13,6 +13,7 @@ static int state = 1;
 unsigned int pre_pc;
 
 extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+void difftest_step();
 
 // 用于ftrace
 extern uint32_t ftrace_func_begin[100];
@@ -166,7 +167,7 @@ void npc_execute(__uint64_t n){
 #endif
 
 #if 1
-  difftest_step()
+  difftest_step();
 #endif
 
       if(state == 0) break;
