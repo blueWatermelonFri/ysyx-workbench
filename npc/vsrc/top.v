@@ -112,7 +112,7 @@ module ysyx_24100005_top(
                                                                 7'b110_0111, rdata  // jalr
                                                                 }));
 
-  assign add_output = add_input2 + add_input2;
+  assign add_output = add_input1 + add_input2;
 
   // write back 
   // mux for weather write back 
