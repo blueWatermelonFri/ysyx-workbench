@@ -20,7 +20,7 @@
 
 void diff_set_regs(void *dut){
   CPU_state * ctx = ( CPU_state*)dut;
-  printf("%x\n", ctx->pc);
+  printf("ctx-pc = %x\n", ctx->pc);
 
   for (int i = 0;  i< 32; i ++){
     cpu.gpr[i] = ctx->gpr[i];
