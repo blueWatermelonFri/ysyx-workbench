@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   // nvboard_bind_all_pins(&top);
   // nvboard_init();
   reset(3);
-  
+
   printf("%s\n", argv[1]);
 
   long img_size = init_img(argv[1]);
@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
 
   init_difftest(argv[3], img_size, 1);
 
+  printf("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
 
 
   npc_sdb_mainloop();
