@@ -12,14 +12,24 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
+#ifndef __TOOL_H__
+#define __TOOL_H__
+
 #include <npc_common.h>
+
+#define RESET_VECTOR 0x80000000
+#define RGE_NUM 32
+typedef struct {
+  unsigned int gpr[RGE_NUM];
+  unsigned int pc;
+} CPU_state;
 
 void npc_execute(__uint64_t n);
 void single_cycle();
 void reset(int n);
 
-void init_img(char* img_file);
-
+int init_img(char* img_file);
 uint8_t* guest_to_host(uint32_t paddr);
-
 void npc_reg_display();
+
+#endif

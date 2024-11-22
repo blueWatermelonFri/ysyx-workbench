@@ -12,8 +12,11 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
+#ifndef __SDB_H__
+#define __SDB_H__
+
 #include <npc_common.h>
 
 void npc_sdb_mainloop();
 
-
+#endif
