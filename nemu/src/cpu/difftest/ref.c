@@ -29,7 +29,7 @@ void diff_set_regs(void *dut){
 
 void diff_get_regs(void *dut){
   
-   CPU_state * ctx = ( CPU_state*)dut;
+  CPU_state * ctx = ( CPU_state*)dut;
   for (int i = 0;  i< 32; i ++){
     ctx->gpr[i] = cpu.gpr[i] ;
   }
