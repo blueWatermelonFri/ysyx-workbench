@@ -18,21 +18,23 @@
 #include <difftest-def.h>
 #include <memory/paddr.h>
 
-void diff_set_regs(CPU_state *dut){
+void diff_set_regs(void *dut){
+  CPU_state * ctx = ( CPU_state *)dut;
+  printf("ctx-pc = %x\n", ctx->pc);
 
   for (int i = 0;  i< 32; i ++){
-    cpu.gpr[i] = dut->gpr[i];
+    cpu.gpr[i] = ctx->gpr[i];
   }
-  cpu.pc = dut->pc;
+  cpu.pc = ctx->pc;
 }
 
-void diff_get_regs(CPU_state *dut){
+void diff_get_regs(void *dut){
   
-  //  CPU_state * ctx = ( CPU_state*)dut;
+   CPU_state * ctx = ( CPU_state*)dut;
   for (int i = 0;  i< 32; i ++){
-    dut->gpr[i] = cpu.gpr[i] ;
+    ctx->gpr[i] = cpu.gpr[i] ;
   }
-  dut->pc = cpu.pc ;
+  ctx->pc = cpu.pc ;
 
 }
 
@@ -44,7 +46,9 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
   }
 }
 
-__EXPORT void difftest_regcpy(CPU_state *dut, bool direction) {
+__EXPORT void difftest_regcpy(void *dut, bool direction) {
+     CPU_state * ctx = (CPU_state *)dut;
+      printf("ctx-pc = %x\n", ctx->pc);
 
   if (direction == DIFFTEST_TO_REF) {
     diff_set_regs(dut);
