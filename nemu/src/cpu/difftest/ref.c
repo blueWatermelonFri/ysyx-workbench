@@ -21,18 +21,18 @@
 void diff_set_regs(CPU_state *dut){
 
   for (int i = 0;  i< 32; i ++){
-    cpu.gpr[i] = ctx->gpr[i];
+    cpu.gpr[i] = dut->gpr[i];
   }
-  cpu.pc = ctx->pc;
+  cpu.pc = dut->pc;
 }
 
 void diff_get_regs(CPU_state *dut){
   
-   CPU_state * ctx = ( CPU_state*)dut;
+  //  CPU_state * ctx = ( CPU_state*)dut;
   for (int i = 0;  i< 32; i ++){
-    ctx->gpr[i] = cpu.gpr[i] ;
+    dut->gpr[i] = cpu.gpr[i] ;
   }
-  ctx->pc = cpu.pc ;
+  dut->pc = cpu.pc ;
 
 }
 
