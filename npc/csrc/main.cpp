@@ -25,9 +25,6 @@ int main(int argc, char *argv[]) {
 
   init_difftest(argv[3], img_size, 1);
 
-  printf("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
-
-
   npc_sdb_mainloop();
 
 }
