@@ -14,11 +14,14 @@ int main(int argc, char *argv[]) {
   // nvboard_init();
   printf("%s\n", argv[1]);
 
-  init_img(argv[1]);
+  long img_size = init_img(argv[1]);
 
   init_elf(argv[2]);
 
   init_disasm("riscv32-pc-linux-gnu");
+
+  init_difftest(argv[3], img_size, 1);
+
 
   reset(3);
 

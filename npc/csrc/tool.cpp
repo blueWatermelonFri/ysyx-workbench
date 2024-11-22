@@ -1,11 +1,13 @@
 #include "npc_common.h"
 #include "Vysyx_24100005_top___024root.h"
+#include "tool.h"
+
 #define PG_ALIGN __attribute((aligned(4096)))
 #define RESET_VECTOR 0x80000000
 #define NPC_MSIZE 0x8000000
 #define BITMASK(bits) ((1ull << (bits)) - 1)
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
-
+#define INST_LEN 4 //指令的长度， 4字节
 static TOP_NAME top;
 static int state = 1;
 unsigned int pre_pc;
@@ -59,13 +61,22 @@ const char *regs[] = {
 };
 
 
+CPU_state cpu;
+void update_cpu(){
+  for(int i = 0; i<16; i++){
+    cpu.gpr[i] = top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i];
+  }
+  cpu.pc = top.PC;
+}
+
 static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
 
 void npc_reg_display(){
-  for (int i = 0;  i< 32; i ++){
-    printf("%-4s =  0x%08x\n",regs[i], top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i]);
+  update_cpu();
+  for (int i = 0;  i< 16; i ++){
+    printf("%-4s =  0x%08x\n",regs[i], cpu.gpr[i]);
   }
 }
 
@@ -79,7 +90,6 @@ static inline uint32_t host_read(void *addr) {
 }
 
 static uint32_t pmem_read(uint32_t addr) {
-  // printf("addr = %x\n", addr);
   uint32_t ret = host_read(guest_to_host(addr));
   return ret;
 }
@@ -109,7 +119,7 @@ void npc_execute(__uint64_t n){
     char logbuf[128];
     char *p = logbuf;
     p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
-    int ilen = 4; // 优化一下？
+    int ilen = INST_LEN; // 优化一下？
     int i;
     uint8_t *inst = (uint8_t *)&(top.inst);
     // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
@@ -127,7 +137,7 @@ void npc_execute(__uint64_t n){
     printf("%s\n", logbuf);
 #endif
 
-#if 1
+#if 0
   static int ftrace_cnt = 0; // unit: us
   unsigned int opcode = BITS(top.inst, 6, 0);
   if(opcode == 0x0000006f || opcode == 0x00000067){
@@ -153,6 +163,10 @@ void npc_execute(__uint64_t n){
       }
     }
   }
+#endif
+
+#if 1
+  difftest_step()
 #endif
 
       if(state == 0) break;
@@ -183,8 +197,9 @@ static long load_img(char* img_file) {
   return size;
 }
 
-void init_img(char* img_file){
+int init_img(char* img_file){
 
   memcpy(guest_to_host(0x80000000), img, sizeof(img));
-  load_img(img_file);
+  long img_size = load_img(img_file);
+  return img_size;
 }

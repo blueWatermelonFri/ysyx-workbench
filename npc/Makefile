@@ -50,8 +50,9 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 
 IMG ?= 
 ELF ?= 
+REF ?= 
 
-NPC_EXEC := $(BIN) $(IMG) $(ELF)
+NPC_EXEC := $(BIN) $(IMG) $(ELF) $(REF)
 
 sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
