@@ -24,6 +24,9 @@ void diff_set_regs(void *dut){
     cpu.gpr[i] = ctx->gpr[i];
   }
   cpu.pc = ctx->pc;
+  printf("%x\n", ctx->pc);
+
+  printf("%x\n", cpu.pc);
 
 }
 
