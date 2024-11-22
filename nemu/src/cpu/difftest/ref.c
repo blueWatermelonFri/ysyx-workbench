@@ -20,13 +20,12 @@
 
 void diff_set_regs(void *dut){
   CPU_state * ctx = ( CPU_state*)dut;
+  printf("%x\n", ctx->pc);
+
   for (int i = 0;  i< 32; i ++){
     cpu.gpr[i] = ctx->gpr[i];
   }
   cpu.pc = ctx->pc;
-  printf("%x\n", ctx->pc);
-  printf("%x\n", cpu.pc);
-
 }
 
 void diff_get_regs(void *dut){
@@ -48,8 +47,6 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
 }
 
 __EXPORT void difftest_regcpy(void *dut, bool direction) {
-  Log("physical memory are111111111111111111111111111");
-
   if (direction == DIFFTEST_TO_REF) {
     diff_set_regs(dut);
   } else {
