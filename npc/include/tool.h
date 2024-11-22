@@ -18,7 +18,7 @@
 #include <npc_common.h>
 
 #define RESET_VECTOR 0x80000000
-#define RGE_NUM 16
+#define RGE_NUM 32
 typedef struct {
   unsigned int gpr[RGE_NUM];
   unsigned int pc;
