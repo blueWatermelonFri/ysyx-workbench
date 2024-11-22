@@ -70,6 +70,7 @@ void difftest_step() {
   CPU_state ref_r;
 
   ref_difftest_exec(1);
+  printf("befor wirexxxxxxxxxxx\n");
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
   update_cpu();
