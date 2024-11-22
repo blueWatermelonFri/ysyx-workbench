@@ -45,7 +45,6 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
 }
 
 __EXPORT void difftest_regcpy(CPU_state *dut, bool direction) {
-      printf("ctx-pc = %x\n", dut->pc);
 
   if (direction == DIFFTEST_TO_REF) {
     diff_set_regs(dut);
