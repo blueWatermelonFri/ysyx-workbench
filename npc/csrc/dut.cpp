@@ -6,9 +6,10 @@ extern CPU_state cpu;
 void update_cpu();
 
 void (*ref_difftest_memcpy)(unsigned int addr, void *buf, size_t n, bool direction) = NULL;
-void (*ref_difftest_regcpy)(CPU_state *dut, int direction) = NULL;
+void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
+
 
 static bool is_skip_ref = false;
 static int skip_dut_nr_inst = 0;
@@ -24,9 +25,8 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
   ref_difftest_memcpy = (void (*)(unsigned int, void*, size_t, bool)) dlsym(handle, "difftest_memcpy");
   assert(ref_difftest_memcpy);
-  
-  
-  ref_difftest_regcpy = (void (*)(CPU_state*, int))dlsym(handle, "difftest_regcpy");
+
+  ref_difftest_regcpy = (void (*)(void *, bool ))dlsym(handle, "difftest_regcpy");
   assert(ref_difftest_regcpy);
 
   ref_difftest_exec = (void (*)(uint64_t ))dlsym(handle, "difftest_exec");
