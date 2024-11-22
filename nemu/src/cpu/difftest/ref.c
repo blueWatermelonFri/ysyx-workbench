@@ -58,6 +58,7 @@ __EXPORT void difftest_regcpy(void *dut, bool direction) {
 }
 
 __EXPORT void difftest_exec(uint64_t n) {
+  Log("physical memory are111111111111111111111111111");
   cpu_exec(n);
 }
 
