@@ -48,7 +48,7 @@ module ysyx_24100005_top(
                                               .din(DPC), 
                                               .dout(PC), 
                                               .wen(1'b1));
-  // stact next pc
+  // static next pc
   assign SPC = PC + 32'h0000_0004;
 
   // decode 
@@ -166,3 +166,41 @@ module ysyx_24100005_top(
   // end
 
 endmodule
+
+// add
+// sub
+// xor
+// or
+// and
+// sll
+// srl
+// sra
+// slt
+// sltu
+// addi
+// xori
+// ori
+// andi
+// slli
+// srli
+// srai
+// slti
+// sltiu
+// lb
+// lh
+// lw
+// lbu
+// lhu
+// sb
+// sh
+// sw
+// beq
+// bne
+// blt
+// bge
+// bltu
+// bgeu
+// jal
+// jalr
+// lui
+// auipc

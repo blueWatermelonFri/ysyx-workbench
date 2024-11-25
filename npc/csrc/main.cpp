@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
   // nvboard_init();
   reset(3);
 
-  printf("%s\n", argv[1]);
 
   long img_size = init_img(argv[1]);
 
