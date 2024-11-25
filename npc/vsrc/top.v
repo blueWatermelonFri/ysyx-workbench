@@ -180,7 +180,7 @@ endmodule
 // addi
 // xori
 // ori
-// andi
+// andi   1
 // slli
 // srli
 // srai
@@ -200,7 +200,7 @@ endmodule
 // bge
 // bltu
 // bgeu
-// jal
-// jalr
+// jal    1
+// jalr   1
 // lui
-// auipc
+// auipc  1
