@@ -1,4 +1,8 @@
 import "DPI-C" function void ebreak();
+import "DPI-C" function int pmem_read(input int raddr);
+import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
+
+
 module ysyx_24100005_top(
   input [31:0] inst,
   input rst,
@@ -12,6 +16,9 @@ module ysyx_24100005_top(
   wire wen;
   wire [31:0] wdata;
   wire [31:0] rdata;
+
+  reg [31:0] mem_rdata;
+
 
   wire [6:0] opcode;
   wire [2:0] funct3;
@@ -149,6 +156,19 @@ module ysyx_24100005_top(
                                                                     7'b110_1111, SPC,  // jal
                                                                     7'b110_0111, SPC  // jalr                                                            
                                                                     }));
+
+  // memory access
+  always @(*) begin
+    if (valid) begin // 有读写请求时
+      rdata = pmem_read(raddr);
+      if (wen) begin // 有写请求时
+        pmem_write(waddr, wdata, wmask);
+      end
+    end
+    else begin
+      rdata = 0;
+    end
+  end
 
   // ebreak
   always @(*) begin
