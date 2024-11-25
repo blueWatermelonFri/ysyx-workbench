@@ -81,13 +81,15 @@ void npc_reg_display(){
   }
 }
 
-extern "C" void ebreak() {
-  printf("hit at goog trap\n");
-  state = 0;
-}
-
 static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;
+}
+
+static inline void host_write(void *addr, int wdata, char wmask) {
+  if( (wmask & 0x1u) == 1) {*(uint8_t  *)addr = (wdata & 0x000000ff);}
+  if( ((wmask >> 1) & 0x1u) == 1) {* ((uint8_t  *)addr + 1)= (unsigned int)(wdata & 0x0000ff00) >> 8;} // 确保wmask是正数，以及移位做0拓展
+  if( ((wmask >> 2) & 0x1u) == 1) {* ((uint8_t  *)addr + 2)= (unsigned int)(wdata & 0x00ff0000) >> 16;} 
+  if( ((wmask >> 3) & 0x1u) == 1) {* ((uint8_t  *)addr + 3)= (unsigned int)(wdata & 0xff000000) >> 24;} 
 }
 
 static uint32_t pmem_read(uint32_t addr) {
@@ -95,6 +97,26 @@ static uint32_t pmem_read(uint32_t addr) {
   return ret;
 }
 
+static void pmem_write(uint32_t addr, int wdata, char wmask) {
+  host_write(guest_to_host(addr), wdata, wmask);
+}
+
+extern "C" void ebreak() {
+  printf("hit at goog trap\n");
+  state = 0;
+}
+
+extern "C" int npcmem_read(int raddr) {
+  uint32_t aligned_addr = raddr & (~0x3u);
+  return pmem_read(aligned_addr);
+}
+extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
+  // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
+  // `wmask`中每比特表示`wdata`中1个字节的掩码,
+  // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
+  uint32_t aligned_addr = waddr & (~0x3u);
+  return pmem_write(aligned_addr, wdata, wmask);
+}
 
 void single_cycle() {
   top.clk = 0; top.eval();

@@ -1,6 +1,6 @@
 import "DPI-C" function void ebreak();
-import "DPI-C" function int pmem_read(input int raddr);
-import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
+import "DPI-C" function int npcmem_read(input int raddr);
+import "DPI-C" function void npcmem_write(input int waddr, input int wdata, input byte wmask);
 
 
 module ysyx_24100005_top(
@@ -158,17 +158,17 @@ module ysyx_24100005_top(
                                                                     }));
 
   // memory access
-  always @(*) begin
-    if (valid) begin // 有读写请求时
-      rdata = pmem_read(raddr);
-      if (wen) begin // 有写请求时
-        pmem_write(waddr, wdata, wmask);
-      end
-    end
-    else begin
-      rdata = 0;
-    end
-  end
+  // always @(*) begin
+  //   if (valid) begin // 有读写请求时
+  //     rdata = npcmem_read(raddr);
+  //     if (wen) begin // 有写请求时
+  //       npcmem_write(waddr, wdata, wmask);
+  //     end
+  //   end
+  //   else begin
+  //     rdata = 0;
+  //   end
+  // end
 
   // ebreak
   always @(*) begin
