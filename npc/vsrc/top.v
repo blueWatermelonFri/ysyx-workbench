@@ -206,30 +206,30 @@ module ysyx_24100005_top(
                                                                     }));
 
   // memory read extract 通过阅读汇编知道，lb地址是字节对齐，lh地址是双字节对齐，lw地址是四字节对齐
-  ysyx_24100005_MuxKeyWithDefault #(13, 5, 32) Mux_mem_read_extract(.key({funct3, add_output[1:0]}),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                // lb
-                                                                5'b000_00, {24'h000000, mem_rdata[7:0]},
-                                                                5'b000_01, {24'h000000, mem_rdata[15:8]},
-                                                                5'b000_10, {24'h000000, mem_rdata[23:16]},
-                                                                5'b000_11, {24'h000000, mem_rdata[31:24]},
-                                                                // lh|lhu
-                                                                5'b001_00, {16'h000000, mem_rdata[15:0]},
-                                                                5'b001_10, {16'h000000, mem_rdata[31:16]},
-                                                                // lw
-                                                                5'b010_00, mem_rdata,
-                                                                // lbu
-                                                                5'b011_00, {24'h000000, mem_rdata[7:0]},
-                                                                5'b011_01, {24'h000000, mem_rdata[15:8]},
-                                                                5'b011_10, {24'h000000, mem_rdata[23:16]},
-                                                                5'b011_11, {24'h000000, mem_rdata[31:24]},
-                                                                // lhu
-                                                                5'b100_00, {16'h000000, mem_rdata[15:0]},
-                                                                5'b100_10, {16'h000000, mem_rdata[31:16]}
-                                                              }),
-                                                          .out(mem_extract));
-
+  // ysyx_24100005_MuxKeyWithDefault #(13, 5, 32) Mux_mem_read_extract(.key({funct3, add_output[1:0]}),
+  //                                                         .default_out({32'h0000_0000}),
+  //                                                         .lut({
+  //                                                               // lb
+  //                                                               5'b000_00, {24'h000000, mem_rdata[7:0]},
+  //                                                               5'b000_01, {24'h000000, mem_rdata[15:8]},
+  //                                                               5'b000_10, {24'h000000, mem_rdata[23:16]},
+  //                                                               5'b000_11, {24'h000000, mem_rdata[31:24]},
+  //                                                               // lh|lhu
+  //                                                               5'b001_00, {16'h000000, mem_rdata[15:0]},
+  //                                                               5'b001_10, {16'h000000, mem_rdata[31:16]},
+  //                                                               // lw
+  //                                                               5'b010_00, mem_rdata,
+  //                                                               // lbu
+  //                                                               5'b011_00, {24'h000000, mem_rdata[7:0]},
+  //                                                               5'b011_01, {24'h000000, mem_rdata[15:8]},
+  //                                                               5'b011_10, {24'h000000, mem_rdata[23:16]},
+  //                                                               5'b011_11, {24'h000000, mem_rdata[31:24]},
+  //                                                               // lhu
+  //                                                               5'b100_00, {16'h000000, mem_rdata[15:0]},
+  //                                                               5'b100_10, {16'h000000, mem_rdata[31:16]}
+  //                                                             }),
+  //                                                         .out(mem_extract));
+  assign mem_extract  = 32'h0000_0001;
   // memory read LB sign extend  
   // ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lb_sext(.key(mem_extract[7]),
   //                                                         .default_out({32'h0000_0000}),
