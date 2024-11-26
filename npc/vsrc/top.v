@@ -249,16 +249,17 @@ module ysyx_24100005_top(
                                                           .out(mem_lh_sext));
 
   // memory read res 
-  ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                3'b000, mem_lb_sext, // lb
-                                                                3'b001, mem_lh_sext, // lh
-                                                                3'b010, mem_extract, // lw
-                                                                3'b011, mem_extract, // lbu
-                                                                3'b100, mem_extract  // lhu
-                                                              }),
-                                                          .out(mem_read_res));
+  // ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
+  //                                                         .default_out({32'h0000_0000}),
+  //                                                         .lut({
+  //                                                               3'b000, mem_lb_sext, // lb
+  //                                                               3'b001, mem_lh_sext, // lh
+  //                                                               3'b010, mem_extract, // lw
+  //                                                               3'b011, mem_extract, // lbu
+  //                                                               3'b100, mem_extract  // lhu
+  //                                                             }),
+  //                                                         .out(mem_read_res));
+  assign mem_read_res = 32'h0000_0001;
 
 // memory write mask
   // ysyx_24100005_MuxKeyWithDefault #(7, 5, 8) Mux_wmask(.key({funct3, add_output[1:0]}),
