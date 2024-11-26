@@ -73,8 +73,11 @@ module ysyx_24100005_RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   input wen,
   input [DATA_WIDTH-1:0] wdata,
   input [ADDR_WIDTH-1:0] waddr,
-  input [ADDR_WIDTH-1:0] raddr,
-  output [DATA_WIDTH-1:0] rdata
+  input [ADDR_WIDTH-1:0] rs1addr,
+  input [ADDR_WIDTH-1:0] rs2addr,
+  output [DATA_WIDTH-1:0] rs1data,
+  output [DATA_WIDTH-1:0] rs2data
+
 );
   reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
   always @(posedge clk) begin
@@ -83,7 +86,8 @@ module ysyx_24100005_RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
     // $display("**************************************");
   end
 
-  assign rdata = wen?(raddr == 0 ? 32'd0: rf[raddr]) : 32'd0;
+  assign rs1data = wen?(rs1addr == 0 ? 32'd0: rf[rs1addr]) : 32'd0;
+  assign rs2data = wen?(rs2addr == 0 ? 32'd0: rf[rs2addr]) : 32'd0;
 
 endmodule
 
