@@ -156,11 +156,10 @@ module ysyx_24100005_top(
                                                         .default_out(1'b1), 
                                                         .lut({
                                                               7'b110_0011, 1'b0, // B type
-                                                              7'b010_0011, 1'b0,  // S type
+                                                              7'b010_0011, 1'b0,  // store
                                                               7'b110_1111, 1'b1,  // jal
                                                               7'b110_0111, 1'b1,   // jalr
-                                                              7'b000_0011, 1'b1 // load
-                                                              // 7'b010_0011, 1'b1 // store                                                              
+                                                              7'b000_0011, 1'b1  // load
                                                               }));
 
   // mux for update PC
@@ -170,8 +169,8 @@ module ysyx_24100005_top(
                                                       .lut({
                                                             7'b011_0011, SPC,         // R type
                                                             7'b001_0011, SPC,         // partial I type
-                                                            7'b000_0011, SPC,         // partial I type
-                                                            7'b010_0011, SPC,         // S type
+                                                            7'b000_0011, SPC,         // load
+                                                            7'b010_0011, SPC,         // store
                                                             7'b011_0111, SPC,         // U type
                                                             7'b110_0011, add_output, // B type
                                                             7'b110_1111, add_output,  // jal
@@ -207,10 +206,10 @@ module ysyx_24100005_top(
                                                                     }));
 
   // memory read extract 通过阅读汇编知道，lb地址是字节对齐，lh地址是双字节对齐，lw地址是四字节对齐
-  ysyx_24100005_MuxKeyWithDefault #(7, 5, 32) Mux_mem_read_extract(.key({funct3, add_output[1:0]}),
+  ysyx_24100005_MuxKeyWithDefault #(13, 5, 32) Mux_mem_read_extract(.key({funct3, add_output[1:0]}),
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
-                                                                // lb|lbu
+                                                                // lb
                                                                 5'b000_00, {24'h000000, mem_rdata[7:0]},
                                                                 5'b000_01, {24'h000000, mem_rdata[15:8]},
                                                                 5'b000_10, {24'h000000, mem_rdata[23:16]},
@@ -219,7 +218,15 @@ module ysyx_24100005_top(
                                                                 5'b001_00, {16'h000000, mem_rdata[15:0]},
                                                                 5'b001_10, {16'h000000, mem_rdata[31:16]},
                                                                 // lw
-                                                                5'b010_00, mem_rdata
+                                                                5'b010_00, mem_rdata,
+                                                                // lbu
+                                                                5'b011_00, {24'h000000, mem_rdata[7:0]},
+                                                                5'b011_01, {24'h000000, mem_rdata[15:8]},
+                                                                5'b011_10, {24'h000000, mem_rdata[23:16]},
+                                                                5'b011_11, {24'h000000, mem_rdata[31:24]},
+                                                                // lhu
+                                                                5'b100_00, {16'h000000, mem_rdata[15:0]},
+                                                                5'b100_10, {16'h000000, mem_rdata[31:16]}
                                                               }),
                                                           .out(mem_extract));
 

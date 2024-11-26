@@ -120,8 +120,6 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 
 void single_cycle() {
   top.clk = 0; top.eval();
-  printf("after reset\n");
-
   top.clk = 1; top.eval();
 }
 
