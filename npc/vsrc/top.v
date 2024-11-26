@@ -13,9 +13,11 @@ module ysyx_24100005_top(
   wire [31:0] SPC;
   wire [31:0] DPC;
 
-  wire wen;
-  wire [31:0] wdata;
-  wire [31:0] rdata;
+  wire wen; // reg write
+  wire read_mem; // mem read
+  wire write_mem; // mem write
+  wire [31:0] wdata; // reg write
+  wire [31:0] rdata; // reg read
 
   reg [31:0] mem_rdata;
 
@@ -97,7 +99,7 @@ module ysyx_24100005_top(
 
 
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(5, 7, 32) Mux_input2 (.out(add_input2), 
+  ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
@@ -105,32 +107,38 @@ module ysyx_24100005_top(
                                                                 7'b001_0111, shiftimmU, // aipuc
                                                                 7'b011_0111, shiftimmU, // lui
                                                                 7'b110_1111, immJ,      // jal
-                                                                7'b110_0111, immI       // jalr
+                                                                7'b110_0111, immI,       // jalr
+                                                                7'b000_0011, immI, // load
+                                                                7'b010_0011, immI // store                                                                
                                                                 }));
 
   // mux for adder input1 (reg/pc)
-  ysyx_24100005_MuxKeyWithDefault #(4, 7, 32) Mux_input1 (.out(add_input1), 
+  ysyx_24100005_MuxKeyWithDefault #(6, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, rdata, // partial I type
                                                                 7'b001_0111, PC, // lui
                                                                 7'b110_1111, PC, // jal
-                                                                7'b110_0111, rdata  // jalr
+                                                                7'b110_0111, rdata,  // jalr
+                                                                7'b000_0011, rdata, // load
+                                                                7'b010_0011, rdata // store
                                                                 }));
 
   assign add_output = add_input1 + add_input2;
 
   // write back 
   // mux for weather write back 
-  ysyx_24100005_MuxKeyWithDefault #(4, 7, 1) Mux_iswrite (.out(wen), 
+  ysyx_24100005_MuxKeyWithDefault #(6, 7, 1) Mux_iswrite (.out(wen), 
                                                         .key(opcode), 
                                                         .default_out(1'b1), 
                                                         .lut({
                                                               7'b110_0011, 1'b0, // B type
                                                               7'b010_0011, 1'b0,  // S type
                                                               7'b110_1111, 1'b1,  // jal
-                                                              7'b110_0111, 1'b1   // jalr
+                                                              7'b110_0111, 1'b1,   // jalr
+                                                              7'b000_0011, 1'b1, // load
+                                                              7'b010_0011, 1'b1 // store                                                              
                                                               }));
 
   // mux for update PC
@@ -148,27 +156,68 @@ module ysyx_24100005_top(
                                                             7'b110_0111, add_output  // jalr                                                            
                                                             }));
 
-  // mux for write back in [add_output , SNPC]
-  ysyx_24100005_MuxKeyWithDefault #(2, 7, 32) Mux_writedata (.out(wdata), 
+  // mux for write back in [add_output , SNPC, mem_read]
+  ysyx_24100005_MuxKeyWithDefault #(3, 7, 32) Mux_writedata (.out(wdata), 
                                                               .key(opcode), 
                                                               .default_out(add_output), 
                                                               .lut({
                                                                     7'b110_1111, SPC,  // jal
-                                                                    7'b110_0111, SPC  // jalr                                                            
+                                                                    7'b110_0111, SPC,  // jalr   
+                                                                    7'b000_0011, mem_read,  // load
                                                                     }));
 
+
+
+  // mux for weather load
+  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_writedata (.out(read_mem), 
+                                                              .key(opcode), 
+                                                              .default_out(1'b0), 
+                                                              .lut({
+                                                                    7'b000_0011,  1'b1,  // load
+                                                                    7'b010_0011,  1'b1  // store                                                           
+                                                                    }));
+
+  // mux for weather store
+  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_writedata (.out(write_mem), 
+                                                              .key(opcode), 
+                                                              .default_out(1'b0), 
+                                                              .lut({
+                                                                    7'b000_0011,  1'b0,  // load
+                                                                    7'b010_0011,  1'b1  // store                                                           
+                                                                    }));
+
+  // mem_read extension 如何判断指令集是不是四字节对齐？
+  ysyx_24100005_MuxKeyWithDefault #(5, 1, 32) Iimm_SEXT(.key({funct3, add_output[1:0]}),
+                                                          .default_out({32'h0000_0000}),
+                                                          .lut({
+                                                                5'b000_00, {24'h000000, mem_rdata[7:0]},
+                                                                5'b000_01, {16'h0000, mem_rdata[15:8], 8'h00},
+                                                                5'b000_10, {8'h00, mem_rdata[23:16], 16'h0000},
+                                                                5'b000_11, {mem_rdata[31:24], 24'h000000},
+
+                                                                5'b000_00, {16'h000000, mem_rdata[15:0]},
+                                                                5'b000_01, {8'h0000, mem_rdata[23:8], 8'h00},
+                                                                5'b000_10, {mem_rdata[31:16], 16'h0000},
+
+
+
+                                                                1'b0, {20'h00000, inst[31:20]},
+                                                                1'b1, {20'hfffff, inst[31:20]}
+                                                              }),
+                                                          .out(immI));
+
   // memory access
-  // always @(*) begin
-  //   if (valid) begin // 有读写请求时
-  //     rdata = npcmem_read(raddr);
-  //     if (wen) begin // 有写请求时
-  //       npcmem_write(waddr, wdata, wmask);
-  //     end
-  //   end
-  //   else begin
-  //     rdata = 0;
-  //   end
-  // end
+  always @(*) begin
+    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
+      mem_rdata = npcmem_read(add_output);
+      if (write_mem) begin // 有写请求时
+        npcmem_write(add_output, wdata, wmask);
+      end
+    end
+    else begin
+      mem_rdata = 0;
+    end
+  end
 
   // ebreak
   always @(*) begin
