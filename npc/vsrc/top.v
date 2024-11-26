@@ -239,7 +239,7 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(mem_lb_sext));
 
-// memory read LB sign extend  
+// memory read LH sign extend  
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lh_sext(.key(mem_extract[15]),
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
@@ -261,22 +261,22 @@ module ysyx_24100005_top(
                                                           .out(mem_read_res));
 
 // memory write mask
-  ysyx_24100005_MuxKeyWithDefault #(7, 5, 8) Mux_wmask(.key({funct3, add_output[1:0]}),
-                                                          .default_out({8'b0000_0000}),
-                                                          .lut({
-                                                                5'b000_00, {8'b0000_0001}, // sb
-                                                                5'b000_01, {8'b0000_0010}, // sb
-                                                                5'b000_10, {8'b0000_0100}, // sb
-                                                                5'b000_11, {8'b0000_1000}, // sb
+  // ysyx_24100005_MuxKeyWithDefault #(7, 5, 8) Mux_wmask(.key({funct3, add_output[1:0]}),
+  //                                                         .default_out({8'b0000_0000}),
+  //                                                         .lut({
+  //                                                               5'b000_00, {8'b0000_0001}, // sb
+  //                                                               5'b000_01, {8'b0000_0010}, // sb
+  //                                                               5'b000_10, {8'b0000_0100}, // sb
+  //                                                               5'b000_11, {8'b0000_1000}, // sb
 
-                                                                5'b001_00, {8'b0000_0011}, // sb
-                                                                5'b001_10, {8'b0000_1100}, // sb
+  //                                                               5'b001_00, {8'b0000_0011}, // sb
+  //                                                               5'b001_10, {8'b0000_1100}, // sb
 
-                                                                5'b010_00, {8'b0000_1111} // sw
-                                                              }),
-                                                          .out(wmask));
+  //                                                               5'b010_00, {8'b0000_1111} // sw
+  //                                                             }),
+  //                                                         .out(wmask));
 
-
+  assign wmask = 8'b00000001;
   // memory access
   always @(*) begin
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
