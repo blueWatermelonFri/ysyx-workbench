@@ -13,11 +13,8 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 int main(int argc, char *argv[]) {
   // nvboard_bind_all_pins(&top);
   // nvboard_init();
-  printf("begin\n");
-
   reset(3);
 
-  printf("after reset\n");
 
 
   long img_size = init_img(argv[1]);

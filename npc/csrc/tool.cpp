@@ -126,6 +126,8 @@ void single_cycle() {
 void reset(int n) {
   top.rst = 1;
   while (n -- > 0) single_cycle();
+  printf("after reset\n");
+
   top.rst = 0;
 }
 
