@@ -151,7 +151,7 @@ module ysyx_24100005_top(
 
   // write back 
   // mux for weather write back 
-  ysyx_24100005_MuxKeyWithDefault #(6, 7, 1) Mux_write_reg (.out(wen), 
+  ysyx_24100005_MuxKeyWithDefault #(5, 7, 1) Mux_write_reg (.out(wen), 
                                                         .key(opcode), 
                                                         .default_out(1'b1), 
                                                         .lut({
@@ -159,8 +159,8 @@ module ysyx_24100005_top(
                                                               7'b010_0011, 1'b0,  // S type
                                                               7'b110_1111, 1'b1,  // jal
                                                               7'b110_0111, 1'b1,   // jalr
-                                                              7'b000_0011, 1'b1, // load
-                                                              7'b010_0011, 1'b1 // store                                                              
+                                                              7'b000_0011, 1'b1 // load
+                                                              // 7'b010_0011, 1'b1 // store                                                              
                                                               }));
 
   // mux for update PC
@@ -290,13 +290,13 @@ module ysyx_24100005_top(
     end
   end
 
-  always @(posedge clk) begin
-    $display("inst=%h, ", inst);
-    $display("Opcode=%h, ", opcode);
-    $display("PC=%h, ", PC);
-    $display("add1=%h, ", add_input1);
-    $display("add2=%h, ", add_input2);
-  end
+  // always @(posedge clk) begin
+  //   $display("inst=%h, ", inst);
+  //   $display("Opcode=%h, ", opcode);
+  //   $display("PC=%h, ", PC);
+  //   $display("add1=%h, ", add_input1);
+  //   $display("add2=%h, ", add_input2);
+  // end
 
 endmodule
 
