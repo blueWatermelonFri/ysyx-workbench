@@ -231,13 +231,14 @@ module ysyx_24100005_top(
                                                           .out(mem_extract));
 
   // memory read LB sign extend  
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lb_sext(.key(mem_extract[7]),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                1'b0, {24'h000000, mem_rdata[7:0]},
-                                                                1'b1, {24'hffffff, mem_rdata[7:0]}
-                                                              }),
-                                                          .out(mem_lb_sext));
+  // ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lb_sext(.key(mem_extract[7]),
+  //                                                         .default_out({32'h0000_0000}),
+  //                                                         .lut({
+  //                                                               1'b0, {24'h000000, mem_rdata[7:0]},
+  //                                                               1'b1, {24'hffffff, mem_rdata[7:0]}
+  //                                                             }),
+  //                                                         .out(mem_lb_sext));
+  assign mem_lb_sext = 32'h0000_0001;
 
 // memory read LH sign extend  
   // ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lh_sext(.key(mem_extract[15]),
