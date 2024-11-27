@@ -64,23 +64,25 @@ module ysyx_24100005_top(
   );
 
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(1, 7, 32) Mux_input2 (.out(add_input2), 
-                                                          .key(opcode), 
-                                                          .default_out(32'h0), 
-                                                          .lut({
-                                                                7'b001_0011, 32'h0
-                                                                }));
+  // ysyx_24100005_MuxKeyWithDefault #(1, 7, 32) Mux_input2 (.out(add_input2), 
+  //                                                         .key(opcode), 
+  //                                                         .default_out(32'h0), 
+  //                                                         .lut({
+  //                                                               7'b001_0011, 32'h0
+  //                                                               }));
 
-  // mux for adder input1 (reg/pc)
-  ysyx_24100005_MuxKeyWithDefault #(4, 7, 32) Mux_input1 (.out(add_input1), 
-                                                          .key(opcode), 
-                                                          .default_out(32'h0), 
-                                                          .lut({
-                                                                7'b001_0011, 32'h0, // partial I type
-                                                                7'b001_0111, 32'h0, // lui
-                                                                7'b110_1111, 32'h0, // jal
-                                                                7'b110_0111, 32'h0  // jalr
-                                                                }));
+  // // mux for adder input1 (reg/pc)
+  // ysyx_24100005_MuxKeyWithDefault #(4, 7, 32) Mux_input1 (.out(add_input1), 
+  //                                                         .key(opcode), 
+  //                                                         .default_out(32'h0), 
+  //                                                         .lut({
+  //                                                               7'b001_0011, 32'h0, // partial I type
+  //                                                               7'b001_0111, 32'h0, // lui
+  //                                                               7'b110_1111, 32'h0, // jal
+  //                                                               7'b110_0111, 32'h0  // jalr
+  //                                                               }));
+  assign add_input1 = 32'h0;
+  assign add_input1 = 32'h1;
 
   assign add_output = add_input1 + add_input2;
 
