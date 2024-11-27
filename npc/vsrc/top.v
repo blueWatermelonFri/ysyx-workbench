@@ -123,7 +123,7 @@ module ysyx_24100005_top(
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
   ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
-                                                          .default_out(32'h0), 
+                                                          .default_out(32'h8000_0000), 
                                                           .lut({
                                                                 7'b001_0011, immI,
                                                                 7'b001_0111, shiftimmU, // aipuc
