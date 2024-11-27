@@ -119,8 +119,9 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 }
 
 void single_cycle() {
-  printf("cycle\n");
+  printf("negedge\n");
   top.clk = 0; top.eval();
+  printf("posedge\n");
   top.clk = 1; top.eval();
 }
 
