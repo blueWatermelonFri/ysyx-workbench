@@ -83,22 +83,6 @@ module ysyx_24100005_top(
   // I type instruction
   assign funct3 = inst[14:12];
   // imm extension
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Iimm_SEXT(.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                1'b0, {20'h00000, inst[31:20]},
-                                                                1'b1, {20'hfffff, inst[31:20]}
-                                                              }),
-                                                          .out(immI));
-
-  // S type imm extension
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Simm_SEXT(.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                1'b0, {20'h00000, inst[31:25], inst[11:7]},
-                                                                1'b1, {20'hfffff, inst[31:25], inst[11:7]}
-                                                              }),
-                                                          .out(immS));
 
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
   ysyx_24100005_MuxKeyWithDefault #(1, 7, 32) Mux_input2 (.out(add_input2), 
