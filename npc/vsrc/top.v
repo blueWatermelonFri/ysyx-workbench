@@ -187,17 +187,6 @@ module ysyx_24100005_top(
                                                                     7'b000_0011, mem_read_res  // load
                                                                     }));
 
-  // mux for weather load
-  wire tmp ;
-  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(tmp), 
-                                                              .key(opcode), 
-                                                              .default_out(1'b0), 
-                                                              .lut({
-                                                                    7'b000_0011,  1'b1  // load
-                                                                    // 7'b010_0011,  1'b1  // store                                                           
-                                                                    }));
-
-  assign read_mem = 0;
 
   // mux for weather store
   ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_write_mem (.out(write_mem), 
@@ -209,6 +198,18 @@ module ysyx_24100005_top(
                                                                     }));
 
   // assign write_mem = 0;
+
+  wire tmp ;
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(read_mem), 
+                                                              .key(opcode), 
+                                                              .default_out(1'b0), 
+                                                              .lut({
+                                                                    7'b000_0011,  1'b1  // load
+                                                                    // 7'b010_0011,  1'b1  // store                                                           
+                                                                    }));
+
+  assign tmp = 0;
+
 
   assign mem_extract  = 32'h0000_0001;
 
