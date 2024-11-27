@@ -29,7 +29,6 @@ module ysyx_24100005_top(
 
   // for mem write extract and sext
   wire [7:0] wmask;
-  wire [31:0] wdata;
 
   wire [6:0] opcode;
   wire [2:0] funct3;
@@ -118,8 +117,6 @@ module ysyx_24100005_top(
                                                                     7'b000_0011,  1'b0  // load
                                                                     // 7'b010_0011,  1'b1  // store                                                           
                                                                     }));
-
-  assign tmp = 0;
 
 
 // 1. 把read换为tmp就不会段错误了
