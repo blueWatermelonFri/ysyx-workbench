@@ -46,7 +46,6 @@ module ysyx_24100005_top(
 
   assign rs1 = inst[19:15];
   assign rs2 = inst[24:20];
-  assign opcode = inst[6:0];
   assign rd = inst[11:7];
   assign funct3 = inst[14:12];
   assign wdata = 0;
@@ -65,10 +64,11 @@ module ysyx_24100005_top(
 
   assign DPC = 32'h8000_0000;
 
+  // assign inst = 32'h0;
   assign add_input1 = 32'h0;
   assign add_input1 = 32'h0;
-
-  // assign addr = add_input1 + add_input2;
+  assign addr = add_input1 + add_input2;
+  assign opcode = inst[6:0];
 
   // 判断指令是否有读写需求
   ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(vaild), 
@@ -78,12 +78,12 @@ module ysyx_24100005_top(
                                                                     7'b000_0011,  1'b1  // load
                                                                     }));
   // assign vaild = 0;
-  assign addr = 0;
+  // assign addr = 0;
 
   always @(*) begin
 
     if (vaild) begin // 有读写请求时 
-      mem_rdata = npcmem_read(addr);
+      mem_rdata = npcmem_read(0);
     end
     else begin
       mem_rdata = 0;
