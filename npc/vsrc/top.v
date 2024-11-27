@@ -189,12 +189,12 @@ module ysyx_24100005_top(
 
   // mux for weather load
   wire tmp ;
-  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_read_mem (.out(tmp), 
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(tmp), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
                                                               .lut({
-                                                                    7'b000_0011,  1'b1,  // load
-                                                                    7'b010_0011,  1'b1  // store                                                           
+                                                                    7'b000_0011,  1'b1  // load
+                                                                    // 7'b010_0011,  1'b1  // store                                                           
                                                                     }));
 
   assign read_mem = 0;
@@ -294,7 +294,7 @@ module ysyx_24100005_top(
       $display("wmask     =%h", wmask);
 
 
-    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
+    if (tmp) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
       if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
