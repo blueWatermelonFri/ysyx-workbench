@@ -77,7 +77,7 @@ module ysyx_24100005_top(
   //                                                             .lut({
   //                                                                   7'b000_0011,  1'b1  // load
   //                                                                   }));
-  assign vaild = 0;
+  assign vaild = 1;
   // assign addr = 0;
 
   always @(*) begin
