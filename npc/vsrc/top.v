@@ -105,7 +105,7 @@ module ysyx_24100005_top(
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b001_0011, 32'h0
+                                                                7'b001_0011, 32'h80000000
                                                                 // 7'b000_0011, immI, // load
                                                                 // 7'b010_0011, immS  // store                                                                
                                                                 }));
