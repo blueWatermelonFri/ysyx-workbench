@@ -16,7 +16,6 @@ int main(int argc, char *argv[]) {
   reset(3);
 
 
-
   long img_size = init_img(argv[1]);
   printf("image init success\n");
 

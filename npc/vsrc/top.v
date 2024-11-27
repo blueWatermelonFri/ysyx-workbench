@@ -68,7 +68,7 @@ module ysyx_24100005_top(
   assign add_input1 = 32'h0;
   assign add_input1 = 32'h0;
 
-  assign addr = add_input1 + add_input2;
+  // assign addr = add_input1 + add_input2;
 
   // 判断指令是否有读写需求
   ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(vaild), 
@@ -77,6 +77,8 @@ module ysyx_24100005_top(
                                                               .lut({
                                                                     7'b000_0011,  1'b1  // load
                                                                     }));
+  // assign vaild = 0;
+  assign addr = 0;
 
   always @(*) begin
 
