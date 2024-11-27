@@ -90,26 +90,6 @@ module ysyx_24100005_top(
                                                                 1'b1, {20'hfffff, inst[31:20]}
                                                               }),
                                                           .out(immI));
-  // U type instruction
-  // imm extension
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Uimm_SEXT(.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                1'b0, {12'h000, inst[31:12]},
-                                                                1'b1, {12'hfff, inst[31:12]}
-                                                              }),
-                                                          .out(immU));
-  // U type imm shift
-  assign shiftimmU = {immU[19:0], 12'h000};
-
-  // j type instruction
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Jimm_SEXT (.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                1'b0, {11'h000, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0},
-                                                                1'b1, {11'hfff, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0}
-                                                              }),
-                                                          .out(immJ));
 
   // S type imm extension
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Simm_SEXT(.key(inst[31]),
@@ -121,46 +101,29 @@ module ysyx_24100005_top(
                                                           .out(immS));
 
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input2 (.out(add_input2), 
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h8000_0000), 
                                                           .lut({
-                                                                7'b001_0011, immI,
-                                                                7'b001_0111, shiftimmU, // aipuc
-                                                                7'b011_0111, shiftimmU, // lui
-                                                                7'b110_1111, immJ,      // jal
-                                                                7'b110_0111, immI,      // jalr
-                                                                7'b000_0011, immI, // load
-                                                                7'b010_0011, immS  // store                                                                
+                                                                7'b001_0011, immI
+                                                                // 7'b000_0011, immI, // load
+                                                                // 7'b010_0011, immS  // store                                                                
                                                                 }));
 
   // mux for adder input1 (reg/pc)
-  ysyx_24100005_MuxKeyWithDefault #(6, 7, 32) Mux_input1 (.out(add_input1), 
+  ysyx_24100005_MuxKeyWithDefault #(4, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, rs1data, // partial I type
                                                                 7'b001_0111, PC, // lui
                                                                 7'b110_1111, PC, // jal
-                                                                7'b110_0111, rs1data,  // jalr
-                                                                7'b000_0011, rs1data, // load
-                                                                7'b010_0011, rs1data // store
+                                                                7'b110_0111, rs1data  // jalr
+                                                                // 7'b000_0011, rs1data, // load
+                                                                // 7'b010_0011, rs1data // store
                                                                 }));
 
   assign add_output = add_input1 + add_input2;
-
-  // write back 
-  // mux for weather write back 
-  ysyx_24100005_MuxKeyWithDefault #(5, 7, 1) Mux_write_reg (.out(wen), 
-                                                        .key(opcode), 
-                                                        .default_out(1'b1), 
-                                                        .lut({
-                                                              7'b110_0011, 1'b0, // B type
-                                                              7'b010_0011, 1'b0,  // store
-                                                              7'b110_1111, 1'b1,  // jal
-                                                              7'b110_0111, 1'b1,   // jalr
-                                                              7'b000_0011, 1'b1  // load
-                                                              }));
 
   // mux for update PC
   ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_PC (.out(DPC), 
@@ -187,17 +150,6 @@ module ysyx_24100005_top(
                                                                     7'b000_0011, mem_read_res  // load
                                                                     }));
 
-  // mux for weather load
-  wire tmp ;
-  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(read_mem), 
-                                                              .key(opcode), 
-                                                              .default_out(1'b0), 
-                                                              .lut({
-                                                                    7'b000_0011,  1'b1  // load
-                                                                    // 7'b010_0011,  1'b1  // store                                                           
-                                                                    }));
-
-  assign tmp = 0;
 
   // mux for weather store
   ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_write_mem (.out(write_mem), 
@@ -209,79 +161,26 @@ module ysyx_24100005_top(
                                                                     }));
 
   // assign write_mem = 0;
-  // memory read extract 通过阅读汇编知道，lb地址是字节对齐，lh地址是双字节对齐，lw地址是四字节对齐
-  // ysyx_24100005_MuxKeyWithDefault #(13, 5, 32) Mux_mem_read_extract(.key({funct3, add_output[1:0]}),
-  //                                                         .default_out({32'h0000_0000}),
-  //                                                         .lut({
-  //                                                               // lb
-  //                                                               5'b000_00, {24'h000000, mem_rdata[7:0]},
-  //                                                               5'b000_01, {24'h000000, mem_rdata[15:8]},
-  //                                                               5'b000_10, {24'h000000, mem_rdata[23:16]},
-  //                                                               5'b000_11, {24'h000000, mem_rdata[31:24]},
-  //                                                               // lh|lhu
-  //                                                               5'b001_00, {16'h000000, mem_rdata[15:0]},
-  //                                                               5'b001_10, {16'h000000, mem_rdata[31:16]},
-  //                                                               // lw
-  //                                                               5'b010_00, mem_rdata,
-  //                                                               // lbu
-  //                                                               5'b011_00, {24'h000000, mem_rdata[7:0]},
-  //                                                               5'b011_01, {24'h000000, mem_rdata[15:8]},
-  //                                                               5'b011_10, {24'h000000, mem_rdata[23:16]},
-  //                                                               5'b011_11, {24'h000000, mem_rdata[31:24]},
-  //                                                               // lhu
-  //                                                               5'b100_00, {16'h000000, mem_rdata[15:0]},
-  //                                                               5'b100_10, {16'h000000, mem_rdata[31:16]}
-  //                                                             }),
-  //                                                         .out(mem_extract));
+  wire tmp ;
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(read_mem), 
+                                                              .key(opcode), 
+                                                              .default_out(1'b0), 
+                                                              .lut({
+                                                                    7'b000_0011,  1'b1  // load
+                                                                    // 7'b010_0011,  1'b1  // store                                                           
+                                                                    }));
+
+  assign tmp = 0;
+
+
   assign mem_extract  = 32'h0000_0001;
-  // memory read LB sign extend  
-  // ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lb_sext(.key(mem_extract[7]),
-  //                                                         .default_out({32'h0000_0000}),
-  //                                                         .lut({
-  //                                                               1'b0, {24'h000000, mem_rdata[7:0]},
-  //                                                               1'b1, {24'hffffff, mem_rdata[7:0]}
-  //                                                             }),
-  //                                                         .out(mem_lb_sext));
+
   assign mem_lb_sext = 32'h0000_0001;
 
-// memory read LH sign extend  
-  // ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lh_sext(.key(mem_extract[15]),
-  //                                                         .default_out({32'h0000_0000}),
-  //                                                         .lut({
-  //                                                               1'b0, {16'h0000, mem_rdata[15:0]},
-  //                                                               1'b1, {16'hffff, mem_rdata[15:0]}
-  //                                                             }),
-  //                                                         .out(mem_lh_sext));
   assign mem_lh_sext = 32'h0000_0001;
 
-  // memory read res 
-  // ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
-  //                                                         .default_out({32'h0000_0000}),
-  //                                                         .lut({
-  //                                                               3'b000, mem_lb_sext, // lb
-  //                                                               3'b001, mem_lh_sext, // lh
-  //                                                               3'b010, mem_extract, // lw
-  //                                                               3'b011, mem_extract, // lbu
-  //                                                               3'b100, mem_extract  // lhu
-  //                                                             }),
-  //                                                         .out(mem_read_res));
   assign mem_read_res = 32'h0000_0001;
 
-// memory write mask
-  // ysyx_24100005_MuxKeyWithDefault #(7, 5, 8) Mux_wmask(.key({funct3, add_output[1:0]}),
-  //                                                         .default_out({8'b0000_0000}),
-  //                                                         .lut({
-  //                                                               5'b000_00, {8'b0000_0001}, // sb
-  //                                                               5'b000_01, {8'b0000_0010}, // sb
-  //                                                               5'b000_10, {8'b0000_0100}, // sb
-  //                                                               5'b000_11, {8'b0000_1000}, // sb
-
-  //                                                               5'b001_00, {8'b0000_0011}, // sb
-  //                                                               5'b001_10, {8'b0000_1100}, // sb
-
-  //                                                               5'b010_00, {8'b0000_1111} // sw
-  //                                                             }),
-  //                                                         .out(wmask));
 
 // 1. 把read换为tmp就不会段错误了
 // 2. 每一个周期会打印好几次
@@ -289,18 +188,15 @@ module ysyx_24100005_top(
   assign wmask = 8'b00000001;
   // memory access
   always @(*) begin
-      $display("xxxxxxxxxxxxxxxxxx", );
-      $display("read_mem       =%h", read_mem);
-      $display("add_output=%h", add_output);
-      $display("write_mem =%h", write_mem);
-      $display("rs2data   =%h", rs2data);
-      $display("wmask     =%h", wmask);
+    //   $display("xxxxxxxxxxxxxxxxxx", );
+    //   $display("read_mem       =%h", read_mem);
+    //   $display("add_output=%h", add_output);
+    //   $display("write_mem =%h", write_mem);
+    //   $display("rs2data   =%h", rs2data);
+    //   $display("wmask     =%h", wmask);
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
-      if (write_mem) begin // 有写请求时
-        npcmem_write(add_output, rs2data, wmask);
-      end
     end
     else begin
       mem_rdata = 0;
@@ -325,40 +221,3 @@ module ysyx_24100005_top(
 
 endmodule
 
-// add
-// sub
-// xor
-// or
-// and
-// sll
-// srl
-// sra
-// slt
-// sltu
-// addi
-// xori
-// ori
-// andi   1
-// slli
-// srli
-// srai
-// slti
-// sltiu
-// lb
-// lh
-// lw
-// lbu
-// lhu
-// sb
-// sh
-// sw
-// beq
-// bne
-// blt
-// bge
-// bltu
-// bgeu
-// jal    1
-// jalr   1
-// lui
-// auipc  1
