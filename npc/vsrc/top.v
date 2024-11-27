@@ -63,31 +63,15 @@ module ysyx_24100005_top(
   .rs2data(rs2data)
   );
 
-  // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  // ysyx_24100005_MuxKeyWithDefault #(1, 7, 32) Mux_input2 (.out(add_input2), 
-  //                                                         .key(opcode), 
-  //                                                         .default_out(32'h0), 
-  //                                                         .lut({
-  //                                                               7'b001_0011, 32'h0
-  //                                                               }));
+  assign DPC = 32'h8000_0000;
 
-  // // mux for adder input1 (reg/pc)
-  // ysyx_24100005_MuxKeyWithDefault #(4, 7, 32) Mux_input1 (.out(add_input1), 
-  //                                                         .key(opcode), 
-  //                                                         .default_out(32'h0), 
-  //                                                         .lut({
-  //                                                               7'b001_0011, 32'h0, // partial I type
-  //                                                               7'b001_0111, 32'h0, // lui
-  //                                                               7'b110_1111, 32'h0, // jal
-  //                                                               7'b110_0111, 32'h0  // jalr
-  //                                                               }));
+
+
+
   assign add_input1 = 32'h0;
   assign add_input1 = 32'h1;
 
   assign add_output = add_input1 + add_input2;
-
-  assign DPC = 32'h8000_0000;
-
 
   // assign write_mem = 0;
   ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(read_mem), 
@@ -105,7 +89,7 @@ module ysyx_24100005_top(
   // memory access
   always @(*) begin
 
-    if (0) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
+    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
     end
     else begin
