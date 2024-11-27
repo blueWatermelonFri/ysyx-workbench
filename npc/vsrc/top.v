@@ -125,7 +125,6 @@ module ysyx_24100005_top(
 
   assign add_output = add_input1 + add_input2;
 
-  
   assign DPC = 32'h8000_0000;
 
   assign wdata = 0;
@@ -155,6 +154,7 @@ module ysyx_24100005_top(
 // 1. 把read换为tmp就不会段错误了
 // 2. 每一个周期会打印好几次
 // 3. 尝试一个最小的可复现demo
+// 4. 为什么每个posedge会变化两次
   assign wmask = 8'b00000001;
   // memory access
   always @(*) begin
@@ -166,7 +166,6 @@ module ysyx_24100005_top(
     $display("read_mem       =%h", read_mem);
 
     if (tmp) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
-      $display("read_mem       =%h", read_mem);
       mem_rdata = npcmem_read(add_output);
     end
     else begin
