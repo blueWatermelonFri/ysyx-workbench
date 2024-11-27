@@ -71,18 +71,18 @@ module ysyx_24100005_top(
   assign opcode = inst[6:0];
 
   // 判断指令是否有读写需求
-  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(vaild), 
-                                                              .key(opcode), 
-                                                              .default_out(1'b0), 
-                                                              .lut({
-                                                                    7'b000_0011,  1'b1  // load
-                                                                    }));
-  // assign vaild = 0;
+  // ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(vaild), 
+  //                                                             .key(opcode), 
+  //                                                             .default_out(1'b0), 
+  //                                                             .lut({
+  //                                                                   7'b000_0011,  1'b1  // load
+  //                                                                   }));
+  assign vaild = 0;
   // assign addr = 0;
 
   always @(*) begin
 
-    if (1) begin // 有读写请求时 
+    if (vaild) begin // 有读写请求时 
       mem_rdata = npcmem_read(0);
     end
     else begin
