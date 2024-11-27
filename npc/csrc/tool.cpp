@@ -128,16 +128,16 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 }
 
 void single_cycle() {
-  VerilatedContext* contextp = new VerilatedContext();
-VerilatedVcdC* tfp = new VerilatedVcdC();
-contextp->traceEverOn(true);
-top.trace(tfp, 0);
-tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
-  contextp->timeInc(1);
+  // 不能在顶层
+  // VerilatedContext* contextp = new VerilatedContext();
+  // VerilatedVcdC* tfp = new VerilatedVcdC();
+  // contextp->traceEverOn(true);
+  // top.trace(tfp, 0);
+  // tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
+  // contextp->timeInc(1);
   top.clk = 0; top.eval();
-  tfp->dump(contextp->time());
-  tfp->close();
-
+  // tfp->dump(contextp->time());
+  // tfp->close();
   top.clk = 1; top.eval();
 
 }
