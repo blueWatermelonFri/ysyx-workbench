@@ -92,7 +92,9 @@ module ysyx_24100005_top(
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b001_0011, 32'h0
+                                                                7'b001_0011, immI
+                                                                // 7'b000_0011, immI, // load
+                                                                // 7'b010_0011, immS  // store                                                                
                                                                 }));
 
   // mux for adder input1 (reg/pc)
@@ -104,6 +106,8 @@ module ysyx_24100005_top(
                                                                 7'b001_0111, PC, // lui
                                                                 7'b110_1111, PC, // jal
                                                                 7'b110_0111, rs1data  // jalr
+                                                                // 7'b000_0011, rs1data, // load
+                                                                // 7'b010_0011, rs1data // store
                                                                 }));
 
   assign add_output = add_input1 + add_input2;
@@ -119,6 +123,7 @@ module ysyx_24100005_top(
                                                               .default_out(1'b0), 
                                                               .lut({
                                                                     7'b000_0011,  1'b0  // load
+                                                                    // 7'b010_0011,  1'b1  // store                                                           
                                                                     }));
 
   assign tmp = 0;
