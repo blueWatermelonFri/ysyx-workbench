@@ -195,7 +195,7 @@ module ysyx_24100005_top(
   //                                                                   7'b000_0011,  1'b1,  // load
   //                                                                   7'b010_0011,  1'b1  // store                                                           
   //                                                                   }));
-  assign read_mem = 1;
+  assign read_mem = 0;
 
   // mux for weather store
   // ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_write_mem (.out(write_mem), 
