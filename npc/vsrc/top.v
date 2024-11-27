@@ -30,7 +30,7 @@ module ysyx_24100005_top(
 
 
   // adder input output
-  wire [31:0] add_output;
+  wire [31:0] addr;
   wire [31:0] add_input1;
   wire [31:0] add_input2;
 
@@ -71,22 +71,21 @@ module ysyx_24100005_top(
   assign add_input1 = 32'h0;
   assign add_input1 = 32'h1;
 
-  assign add_output = add_input1 + add_input2;
+  assign addr = add_input1 + add_input2;
 
   // assign write_mem = 0;
-  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_read_mem (.out(vaild), 
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(vaild), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
                                                               .lut({
-                                                                    7'b000_0011,  1'b1,  // load
-                                                                    7'b010_0011,  1'b1  // store                                                           
+                                                                    7'b000_0011,  1'b1  // load
                                                                     }));
 
   // memory access
   always @(*) begin
 
     if (vaild) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
-      mem_rdata = npcmem_read(add_output);
+      mem_rdata = npcmem_read(addr);
     end
     else begin
       mem_rdata = 0;
