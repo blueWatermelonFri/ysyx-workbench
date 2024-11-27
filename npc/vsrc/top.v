@@ -83,7 +83,7 @@ module ysyx_24100005_top(
   always @(*) begin
 
     if (vaild) begin // 有读写请求时 
-      mem_rdata = npcmem_read(0);
+      mem_rdata = npcmem_read(addr);
     end
     else begin
       mem_rdata = 0;
