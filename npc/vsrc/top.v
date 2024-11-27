@@ -110,16 +110,16 @@ module ysyx_24100005_top(
                                                                 }));
 
   // mux for adder input1 (reg/pc)
-  ysyx_24100005_MuxKeyWithDefault #(6, 7, 32) Mux_input1 (.out(add_input1), 
+  ysyx_24100005_MuxKeyWithDefault #(4, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, rs1data, // partial I type
                                                                 7'b001_0111, PC, // lui
                                                                 7'b110_1111, PC, // jal
-                                                                7'b110_0111, rs1data,  // jalr
-                                                                7'b000_0011, rs1data, // load
-                                                                7'b010_0011, rs1data // store
+                                                                7'b110_0111, rs1data  // jalr
+                                                                // 7'b000_0011, rs1data, // load
+                                                                // 7'b010_0011, rs1data // store
                                                                 }));
 
   assign add_output = add_input1 + add_input2;
@@ -196,7 +196,7 @@ module ysyx_24100005_top(
 
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
-      mem_rdata = 1;
+      mem_rdata = npcmem_read(add_output);
     //   if (write_mem) begin // 有写请求时
     //     npcmem_write(add_output, rs2data, wmask);
     //   end
