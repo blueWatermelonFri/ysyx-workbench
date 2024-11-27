@@ -194,8 +194,8 @@ module ysyx_24100005_top(
     //   $display("rs2data   =%h", rs2data);
     //   $display("wmask     =%h", wmask);
 
-    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       $display("read_mem       =%h", read_mem);
+    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
     end
     else begin
