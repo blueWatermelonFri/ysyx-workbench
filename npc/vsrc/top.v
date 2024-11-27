@@ -19,46 +19,24 @@ module ysyx_24100005_top(
   wire [31:0] rs1data; // reg read rs1
   wire [31:0] rs2data; // reg read rs2
 
-
   // for mem read extract and sext
   reg [31:0] mem_rdata;
-  wire [31:0] mem_read_res;
-  wire [31:0] mem_lh_sext;
-  wire [31:0] mem_lb_sext;
-  wire [31:0] mem_extract;
 
   // for mem write extract and sext
-  wire [7:0] wmask;
 
   wire [6:0] opcode;
   wire [2:0] funct3;
   wire [4:0] rs1;
   wire [4:0] rs2;
-  wire [11:0] imm;
   wire [4:0] rd;
 
-  wire [31:0] immI;
-  wire [31:0] immJ;
-  wire [31:0] immU;
-  wire [31:0] immS;
-  wire [31:0] shiftimmU;
 
   // adder input output
   wire [31:0] add_output;
   wire [31:0] add_input1;
   wire [31:0] add_input2;
 
-  // 初始化寄存器堆
-  ysyx_24100005_RegisterFile #(5, 32) RegFile(
-  .clk(clk),
-  .wdata(wdata),
-  .waddr(rd),
-  .rs1addr(rs1),
-  .rs2addr(rs2),
-  .wen(wen),
-  .rs1data(rs1data),
-  .rs2data(rs2data)
-  );
+
 
   // PC更新
   ysyx_24100005_Reg #(32, 32'h8000_0000) i0 (.clk(clk),
@@ -82,6 +60,18 @@ module ysyx_24100005_top(
   // I type instruction
   assign funct3 = inst[14:12];
   // imm extension
+
+  // 初始化寄存器堆
+  ysyx_24100005_RegisterFile #(5, 32) RegFile(
+  .clk(clk),
+  .wdata(wdata),
+  .waddr(rd),
+  .rs1addr(rs1),
+  .rs2addr(rs2),
+  .wen(wen),
+  .rs1data(rs1data),
+  .rs2data(rs2data)
+  );
 
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
   ysyx_24100005_MuxKeyWithDefault #(1, 7, 32) Mux_input2 (.out(add_input2), 
@@ -123,7 +113,6 @@ module ysyx_24100005_top(
 // 2. 每一个周期会打印好几次
 // 3. 尝试一个最小的可复现demo
 // 4. 为什么每个posedge会变化两次
-  assign wmask = 8'b00000001;
   // memory access
   always @(*) begin
 
