@@ -89,7 +89,7 @@ module ysyx_24100005_top(
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b001_0011, immI
+                                                                7'b001_0011, 32'h0
                                                                 }));
 
   // mux for adder input1 (reg/pc)
@@ -97,13 +97,13 @@ module ysyx_24100005_top(
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b001_0011, rs1data, // partial I type
-                                                                7'b001_0111, PC, // lui
-                                                                7'b110_1111, PC, // jal
-                                                                7'b110_0111, rs1data  // jalr
+                                                                7'b001_0011, 32'h0, // partial I type
+                                                                7'b001_0111, 32'h0, // lui
+                                                                7'b110_1111, 32'h0, // jal
+                                                                7'b110_0111, 32'h0  // jalr
                                                                 }));
 
-  assign add_output = 0;
+  assign add_output = add_input1 + add_input2;
 
   assign DPC = 32'h8000_0000;
 
