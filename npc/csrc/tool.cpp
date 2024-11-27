@@ -119,6 +119,7 @@ extern "C" int npcmem_read(int raddr) {
   uint32_t aligned_addr = raddr & (~0x3u);
   return pmem_read(aligned_addr);
 }
+
 extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
