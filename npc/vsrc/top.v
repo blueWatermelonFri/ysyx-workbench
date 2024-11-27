@@ -158,12 +158,8 @@ module ysyx_24100005_top(
   assign wmask = 8'b00000001;
   // memory access
   always @(*) begin
-    //   $display("xxxxxxxxxxxxxxxxxx", );
-    //   $display("add_output=%h", add_output);
-    //   $display("write_mem =%h", write_mem);
-    //   $display("rs2data   =%h", rs2data);
-    //   $display("wmask     =%h", wmask);
-    $display("read_mem       =%h", read_mem);
+
+    $monitor("read_mem       =%h", read_mem);
 
     if (tmp) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
