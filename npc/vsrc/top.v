@@ -286,12 +286,12 @@ module ysyx_24100005_top(
   assign wmask = 8'b00000001;
   // memory access
   always @(*) begin
-      $display("tmp=%h, ", tmp);
-      $display("tmp=%h, ", tmp);
-      $display("tmp=%h, ", tmp);
-      $display("tmp=%h, ", tmp);
+      $display("tmp=%h", tmp);
+      $display("tmp=%h", tmp);
+      $display("tmp=%h", tmp);
+      $display("tmp=%h", tmp);
 
-    if (tmp) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
+    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
       if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
