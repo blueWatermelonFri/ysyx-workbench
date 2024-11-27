@@ -120,9 +120,9 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 
 void single_cycle() {
   printf("negedge\n");
-  top.clk = 0; top.eval();
-  printf("posedge\n");
   top.clk = 1; top.eval();
+  printf("posedge\n");
+  top.clk = 0; top.eval();
 }
 
 void reset(int n) {
