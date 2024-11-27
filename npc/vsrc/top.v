@@ -106,7 +106,7 @@ module ysyx_24100005_top(
                                                                 7'b110_0111, rs1data  // jalr
                                                                 }));
 
-  // assign add_output = 0;
+  assign add_output = add_input1 + add_input2;
 
   assign DPC = 32'h8000_0000;
 
@@ -135,7 +135,7 @@ module ysyx_24100005_top(
     // $display("read_mem       =%h", 0);
     $display("inst       =%h", inst);
 
-    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
+    if (0) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
     end
     else begin
