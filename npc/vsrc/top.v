@@ -81,7 +81,7 @@ module ysyx_24100005_top(
   // assign addr = 0;
 
   always @(*) begin
-    $display("display\n");
+    $display("vaild =  %h\n", vaild);
     if (vaild) begin // 有读写请求时 
       mem_rdata = npcmem_read(0);
     end
