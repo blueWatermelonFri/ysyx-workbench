@@ -74,12 +74,12 @@ module ysyx_24100005_top(
   assign add_output = add_input1 + add_input2;
 
   // assign write_mem = 0;
-  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(vaild), 
+  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_read_mem (.out(vaild), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
                                                               .lut({
-                                                                    7'b000_0011,  1'b0  // load
-                                                                    // 7'b010_0011,  1'b1  // store                                                           
+                                                                    7'b000_0011,  1'b1,  // load
+                                                                    7'b010_0011,  1'b1  // store                                                           
                                                                     }));
 
   // memory access
