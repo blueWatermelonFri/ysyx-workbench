@@ -88,7 +88,6 @@ module ysyx_24100005_top(
 
 
   // assign write_mem = 0;
-  wire tmp ;
   ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(read_mem), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
@@ -107,7 +106,7 @@ module ysyx_24100005_top(
     $display("inst       =%h", inst);
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
-      mem_rdata = npcmem_read(add_output);
+      mem_rdata = npcmem_read(0);
     end
     else begin
       mem_rdata = 0;
