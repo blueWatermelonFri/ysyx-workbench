@@ -160,6 +160,7 @@ module ysyx_24100005_top(
   always @(*) begin
 
     $display("read_mem       =%h", read_mem);
+    $display("opcode       =%h", opcode);
 
     if (tmp) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
