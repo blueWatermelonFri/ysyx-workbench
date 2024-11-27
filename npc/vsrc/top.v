@@ -44,19 +44,12 @@ module ysyx_24100005_top(
   // static next pc
   assign SPC = PC + 32'h0000_0004;
 
-  // R | I | S | B type
   assign rs1 = inst[19:15];
-
-  // R | S | B type
   assign rs2 = inst[24:20];
-
-  // decode 
   assign opcode = inst[6:0];
   assign rd = inst[11:7];
-
-  // I type instruction
   assign funct3 = inst[14:12];
-  // imm extension
+  assign wdata = 0;
 
   // 初始化寄存器堆
   ysyx_24100005_RegisterFile #(5, 32) RegFile(
@@ -93,7 +86,6 @@ module ysyx_24100005_top(
 
   assign DPC = 32'h8000_0000;
 
-  assign wdata = 0;
 
   // assign write_mem = 0;
   wire tmp ;
