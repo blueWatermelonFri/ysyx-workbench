@@ -91,7 +91,6 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(immI));
 
-
   // S type imm extension
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Simm_SEXT(.key(inst[31]),
                                                           .default_out({32'h0000_0000}),
@@ -161,7 +160,6 @@ module ysyx_24100005_top(
                                                                     }));
 
   // assign write_mem = 0;
-
   wire tmp ;
   ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(read_mem), 
                                                               .key(opcode), 
@@ -198,7 +196,7 @@ module ysyx_24100005_top(
 
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
-      mem_rdata = npcmem_read(add_output);
+      mem_rdata = npcmem_read(32'h0000_0000);
       if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
       end
