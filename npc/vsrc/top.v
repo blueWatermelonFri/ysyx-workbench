@@ -125,40 +125,10 @@ module ysyx_24100005_top(
 
   assign add_output = add_input1 + add_input2;
 
-  // mux for update PC
-  ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_PC (.out(DPC), 
-                                                      .key(opcode), 
-                                                      .default_out(SPC), 
-                                                      .lut({
-                                                            7'b011_0011, SPC,         // R type
-                                                            7'b001_0011, SPC,         // partial I type
-                                                            7'b000_0011, SPC,         // load
-                                                            7'b010_0011, SPC,         // store
-                                                            7'b011_0111, SPC,         // U type
-                                                            7'b110_0011, add_output, // B type
-                                                            7'b110_1111, add_output,  // jal
-                                                            7'b110_0111, add_output  // jalr                                                            
-                                                            }));
+  
+  assign DPC = 32'h8000_0000;
 
-  // mux for write back in [add_output , SNPC, mem_read_res]
-  ysyx_24100005_MuxKeyWithDefault #(3, 7, 32) Mux_writedata (.out(wdata), 
-                                                              .key(opcode), 
-                                                              .default_out(add_output), 
-                                                              .lut({
-                                                                    7'b110_1111, SPC,  // jal
-                                                                    7'b110_0111, SPC,  // jalr   
-                                                                    7'b000_0011, mem_read_res  // load
-                                                                    }));
-
-
-  // mux for weather store
-  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_write_mem (.out(write_mem), 
-                                                              .key(opcode), 
-                                                              .default_out(1'b0), 
-                                                              .lut({
-                                                                    7'b000_0011,  1'b0,  // load
-                                                                    7'b010_0011,  1'b1  // store                                                           
-                                                                    }));
+  assign wdata = 0;
 
   // assign write_mem = 0;
   wire tmp ;
