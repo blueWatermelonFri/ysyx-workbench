@@ -188,13 +188,15 @@ module ysyx_24100005_top(
                                                                     }));
 
   // mux for weather load
-  // ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_read_mem (.out(read_mem), 
-  //                                                             .key(opcode), 
-  //                                                             .default_out(1'b0), 
-  //                                                             .lut({
-  //                                                                   7'b000_0011,  1'b1,  // load
-  //                                                                   7'b010_0011,  1'b1  // store                                                           
-  //                                                                   }));
+  wire tmp ;
+  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_read_mem (.out(tmp), 
+                                                              .key(opcode), 
+                                                              .default_out(1'b0), 
+                                                              .lut({
+                                                                    7'b000_0011,  1'b1,  // load
+                                                                    7'b010_0011,  1'b1  // store                                                           
+                                                                    }));
+
   assign read_mem = 0;
 
   // mux for weather store
@@ -304,6 +306,7 @@ module ysyx_24100005_top(
 
   always @(posedge clk) begin
     $display("inst=%h, ", inst);
+    $display("tmp=%h, ", tmp);
     $display("Opcode=%h, ", opcode);
     $display("PC=%h, ", PC);
     $display("add1=%h, ", add_input1);
