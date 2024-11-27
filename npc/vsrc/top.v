@@ -135,7 +135,7 @@ module ysyx_24100005_top(
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
                                                               .lut({
-                                                                    7'b000_0011,  1'b1  // load
+                                                                    7'b000_0011,  1'b0  // load
                                                                     // 7'b010_0011,  1'b1  // store                                                           
                                                                     }));
 
@@ -159,7 +159,7 @@ module ysyx_24100005_top(
   // memory access
   always @(*) begin
 
-    $monitor("read_mem       =%h", 0);
+    $monitor("read_mem       =%h", read_mem);
 
     if (tmp) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
