@@ -22,8 +22,6 @@ module ysyx_24100005_top(
   // for mem read extract and sext
   reg [31:0] mem_rdata;
 
-  // for mem write extract and sext
-
   wire [6:0] opcode;
   wire [2:0] funct3;
   wire [4:0] rs1;
@@ -35,7 +33,6 @@ module ysyx_24100005_top(
   wire [31:0] add_output;
   wire [31:0] add_input1;
   wire [31:0] add_input2;
-
 
 
   // PC更新
@@ -116,7 +113,6 @@ module ysyx_24100005_top(
   // memory access
   always @(*) begin
 
-    // $display("read_mem       =%h", 0);
     $display("inst       =%h", inst);
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
@@ -126,22 +122,6 @@ module ysyx_24100005_top(
       mem_rdata = 0;
     end
   end
-
-  // ebreak
-  always @(*) begin
-    if(opcode == 7'b1110011) begin
-      ebreak();
-    end
-  end
-
-  // always @(posedge clk) begin
-  //   $display("inst=%h, ", inst);
-  //   $display("tmp=%h, ", tmp);
-  //   $display("Opcode=%h, ", opcode);
-  //   $display("PC=%h, ", PC);
-  //   $display("add1=%h, ", add_input1);
-  //   $display("add2=%h, ", add_input2);
-  // end
 
 endmodule
 
