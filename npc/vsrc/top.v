@@ -101,12 +101,11 @@ module ysyx_24100005_top(
                                                           .out(immS));
 
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(2, 7, 32) Mux_input2 (.out(add_input2), 
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b000_0011, immI, // load
-                                                                7'b010_0011, immS  // store                                                                
+                                                                7'b000_0000, 32'h80000000 // load
                                                                 }));
 
   // mux for adder input1 (reg/pc)
