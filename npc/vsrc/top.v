@@ -67,7 +67,6 @@ module ysyx_24100005_top(
 
 
 
-
   assign add_input1 = 32'h0;
   assign add_input1 = 32'h0;
 
@@ -84,7 +83,7 @@ module ysyx_24100005_top(
   always @(*) begin
 
     if (vaild) begin // 有读写请求时 
-      mem_rdata = npcmem_read(addr);
+      mem_rdata = npcmem_read(0);
     end
     else begin
       mem_rdata = 0;
