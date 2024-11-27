@@ -65,8 +65,6 @@ module ysyx_24100005_top(
 
   assign DPC = 32'h8000_0000;
 
-
-
   assign add_input1 = 32'h0;
   assign add_input1 = 32'h0;
 
@@ -81,7 +79,6 @@ module ysyx_24100005_top(
                                                                     }));
 
   always @(*) begin
-
 
     if (vaild) begin // 有读写请求时 
       mem_rdata = npcmem_read(addr);

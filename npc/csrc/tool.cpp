@@ -9,6 +9,14 @@
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
 #define INST_LEN 4 //指令的长度， 4字节
 static TOP_NAME top;
+
+
+// VerilatedVcdC* tfp = new VerilatedVcdC;
+// topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
+
+
+
+
 static int state = 1;
 unsigned int pre_pc;
 
@@ -120,10 +128,18 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 }
 
 void single_cycle() {
-  printf("negedge\n");
+  VerilatedContext* contextp = new VerilatedContext();
+VerilatedVcdC* tfp = new VerilatedVcdC();
+contextp->traceEverOn(true);
+top.trace(tfp, 0);
+tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
+  contextp->timeInc(1);
   top.clk = 0; top.eval();
-  printf("posedge\n");
+  tfp->dump(contextp->time());
+  tfp->close();
+
   top.clk = 1; top.eval();
+
 }
 
 void reset(int n) {
