@@ -286,6 +286,7 @@ module ysyx_24100005_top(
   assign wmask = 8'b00000001;
   // memory access
   always @(*) begin
+      $display("xxxxxxxxxxxxxxxxxx", );
       $display("tmp       =%h", tmp);
       $display("add_output=%h", add_output);
       $display("write_mem =%h", write_mem);
