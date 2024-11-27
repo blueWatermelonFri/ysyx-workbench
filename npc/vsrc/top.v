@@ -90,26 +90,7 @@ module ysyx_24100005_top(
                                                                 1'b1, {20'hfffff, inst[31:20]}
                                                               }),
                                                           .out(immI));
-  // U type instruction
-  // imm extension
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Uimm_SEXT(.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                1'b0, {12'h000, inst[31:12]},
-                                                                1'b1, {12'hfff, inst[31:12]}
-                                                              }),
-                                                          .out(immU));
-  // U type imm shift
-  assign shiftimmU = {immU[19:0], 12'h000};
 
-  // j type instruction
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Jimm_SEXT (.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                1'b0, {11'h000, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0},
-                                                                1'b1, {11'hfff, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0}
-                                                              }),
-                                                          .out(immJ));
 
   // S type imm extension
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Simm_SEXT(.key(inst[31]),
@@ -121,15 +102,10 @@ module ysyx_24100005_top(
                                                           .out(immS));
 
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input2 (.out(add_input2), 
+  ysyx_24100005_MuxKeyWithDefault #(2, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b001_0011, immI,
-                                                                7'b001_0111, shiftimmU, // aipuc
-                                                                7'b011_0111, shiftimmU, // lui
-                                                                7'b110_1111, immJ,      // jal
-                                                                7'b110_0111, immI,      // jalr
                                                                 7'b000_0011, immI, // load
                                                                 7'b010_0011, immS  // store                                                                
                                                                 }));
@@ -148,19 +124,6 @@ module ysyx_24100005_top(
                                                                 }));
 
   assign add_output = add_input1 + add_input2;
-
-  // write back 
-  // mux for weather write back 
-  ysyx_24100005_MuxKeyWithDefault #(5, 7, 1) Mux_write_reg (.out(wen), 
-                                                        .key(opcode), 
-                                                        .default_out(1'b1), 
-                                                        .lut({
-                                                              7'b110_0011, 1'b0, // B type
-                                                              7'b010_0011, 1'b0,  // store
-                                                              7'b110_1111, 1'b1,  // jal
-                                                              7'b110_0111, 1'b1,   // jalr
-                                                              7'b000_0011, 1'b1  // load
-                                                              }));
 
   // mux for update PC
   ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_PC (.out(DPC), 
@@ -217,9 +180,7 @@ module ysyx_24100005_top(
 
   assign mem_lh_sext = 32'h0000_0001;
 
-
   assign mem_read_res = 32'h0000_0001;
-
 
 
 // 1. 把read换为tmp就不会段错误了
