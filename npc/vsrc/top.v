@@ -200,15 +200,15 @@ module ysyx_24100005_top(
   assign read_mem = 0;
 
   // mux for weather store
-  // ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_write_mem (.out(write_mem), 
-  //                                                             .key(opcode), 
-  //                                                             .default_out(1'b0), 
-  //                                                             .lut({
-  //                                                                   7'b000_0011,  1'b0,  // load
-  //                                                                   7'b010_0011,  1'b1  // store                                                           
-  //                                                                   }));
+  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_write_mem (.out(write_mem), 
+                                                              .key(opcode), 
+                                                              .default_out(1'b0), 
+                                                              .lut({
+                                                                    7'b000_0011,  1'b0,  // load
+                                                                    7'b010_0011,  1'b1  // store                                                           
+                                                                    }));
 
-  assign write_mem = 0;
+  // assign write_mem = 0;
   // memory read extract 通过阅读汇编知道，lb地址是字节对齐，lh地址是双字节对齐，lw地址是四字节对齐
   // ysyx_24100005_MuxKeyWithDefault #(13, 5, 32) Mux_mem_read_extract(.key({funct3, add_output[1:0]}),
   //                                                         .default_out({32'h0000_0000}),
@@ -294,7 +294,7 @@ module ysyx_24100005_top(
       $display("wmask     =%h", wmask);
 
 
-    if (tmp) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
+    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
       if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
