@@ -142,15 +142,6 @@ module ysyx_24100005_top(
   assign tmp = 0;
 
 
-  assign mem_extract  = 32'h0000_0001;
-
-  assign mem_lb_sext = 32'h0000_0001;
-
-  assign mem_lh_sext = 32'h0000_0001;
-
-  assign mem_read_res = 32'h0000_0001;
-
-
 // 1. 把read换为tmp就不会段错误了
 // 2. 每一个周期会打印好几次
 // 3. 尝试一个最小的可复现demo
