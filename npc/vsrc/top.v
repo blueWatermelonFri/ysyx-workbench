@@ -189,7 +189,7 @@ module ysyx_24100005_top(
   // memory access
   always @(*) begin
     //   $display("xxxxxxxxxxxxxxxxxx", );
-    //   $display("read_mem       =%h", read_mem);
+      $display("read_mem       =%h", read_mem);
     //   $display("add_output=%h", add_output);
     //   $display("write_mem =%h", write_mem);
     //   $display("rs2data   =%h", rs2data);
