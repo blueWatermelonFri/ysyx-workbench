@@ -103,7 +103,7 @@ module ysyx_24100005_top(
                                                                 7'b110_0111, rs1data  // jalr
                                                                 }));
 
-  assign add_output = 0;
+  assign add_output = add_input1 + add_input2;
 
   assign DPC = 32'h8000_0000;
 
