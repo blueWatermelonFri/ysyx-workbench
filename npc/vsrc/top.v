@@ -284,7 +284,7 @@ module ysyx_24100005_top(
 // 3. 尝试一个最小的可复现demo
   // assign wmask = 8'b00000001;
   // memory access
-  always @(PC) begin
+  always @(add_output) begin
     // $display("rs1 = %h, ", rs1data);
     $display("PC = %h, ", PC);
 
