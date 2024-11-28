@@ -3,15 +3,10 @@ import "DPI-C" function int npcmem_read(input int raddr);
 module ysyx_24100005_top(
   input [31:0] inst,
   input rst,
-  input clk,
-
-  output reg [31:0] PC
+  input clk
 );
   wire vaild; // mem read
-
-  // for mem read extract and sext
   reg [31:0] mem_rdata;
-
   wire [6:0] opcode;
 
   // adder input output
@@ -46,4 +41,3 @@ module ysyx_24100005_top(
   end
 
 endmodule
-
