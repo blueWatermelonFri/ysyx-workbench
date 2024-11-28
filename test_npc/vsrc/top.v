@@ -1,7 +1,6 @@
 
 module ysyx_24100005_top(
-  input rst,
-  input clk
+  input rst
 );
 
   always @(*) begin
