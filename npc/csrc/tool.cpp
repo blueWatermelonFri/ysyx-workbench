@@ -11,6 +11,7 @@
 
 // VerilatedVcdC* tfp = new VerilatedVcdC;
 // topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
+// 必须要先new， 不可以 VerilatedContext* contextp = nullptr;
 VerilatedContext* contextp = new VerilatedContext;
 
 VerilatedVcdC* tfp = NULL;
