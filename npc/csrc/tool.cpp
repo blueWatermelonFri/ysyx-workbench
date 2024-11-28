@@ -139,9 +139,7 @@ void single_cycle() {
 
 void reset(int n) {
   
-  contextp = new VerilatedContext;
-  contextp->traceEverOn(true);
-  tfp = new VerilatedVcdC;
+
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
 
@@ -153,6 +151,11 @@ void reset(int n) {
 }
 
 void npc_execute_once(){
+  
+  contextp = new VerilatedContext;
+  contextp->traceEverOn(true);
+  tfp = new VerilatedVcdC;
+
     top.inst = pmem_read(top.PC);
     pre_pc = top.PC;
     single_cycle();
