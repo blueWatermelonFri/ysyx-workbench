@@ -149,13 +149,15 @@ void init_wave(){
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
 }
 
+void end_wave(){  
+  tfp->close();
+}
 void reset(int n) {
 
   top.rst = 1;
   while (n -- > 0) single_cycle();
   top.rst = 0;
 
-  tfp->close();
 }
 
 void npc_execute_once(){

@@ -28,6 +28,8 @@ void npc_execute(__uint64_t n);
 void single_cycle();
 void reset(int n);
 void init_wave();
+void end_wave();
+
 
 int init_img(char* img_file);
 uint8_t* guest_to_host(uint32_t paddr);
