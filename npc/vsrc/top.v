@@ -283,6 +283,7 @@ module ysyx_24100005_top(
 // 2. 每一个周期会打印好几次
 // 3. 尝试一个最小的可复现demo
   // assign wmask = 8'b00000001;
+  
   // memory access
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
     // $display("rs1 = %h, ", rs1data);
