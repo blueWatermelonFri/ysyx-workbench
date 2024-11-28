@@ -140,8 +140,8 @@ void single_cycle() {
 void reset(int n) {
   
   contextp = new VerilatedContext;
-  tfp = new VerilatedVcdC;
   contextp->traceEverOn(true);
+  tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
 
