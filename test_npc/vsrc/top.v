@@ -5,7 +5,7 @@ module ysyx_24100005_top(
 );
 
   always @(*) begin
-    $display("inst = %h\n", rst);
+    $display("rst = %h\n", rst);
   end
 
 endmodule
