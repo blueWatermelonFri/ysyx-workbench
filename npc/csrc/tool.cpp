@@ -11,7 +11,8 @@
 
 // VerilatedVcdC* tfp = new VerilatedVcdC;
 // topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
-VerilatedContext* contextp = NULL;
+VerilatedContext* contextp = new VerilatedContext;
+
 VerilatedVcdC* tfp = NULL;
 
 static TOP_NAME top;
@@ -141,7 +142,6 @@ void single_cycle() {
 
 void init_wave(){
   
-  contextp = new VerilatedContext;
   contextp->traceEverOn(true);
   tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
