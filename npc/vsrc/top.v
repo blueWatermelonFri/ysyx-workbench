@@ -208,7 +208,6 @@ module ysyx_24100005_top(
                                                                     7'b010_0011,  1'b1  // store                                                           
                                                                     }));
 
-  // assign write_mem = 0;
   // memory read extract 通过阅读汇编知道，lb地址是字节对齐，lh地址是双字节对齐，lw地址是四字节对齐
   ysyx_24100005_MuxKeyWithDefault #(13, 5, 32) Mux_mem_read_extract(.key({funct3, add_output[1:0]}),
                                                           .default_out({32'h0000_0000}),
@@ -233,7 +232,6 @@ module ysyx_24100005_top(
                                                                 5'b100_10, {16'h000000, mem_rdata[31:16]}
                                                               }),
                                                           .out(mem_extract));
-  // assign mem_extract  = 32'h0000_0001;
   // memory read LB sign extend  
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lb_sext(.key(mem_extract[7]),
                                                           .default_out({32'h0000_0000}),
@@ -242,7 +240,6 @@ module ysyx_24100005_top(
                                                                 1'b1, {24'hffffff, mem_rdata[7:0]}
                                                               }),
                                                           .out(mem_lb_sext));
-  // assign mem_lb_sext = 32'h0000_0001;
 
 // memory read LH sign extend  
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lh_sext(.key(mem_extract[15]),
@@ -252,7 +249,6 @@ module ysyx_24100005_top(
                                                                 1'b1, {16'hffff, mem_rdata[15:0]}
                                                               }),
                                                           .out(mem_lh_sext));
-  // assign mem_lh_sext = 32'h0000_0001;
 
   // memory read res 
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
@@ -289,6 +285,7 @@ module ysyx_24100005_top(
   // assign wmask = 8'b00000001;
   // memory access
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
+    $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
