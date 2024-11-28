@@ -286,7 +286,7 @@ module ysyx_24100005_top(
   // memory access
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
     // $display("rs1 = %h, ", rs1data);
-    $display("inst = %h, ", inst);
+    $display("PC = %h, ", PC);
 
     // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
