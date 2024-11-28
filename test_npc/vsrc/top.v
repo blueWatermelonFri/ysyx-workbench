@@ -16,6 +16,8 @@ module ysyx_24100005_top(
 
   always @(*) begin
     $display("inst = %h\n", inst);
+    $display("inst = %h\n", clk);
+    
   end
 
 endmodule
