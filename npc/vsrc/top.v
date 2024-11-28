@@ -285,7 +285,7 @@ module ysyx_24100005_top(
   // assign wmask = 8'b00000001;
   // memory access
   always @(add_input1) begin
-    $display("pc = %h, ", PC);
+    $display("opcode = %h, ", opcode);
 
     // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
