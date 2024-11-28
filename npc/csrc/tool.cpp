@@ -152,9 +152,7 @@ void reset(int n) {
 
 void npc_execute_once(){
   
-  contextp = new VerilatedContext;
-  contextp->traceEverOn(true);
-  tfp = new VerilatedVcdC;
+
 
     top.inst = pmem_read(top.PC);
     pre_pc = top.PC;
@@ -162,6 +160,11 @@ void npc_execute_once(){
 }
 
 void npc_execute(__uint64_t n){
+  
+  contextp = new VerilatedContext;
+  contextp->traceEverOn(true);
+  tfp = new VerilatedVcdC;
+
     for (;n > 0; n --) {
       npc_execute_once();
 #if 1
