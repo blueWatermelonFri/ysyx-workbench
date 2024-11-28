@@ -137,15 +137,17 @@ void single_cycle() {
 
 }
 
-void reset(int n) {
-
+void init_wave(){
+  
   contextp = new VerilatedContext;
   contextp->traceEverOn(true);
   tfp = new VerilatedVcdC;
-
-
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
+  
+}
+
+void reset(int n) {
 
   top.rst = 1;
   while (n -- > 0) single_cycle();

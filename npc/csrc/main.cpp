@@ -13,6 +13,9 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 int main(int argc, char *argv[]) {
   // nvboard_bind_all_pins(&top);
   // nvboard_init();
+
+  init_wave();
+
   reset(3);
 
 
