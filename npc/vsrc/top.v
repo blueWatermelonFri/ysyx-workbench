@@ -285,7 +285,7 @@ module ysyx_24100005_top(
   // assign wmask = 8'b00000001;
   // memory access
   always @(wen) begin
-    $display("rs1data = %h, ", wen);
+    $display("wen = %h, ", wen);
 
     // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
