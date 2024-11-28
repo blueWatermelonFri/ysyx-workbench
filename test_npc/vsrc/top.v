@@ -33,24 +33,6 @@ module ysyx_24100005_top(
   wire [31:0] add_input2;
 
 
-  // PC更新
-  ysyx_24100005_Reg #(32, 32'h8000_0000) i0 (.clk(clk),
-                                              .rst(rst), 
-                                              .din(DPC), 
-                                              .dout(PC), 
-                                              .wen(1'b1));
-  // static next pc
-  assign SPC = PC + 32'h0000_0004;
-
-  assign rs1 = inst[19:15];
-  assign rs2 = inst[24:20];
-  assign rd = inst[11:7];
-  assign funct3 = inst[14:12];
-  assign wdata = 0;
-
-
-  assign DPC = 32'h8000_0000;
-
   // assign inst = 32'h0;
   assign add_input1 = 32'h0;
   assign add_input2 = 32'h0;
