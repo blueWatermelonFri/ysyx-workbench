@@ -35,6 +35,8 @@ module ysyx_24100005_top(
 
   always @(*) begin
     $display("vaild = %h\n", vaild);
+    $display("inst = %h\n", inst);
+
     if (vaild) begin // 有读写请求时 
       mem_rdata = npcmem_read(0);
     end

@@ -47,6 +47,4 @@ int main(int argc, char *argv[]) {
   reset(3);
 
   tfp->close();
-
-
 }
