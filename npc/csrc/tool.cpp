@@ -10,12 +10,9 @@
 #define INST_LEN 4 //指令的长度， 4字节
 static TOP_NAME top;
 
-
 // VerilatedVcdC* tfp = new VerilatedVcdC;
 // topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
-
-
-
+const std::unique_ptr<VerilatedContext> contextp{new VerilatedContext};
 
 static int state = 1;
 unsigned int pre_pc;
@@ -115,7 +112,6 @@ extern "C" void ebreak() {
 }
 
 extern "C" int npcmem_read(int raddr) {
-  printf("xxxxxxxxxxxxxxxxxxxxxxxx\n");
   uint32_t aligned_addr = raddr & (~0x3u);
   return pmem_read(aligned_addr);
 }
@@ -129,11 +125,22 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 }
 
 void single_cycle() {
+
+  contextp->timeInc(1);
   top.clk = 0; top.eval();
+
+  contextp->timeInc(1);
   top.clk = 1; top.eval();
+
 }
 
 void reset(int n) {
+  
+  Verilated::traceEverOn(true);
+  VerilatedVcdC* tfp = new VerilatedVcdC;
+  top.trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
+  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
+  
   top.rst = 1;
   while (n -- > 0) single_cycle();
   top.rst = 0;
