@@ -20,24 +20,11 @@ module ysyx_24100005_top(
   assign addr = add_input1 + add_input2;
   assign opcode = inst[6:0];
 
-  // 判断指令是否有读写需求
-  ysyx_24100005_MuxKeyWithDefault #(1, 1, 1) Mux_read_mem (.out(vaild), 
-                                                              .key(0), 
-                                                              .default_out(1'b0), 
-                                                              .lut({
-                                                                    1'b0,  1'b1  // load
-                                                                    }));
+
 
   always @(*) begin
-    $display("vaild = %h\n", vaild);
     $display("inst = %h\n", inst);
 
-    if (vaild) begin // 有读写请求时 
-      mem_rdata = npcmem_read(0);
-    end
-    else begin
-      mem_rdata = 0;
-    end
   end
 
 endmodule
