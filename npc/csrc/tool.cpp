@@ -144,7 +144,7 @@ void init_wave(){
   tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
-  
+
 }
 
 void reset(int n) {
@@ -153,7 +153,6 @@ void reset(int n) {
   while (n -- > 0) single_cycle();
   top.rst = 0;
 
-  tfp->close();
 }
 
 void npc_execute_once(){
