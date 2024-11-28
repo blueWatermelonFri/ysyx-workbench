@@ -170,7 +170,6 @@ void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
       npc_execute_once();
     
-    end_wave();
 
 #if 1
     char logbuf[128];
@@ -228,6 +227,9 @@ void npc_execute(__uint64_t n){
 
       if(state == 0) break;
   }
+  
+  end_wave();
+
 }
 
 static long load_img(char* img_file) {
