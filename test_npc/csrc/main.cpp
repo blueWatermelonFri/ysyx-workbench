@@ -9,35 +9,6 @@ VerilatedContext* contextp = new VerilatedContext;
 VerilatedVcdC* tfp = NULL;
 static TOP_NAME top;
 
-void single_cycle() {
-
-  contextp->timeInc(1);
-  top.clk = 0; top.eval();
-  tfp->dump(contextp->time());
-
-  contextp->timeInc(1);
-  top.clk = 1; top.eval();
-  tfp->dump(contextp->time());
-
-}
-
-
-void reset(int n) {
-
-  top.rst = 1;
-  
-  contextp->timeInc(1);
-  top.clk = 0; top.eval();
-  tfp->dump(contextp->time());
-
-  contextp->timeInc(1);
-  top.clk = 1; top.eval();
-  tfp->dump(contextp->time());
-
-  top.rst = 0;
-
-}
-
 int main(int argc, char *argv[]) {
 
   contextp->traceEverOn(true);
@@ -45,7 +16,19 @@ int main(int argc, char *argv[]) {
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
   
-  reset(3);
+  top.rst = 1;
+  
+  contextp->timeInc(1);
+  top.clk = 0; 
+  top.eval();
+  tfp->dump(contextp->time());
+
+  contextp->timeInc(1);
+  top.clk = 1; 
+  top.eval();
+  tfp->dump(contextp->time());
+
+  top.rst = 0;
 
   tfp->close();
 }
