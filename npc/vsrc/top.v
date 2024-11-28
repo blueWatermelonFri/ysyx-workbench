@@ -286,7 +286,6 @@ module ysyx_24100005_top(
   // memory access
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
     $display("addintput1 = %h, ", add_input1);
-    $display("addintput2 = %h, ", add_input2);
 
     $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
