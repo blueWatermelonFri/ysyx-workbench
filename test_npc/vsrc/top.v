@@ -32,8 +32,6 @@ module ysyx_24100005_top(
                                                               .lut({
                                                                     1'b0,  1'b1  // load
                                                                     }));
-  // assign vaild = 1;
-  // assign addr = 0;
 
   always @(*) begin
     $display("vaild = %h\n", vaild);
