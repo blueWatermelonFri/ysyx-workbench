@@ -142,8 +142,8 @@ void reset(int n) {
   contextp = new VerilatedContext;
   tfp = new VerilatedVcdC;
   contextp->traceEverOn(true);
-  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
   top.trace(tfp, 0);
+  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
 
   top.rst = 1;
   while (n -- > 0) single_cycle();
