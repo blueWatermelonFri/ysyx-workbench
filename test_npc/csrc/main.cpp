@@ -28,7 +28,6 @@ int main(int argc, char *argv[]) {
   top.eval();
   tfp->dump(contextp->time());
 
-  top.rst = 0;
 
   tfp->close();
 }
