@@ -14,23 +14,8 @@ module ysyx_24100005_top(
   wire [31:0] add_input1;
   wire [31:0] add_input2;
 
-  // assign inst = 32'h0;
-  assign add_input1 = 32'h0;
-  assign add_input2 = 32'h0;
-  assign addr = add_input1 + add_input2;
-  assign opcode = inst[6:0];
-
-  // 判断指令是否有读写需求
-  ysyx_24100005_MuxKeyWithDefault #(1, 1, 1) Mux_read_mem (.out(vaild), 
-                                                           .key(0), 
-                                                           .default_out(1'b0), 
-                                                           .lut({
-                                                                    1'b0,  1'b1  // load
-                                                                    }));
-
   always @(*) begin
     $display("inst = %h\n", inst);
-
   end
 
 endmodule
