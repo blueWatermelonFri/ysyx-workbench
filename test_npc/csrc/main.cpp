@@ -9,11 +9,6 @@ VerilatedContext* contextp = new VerilatedContext;
 VerilatedVcdC* tfp = NULL;
 static TOP_NAME top;
 
-extern "C" int npcmem_read(int raddr) {
-  uint32_t aligned_addr = raddr & (~0x3u);
-  return 1;
-}
-
 void single_cycle() {
 
   contextp->timeInc(1);
