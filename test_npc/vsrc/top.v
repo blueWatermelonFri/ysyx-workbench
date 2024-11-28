@@ -15,8 +15,7 @@ module ysyx_24100005_top(
   wire [31:0] add_input2;
 
   always @(*) begin
-    $display("inst = %h\n", inst);
-    $display("inst = %h\n", clk);
+    $display("inst = %h\n", rst);
     
   end
 
