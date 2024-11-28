@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
   
+  top.rst = 1;
   
   contextp->timeInc(1);
   top.eval();
