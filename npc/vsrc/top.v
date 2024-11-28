@@ -285,6 +285,9 @@ module ysyx_24100005_top(
   // assign wmask = 8'b00000001;
   // memory access
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
+    $display("addintput1 = %h, ", add_input1);
+    $display("addintput2 = %h, ", add_input2);
+
     $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
