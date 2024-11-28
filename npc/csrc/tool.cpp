@@ -12,7 +12,8 @@ static TOP_NAME top;
 
 // VerilatedVcdC* tfp = new VerilatedVcdC;
 // topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
-const std::unique_ptr<VerilatedContext> contextp{new VerilatedContext};
+VerilatedContext* contextp = NULL;
+VerilatedVcdC* tfp = NULL;
 
 static int state = 1;
 unsigned int pre_pc;
@@ -128,22 +129,27 @@ void single_cycle() {
 
   contextp->timeInc(1);
   top.clk = 0; top.eval();
+  tfp->dump(contextp->time());
 
   contextp->timeInc(1);
   top.clk = 1; top.eval();
+  tfp->dump(contextp->time());
 
 }
 
 void reset(int n) {
   
-  Verilated::traceEverOn(true);
-  VerilatedVcdC* tfp = new VerilatedVcdC;
-  top.trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
+  contextp = new VerilatedContext;
+  tfp = new VerilatedVcdC;
+  contextp->traceEverOn(true);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
-  
+  top.trace(tfp, 0);
+
   top.rst = 1;
   while (n -- > 0) single_cycle();
   top.rst = 0;
+
+  tfp->close();
 }
 
 void npc_execute_once(){
