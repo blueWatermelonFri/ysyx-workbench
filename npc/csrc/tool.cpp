@@ -8,12 +8,14 @@
 #define BITMASK(bits) ((1ull << (bits)) - 1)
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
 #define INST_LEN 4 //指令的长度， 4字节
-static TOP_NAME top;
 
 // VerilatedVcdC* tfp = new VerilatedVcdC;
 // topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
+
+static TOP_NAME top;
+
 
 static int state = 1;
 unsigned int pre_pc;
@@ -144,7 +146,6 @@ void init_wave(){
   tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
-
 }
 
 void reset(int n) {
@@ -153,6 +154,7 @@ void reset(int n) {
   while (n -- > 0) single_cycle();
   top.rst = 0;
 
+  tfp->close();
 }
 
 void npc_execute_once(){
