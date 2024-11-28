@@ -26,11 +26,11 @@ module ysyx_24100005_top(
   assign opcode = inst[6:0];
 
   // 判断指令是否有读写需求
-  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(vaild), 
-                                                              .key(opcode), 
+  ysyx_24100005_MuxKeyWithDefault #(1, 1, 1) Mux_read_mem (.out(vaild), 
+                                                              .key(0), 
                                                               .default_out(1'b0), 
                                                               .lut({
-                                                                    7'b000_0011,  1'b1  // load
+                                                                    1'b0,  1'b1  // load
                                                                     }));
   // assign vaild = 1;
   // assign addr = 0;
@@ -44,8 +44,6 @@ module ysyx_24100005_top(
       mem_rdata = 0;
     end
   end
-
-
 
 endmodule
 
