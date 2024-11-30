@@ -291,6 +291,8 @@ module ysyx_24100005_top(
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
     $display("rs1 = %h, ", rs1);
+    $display("rd = %h, ", rd);
+
     $display("add_input1 = %h, ", add_input1);
     $display("add_input2 = %h, ", add_input2);
       mem_rdata = npcmem_read(add_output);
