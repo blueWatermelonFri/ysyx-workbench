@@ -294,12 +294,12 @@ module ysyx_24100005_top(
     $display("rd = %h, ", rd);
     $display("wdata = %h, ", wdata);
     $display("wen = %h, ", wen);
-    $display("mem_extract = %h, ", mem_extract);
 
 
     $display("add_input1 = %h, ", add_input1);
     $display("add_input2 = %h, ", add_input2);
       mem_rdata = npcmem_read(add_output);
+    $display("mem_rdata = %h, ", mem_rdata);
       if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
       end
