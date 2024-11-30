@@ -252,15 +252,15 @@ module ysyx_24100005_top(
                                                           .out(mem_lh_sext));
 
 // memory read no extent  
-  ysyx_24100005_MuxKeyWithDefault #(3, 3, 32) Mux_no_sext(.key(funct3),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                3'b010, mem_rdata, // lw
-                                                                3'b011, mem_rdata, // lbu
-                                                                3'b100, mem_rdata  // lhu
-                                                              }),
-                                                          .out(mem_no_sext));
-
+  // ysyx_24100005_MuxKeyWithDefault #(3, 3, 32) Mux_no_sext(.key(funct3),
+  //                                                         .default_out({32'h0000_0000}),
+  //                                                         .lut({
+  //                                                               3'b010, mem_rdata, // lw
+  //                                                               3'b011, mem_rdata, // lbu
+  //                                                               3'b100, mem_rdata  // lhu
+  //                                                             }),
+  //                                                         .out(mem_no_sext));
+  assign mem_no_sext = mem_rdata;
   // memory read res 
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
                                                           .default_out({32'h0000_0000}),
