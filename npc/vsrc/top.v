@@ -294,6 +294,7 @@ module ysyx_24100005_top(
     $display("rd = %h, ", rd);
     $display("wdata = %h, ", wdata);
     $display("wen = %h, ", wen);
+    $display("mem_read_res = %h, ", mem_read_res);
 
 
 
