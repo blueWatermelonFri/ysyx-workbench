@@ -168,6 +168,7 @@ void npc_execute_once(){
     // printf("top.pc %x\n", top.PC);
     pre_pc = top.PC;
     single_cycle();
+    printf("over a cycle\n");
 }
 
 void npc_execute(__uint64_t n){
