@@ -221,7 +221,7 @@ module ysyx_24100005_top(
                                                                 5'b001_00, {16'h000000, mem_rdata[15:0]},
                                                                 5'b001_10, {16'h000000, mem_rdata[31:16]},
                                                                 // lw
-                                                                5'b010_00, mem_rdata[31:0],
+                                                                5'b010_00, 32'h80000220,
                                                                 // lbu
                                                                 5'b011_00, {24'h000000, mem_rdata[7:0]},
                                                                 5'b011_01, {24'h000000, mem_rdata[15:8]},
@@ -301,7 +301,7 @@ module ysyx_24100005_top(
     $display("add_input2 = %h, ", add_input2);
       mem_rdata = npcmem_read(add_output);
     $display("mem_extract = %h, ", mem_extract);
-    $display("mem_rdata = %h, ", mem_rdata);
+    $display("mem_rdata = %h, ", mem_extract);
     
       if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
