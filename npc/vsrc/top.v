@@ -294,7 +294,7 @@ module ysyx_24100005_top(
     $display("rd = %h, ", rd);
     $display("wdata = %h, ", wdata);
     $display("wen = %h, ", wen);
-    $display("{funct3, add_output[1:0]} = %h, ", {funct3, add_output[1:0]});
+    $display("{funct3, add_output[1:0]} = %b, ", {funct3, add_output[1:0]});
     $display("mem_extract = %h, ", mem_extract);
 
 
