@@ -104,6 +104,7 @@ static inline void host_write(void *addr, int wdata, char wmask) {
 
 static uint32_t pmem_read(uint32_t addr) {
   uint32_t ret = host_read(guest_to_host(addr));
+  printf("read data %x\n", ret);
   return ret;
 }
 
