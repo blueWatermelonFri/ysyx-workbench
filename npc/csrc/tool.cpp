@@ -164,6 +164,7 @@ void reset(int n) {
 }
 
 void npc_execute_once(){
+    printf("begin a cycle\n");
     top.inst = pmem_read(top.PC);
     // printf("top.pc %x\n", top.PC);
     pre_pc = top.PC;
