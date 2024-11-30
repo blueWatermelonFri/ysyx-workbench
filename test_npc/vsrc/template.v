@@ -82,12 +82,13 @@ module ysyx_24100005_RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
   always @(posedge clk) begin
     if (wen && waddr != 5'd0) rf[waddr] <= wdata;
-    // $display("xxxx=%h, ", rf[5'b00001]);
-    // $display("**************************************");
+    $display("reg waddr =%h, ", waddr);
+    $display("reg wdata =%h, ", wdata);
   end
 
-  assign rs1data = wen?(rs1addr == 0 ? 32'd0: rf[rs1addr]) : 32'd0;
-  assign rs2data = wen?(rs2addr == 0 ? 32'd0: rf[rs2addr]) : 32'd0;
+  // 永远都读
+  assign rs1data = (rs1addr == 0 ? 32'd0: rf[rs1addr]);
+  assign rs2data = (rs2addr == 0 ? 32'd0: rf[rs2addr]);
 
 endmodule
 
