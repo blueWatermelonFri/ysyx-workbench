@@ -311,7 +311,7 @@ module ysyx_24100005_top(
     $display("add_input1 = %h, ", add_input1);
     $display("add_input2 = %h, ", add_input2);
       mem_rdata = npcmem_read(add_output);
-    $display("mem_extract = %h, ", mem_extract);
+    $display("mem_no_sext = %h, ", mem_no_sext);
     $display("mem_rdata = %h, ", mem_rdata);
     
       if (write_mem) begin // 有写请求时
