@@ -23,7 +23,6 @@ module ysyx_24100005_top(
 
 
   // for mem read extract and sext
-  reg [31:0] mem_rdata;
   wire [31:0] mem_read_res;
   wire [31:0] mem_lh_sext;
   wire [31:0] mem_lb_sext;
@@ -46,15 +45,17 @@ module ysyx_24100005_top(
   .rs2data(rs2data)
   );
 
-  assign mem_no_sext = mem_rdata;
+  wire [31:0] wire_var;
+  reg [31:0] reg_var;
+  assign wire_var = reg_var;
 
-  always @(inst, read_mem) begin
+  always @(inst) begin
+      reg_var = npcmem_read(inst);
+      $display("reg var = %h\n", reg_var);
+      $display("wire var = %h\n", wire_var);
 
-      mem_rdata = npcmem_read(inst);
-      $display("mem_no_sext = %h, ", mem_no_sext);
-      $display("mem_rdata = %h, ", mem_rdata);
-    
   end
+
   // ebreak
 
 
