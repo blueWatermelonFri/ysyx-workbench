@@ -118,9 +118,7 @@ extern "C" void ebreak() {
 }
 
 extern "C" int npcmem_read(int raddr) {
-  printf("read_addr = %x\n", raddr);
-  uint32_t aligned_addr = raddr & (~0x3u);
-  return pmem_read(aligned_addr);
+  return raddr;
 }
 
 extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
@@ -135,11 +133,11 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 void single_cycle() {
 
   contextp->timeInc(1);
-  top.clk = 1; top.eval();
+  top.clk = 1; top.inst = 0x80000001, top.eval();
   tfp->dump(contextp->time());
 
   contextp->timeInc(1);
-  top.clk = 0; top.eval();
+  top.clk = 0; top.inst = 0x80000000, top.eval();
   tfp->dump(contextp->time());
 
 }
