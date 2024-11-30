@@ -65,10 +65,11 @@ bool isa_difftest_checkregs(CPU_state *ref_r) {
   return true;
 }
 
-static void checkregs(CPU_state *ref) {
+static int checkregs(CPU_state *ref) {
   if (!isa_difftest_checkregs(ref)) {
     npc_reg_display();
   }
+    return 1;
 }
 
 void difftest_step() {
