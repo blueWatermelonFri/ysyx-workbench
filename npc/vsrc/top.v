@@ -52,11 +52,11 @@ module ysyx_24100005_top(
   // 初始化寄存器堆
   ysyx_24100005_RegisterFile #(5, 32) RegFile(
   .clk(clk),
+  .wen(wen),
   .wdata(wdata),
   .waddr(rd),
   .rs1addr(rs1),
   .rs2addr(rs2),
-  .wen(wen),
   .rs1data(rs1data),
   .rs2data(rs2data)
   );
