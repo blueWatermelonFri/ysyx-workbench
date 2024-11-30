@@ -255,9 +255,9 @@ module ysyx_24100005_top(
   ysyx_24100005_MuxKeyWithDefault #(3, 3, 32) Mux_no_sext(.key(funct3),
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
-                                                                3'b010, mem_extract, // lw
-                                                                3'b011, mem_extract, // lbu
-                                                                3'b100, mem_extract  // lhu
+                                                                3'b010, mem_rdata, // lw
+                                                                3'b011, mem_rdata, // lbu
+                                                                3'b100, mem_rdata  // lhu
                                                               }),
                                                           .out(mem_no_sext));
 
