@@ -210,7 +210,7 @@ module ysyx_24100005_top(
 
   // memory read extract 通过阅读汇编知道，lb地址是字节对齐，lh地址是双字节对齐，lw地址是四字节对齐
   ysyx_24100005_MuxKeyWithDefault #(13, 5, 32) Mux_mem_read_extract(.key({funct3, add_output[1:0]}),
-                                                          .default_out(mem_rdata),
+                                                          .default_out({32'h0000_0000}),
                                                           .lut({
                                                                 // lb
                                                                 5'b000_00, {24'h000000, mem_rdata[7:0]},
@@ -295,12 +295,12 @@ module ysyx_24100005_top(
     $display("wdata = %h, ", wdata);
     $display("wen = %h, ", wen);
     $display("{funct3, add_output[1:0]} = %b, ", {funct3, add_output[1:0]});
-    $display("mem_extract = %h, ", mem_extract);
 
 
     $display("add_input1 = %h, ", add_input1);
     $display("add_input2 = %h, ", add_input2);
       mem_rdata = npcmem_read(add_output);
+    $display("mem_extract = %h, ", mem_extract);
       if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
       end
