@@ -25,6 +25,7 @@ module ysyx_24100005_top(
   wire [31:0] mem_read_res;
   wire [31:0] mem_lh_sext;
   wire [31:0] mem_lb_sext;
+  wire [31:0] mem_no_sext;
   wire [31:0] mem_extract;
 
   // for mem write extract and sext
@@ -250,15 +251,25 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(mem_lh_sext));
 
+// memory read no extent  
+  ysyx_24100005_MuxKeyWithDefault #(3, 3, 32) Mux_no_sext(.key(funct3),
+                                                          .default_out({32'h0000_0000}),
+                                                          .lut({
+                                                                3'b010, mem_extract, // lw
+                                                                3'b011, mem_extract, // lbu
+                                                                3'b100, mem_extract  // lhu
+                                                              }),
+                                                          .out(mem_no_sext));
+
   // memory read res 
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
                                                                 3'b000, mem_lb_sext, // lb
                                                                 3'b001, mem_lh_sext, // lh
-                                                                3'b010, mem_extract, // lw
-                                                                3'b011, mem_extract, // lbu
-                                                                3'b100, mem_extract  // lhu
+                                                                3'b010, mem_no_sext, // lw
+                                                                3'b011, mem_no_sext, // lbu
+                                                                3'b100, mem_no_sext  // lhu
                                                               }),
                                                           .out(mem_read_res));
   // assign mem_read_res = 32'h0000_0001;
