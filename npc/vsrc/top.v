@@ -301,6 +301,8 @@ module ysyx_24100005_top(
     $display("add_input2 = %h, ", add_input2);
       mem_rdata = npcmem_read(add_output);
     $display("mem_extract = %h, ", mem_extract);
+    $display("mem_rdata = %h, ", mem_rdata);
+    
       if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
       end
