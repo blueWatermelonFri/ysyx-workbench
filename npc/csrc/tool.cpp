@@ -225,7 +225,7 @@ void npc_execute(__uint64_t n){
   }
 #endif
 
-#if 1
+#if 0
   difftest_step();
 #endif
 
