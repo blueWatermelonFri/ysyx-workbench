@@ -86,8 +86,8 @@ module ysyx_24100005_RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
     // $display("**************************************");
   end
 
-  assign rs1data = wen?(rs1addr == 0 ? 32'd0: rf[rs1addr]) : 32'd0;
-  assign rs2data = wen?(rs2addr == 0 ? 32'd0: rf[rs2addr]) : 32'd0;
+  assign rs1data = (rs1addr == 0 ? 32'd0: rf[rs1addr]);
+  assign rs2data = (rs2addr == 0 ? 32'd0: rf[rs2addr]);
 
 endmodule
 
