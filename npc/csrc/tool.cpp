@@ -126,6 +126,7 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   uint32_t aligned_addr = waddr & (~0x3u);
+  printf("aligned_addr = %x\n", aligned_addr);
   return pmem_write(aligned_addr, wdata, wmask);
 }
 
