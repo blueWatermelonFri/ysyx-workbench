@@ -279,16 +279,14 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(wmask));
 
-// 1. 把read换为tmp就不会段错误了
-// 2. 每一个周期会打印好几次
-// 3. 尝试一个最小的可复现demo
   // assign wmask = 8'b00000001;
   // memory access
+  // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
+  // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
+  // 那为什么一个周期的第一eval为上升沿，rs1addr和rs1data同时变化，add_output也会变化两次
   always @(rs1data) begin
     $display("rs1addr = %h, ", rs1);
     $display("rs1data = %h, ", rs1data);
-
-
     // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
     if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
