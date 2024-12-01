@@ -289,9 +289,8 @@ module ysyx_24100005_top(
   always @(*) begin
     // $display("rs1addr = %h, ", rs1);
     // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
-    if (read_mem && !rst) begin 
-
-    $display("add_output = %h, ", add_output);
+    if (read_mem && rst) begin 
+      $display("add_output = %h, ", add_output);
       mem_rdata = npcmem_read(add_output);
     end
     else begin 
