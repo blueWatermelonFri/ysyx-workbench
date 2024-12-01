@@ -298,7 +298,6 @@ module ysyx_24100005_top(
   
   // always @( mem_no_sext) begin
   //   $display("mem_no_sext = %h, ", mem_no_sext);
-    
   // end
 
 
@@ -311,7 +310,7 @@ module ysyx_24100005_top(
 
       mem_rdata = npcmem_read(add_output);
     end
-    else begin
+    else begin 
       mem_rdata = 0;
     end
     
