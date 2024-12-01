@@ -13,10 +13,13 @@ int main(int argc, char *argv[]) {
 
   reset(3);
 
-  init_img();
+  int img_size = init_img();
 
   init_disasm("riscv32-pc-linux-gnu");
   printf("disasm init success\n");
+
+  init_difftest(argv[3], img_size, 1);
+  printf("difftest init success\n");
 
   npc_sdb_mainloop();
 

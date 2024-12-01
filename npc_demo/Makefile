@@ -48,8 +48,11 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 				-I/home/myuser/ysyx/ysyx-workbench/npc_demo/vsrc
 
 
+IMG ?= 
+ELF ?= 
+REF ?= /home/myuser/ysyx/ysyx-workbench/nemu/build/riscv32-nemu-interpreter-so
 
-NPC_EXEC := $(BIN)
+NPC_EXEC := $(BIN) $(IMG) $(ELF) $(REF)
 
 sim:$(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!

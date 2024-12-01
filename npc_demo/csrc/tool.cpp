@@ -283,6 +283,9 @@ void npc_execute(__uint64_t n){
   }
 #endif
 
+#if 1
+  difftest_step();
+#endif
 
       if(state == 0) break;
   }
@@ -295,5 +298,5 @@ void npc_execute(__uint64_t n){
 int init_img(){
 
   memcpy(guest_to_host(0x80000000), img, sizeof(img));
-  return 0;
+  return sizeof(img);
 }
