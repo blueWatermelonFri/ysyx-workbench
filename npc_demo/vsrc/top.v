@@ -250,15 +250,6 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(mem_lh_sext));
 
-// memory read no extent  
-  // ysyx_24100005_MuxKeyWithDefault #(3, 3, 32) Mux_no_sext(.key(funct3),
-  //                                                         .default_out({32'h0000_0000}),
-  //                                                         .lut({
-  //                                                               3'b010, mem_rdata, // lw
-  //                                                               3'b011, mem_rdata, // lbu
-  //                                                               3'b100, mem_rdata  // lhu
-  //                                                             }),
-  //                                                         .out(mem_no_sext));
   // memory read res 
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
                                                           .default_out({32'h0000_0000}),
@@ -288,11 +279,6 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(wmask));
 
-  // assign wmask = 8'b00000001;
-  // memory access
-  // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
-  // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
-  // 那为什么一个周期的第一eval为上升沿，rs1addr和rs1data同时变化，add_output也会变化两次
   assign mem_no_sext = mem_rdata;
   
   // always @( mem_no_sext) begin
@@ -318,57 +304,11 @@ module ysyx_24100005_top(
       end
   end
 
-  // // ebreak
-  // always @(*) begin
-  //   if(opcode == 7'b1110011) begin
-  //     ebreak();
-  //   end
-  // end
-
-  // always @(posedge clk) begin
-  //   $display("inst=%h, ", inst);
-  //   $display("tmp=%h, ", tmp);
-  //   $display("Opcode=%h, ", opcode);
-  //   $display("add1=%h, ", add_input1);
-  //   $display("add2=%h, ", add_input2);
-  // end
+  // ebreak
+  always @(*) begin
+    if(opcode == 7'b1110011) begin
+      ebreak();
+    end
+  end
 
 endmodule
-
-// add
-// sub
-// xor
-// or
-// and
-// sll
-// srl
-// sra
-// slt
-// sltu
-// addi
-// xori
-// ori
-// andi   1
-// slli
-// srli
-// srai
-// slti
-// sltiu
-// lb
-// lh
-// lw
-// lbu
-// lhu
-// sb
-// sh
-// sw
-// beq
-// bne
-// blt
-// bge
-// bltu
-// bgeu
-// jal    1
-// jalr   1
-// lui
-// auipc  1
