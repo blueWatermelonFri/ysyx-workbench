@@ -49,7 +49,7 @@ module ysyx_24100005_top(
   reg [31:0] reg_var;
   assign wire_var = npcmem_read(inst);
 
-  always @(inst) begin
+  always @(inst, wire_var) begin
       reg_var = npcmem_read(inst);
 
       $display("reg var = %h\n", reg_var);
