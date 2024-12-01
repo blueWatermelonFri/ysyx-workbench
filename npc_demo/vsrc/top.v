@@ -12,43 +12,11 @@ module ysyx_24100005_top(
   wire [31:0] SPC;
   wire [31:0] DPC;
 
-  wire wen; // reg write
-  wire read_mem; // mem read
-  wire write_mem; // mem write
-  wire [31:0] wdata; // reg write
   wire [31:0] rs1data; // reg read rs1
   wire [31:0] rs2data; // reg read rs2
 
-
-  // for mem read extract and sext
-  reg [31:0] mem_rdata;
-  wire [31:0] mem_read_res;
-  wire [31:0] mem_lh_sext;
-  wire [31:0] mem_lb_sext;
-  wire [31:0] mem_no_sext;
-  wire [31:0] mem_extract;
-
-  // for mem write extract and sext
-  wire [7:0] wmask;
-  wire [31:0] wdata;
-
   wire [6:0] opcode;
-  wire [2:0] funct3;
-  wire [4:0] rs1;
-  wire [4:0] rs2;
-  wire [11:0] imm;
-  wire [4:0] rd;
 
-  wire [31:0] immI;
-  wire [31:0] immJ;
-  wire [31:0] immU;
-  wire [31:0] immS;
-  wire [31:0] shiftimmU;
-
-  // adder input output
-  wire [31:0] add_output;
-  wire [31:0] add_input1;
-  wire [31:0] add_input2;
 
   // 初始化寄存器堆
   ysyx_24100005_RegisterFile #(5, 32) RegFile(
@@ -71,35 +39,11 @@ module ysyx_24100005_top(
   // static next pc
   assign SPC = PC + 32'h0000_0004;
 
-  // R | I | S | B type
-  assign rs1 = inst[19:15];
-
-  // R | S | B type
-  assign rs2 = inst[24:20];
-
-  // decode 
   assign opcode = inst[6:0];
-  assign rd = inst[11:7];
-
-  // I type instruction
-  assign funct3 = inst[14:12];
-  // imm extension
-
-  // U type instruction
-  // imm extension
-
-  // U type imm shift
-
-
-
-
-
-  assign add_output = add_input1 + add_input2;
-
 
 
   // mux for update PC
-  ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_PC (.out(DPC), 
+  ysyx_24100005_MuxKeyWithDefault #(5, 7, 32) Mux_PC (.out(DPC), 
                                                       .key(opcode), 
                                                       .default_out(SPC), 
                                                       .lut({
@@ -107,15 +51,8 @@ module ysyx_24100005_top(
                                                             7'b001_0011, SPC,         // partial I type
                                                             7'b000_0011, SPC,         // load
                                                             7'b010_0011, SPC,         // store
-                                                            7'b011_0111, SPC,         // U type
-                                                            7'b110_0011, add_output, // B type
-                                                            7'b110_1111, add_output,  // jal
-                                                            7'b110_0111, add_output  // jalr                                                            
+                                                            7'b011_0111, SPC         // U type
                                                             }));
-
-
-
-
 
   // ebreak
   always @(*) begin
