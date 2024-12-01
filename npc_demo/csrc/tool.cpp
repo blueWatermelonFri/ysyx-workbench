@@ -191,7 +191,6 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 
 void single_cycle() {
 
-  
   top.clk = 1; top.eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
@@ -208,7 +207,7 @@ void init_wave(){
   contextp->traceEverOn(true);
   tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
-  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
+  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc_demo/simx.vcd");
 }
 
 void end_wave(){  
