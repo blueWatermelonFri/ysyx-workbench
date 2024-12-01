@@ -47,7 +47,7 @@ module ysyx_24100005_top(
 
   wire [31:0] wire_var;
   reg [31:0] reg_var;
-  assign wire_var = npcmem_read(inst);
+  assign wire_var = reg_var;
 
   always @(inst, wire_var) begin
       reg_var = npcmem_read(inst);
