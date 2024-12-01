@@ -76,6 +76,7 @@ CPU_state cpu;
 void update_cpu(){
   for(int i = 0; i<16; i++){
     cpu.gpr[i] = top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i];
+    printf("%d = %x\n",i,  top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i]);
   }
   cpu.pc = top.PC;
 }
