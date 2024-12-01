@@ -18,8 +18,7 @@ int main(int argc, char *argv[]) {
   init_disasm("riscv32-pc-linux-gnu");
   printf("disasm init success\n");
 
-  printf("%s\n", argv[3]);
-  init_difftest(argv[3], img_size, 1);
+  init_difftest(argv[1], img_size, 1);
 
   printf("difftest init success\n");
 
