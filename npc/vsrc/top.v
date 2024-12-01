@@ -296,9 +296,9 @@ module ysyx_24100005_top(
   // 那为什么一个周期的第一eval为上升沿，rs1addr和rs1data同时变化，add_output也会变化两次
   assign mem_no_sext = mem_rdata;
   
-  // always @( mem_no_sext) begin
-  //   $display("mem_no_sext = %h, ", mem_no_sext);
-  // end
+  always @( mem_no_sext) begin
+    $display("mem_no_sext = %h, ", mem_no_sext);
+  end
 
 
   always @(add_output, read_mem, write_mem, rs2data, wmask) begin
