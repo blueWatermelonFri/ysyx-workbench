@@ -135,11 +135,11 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 void single_cycle() {
 
   contextp->timeInc(1);
-  top.clk = 0; top.eval();
+  top.clk = 1; top.eval();
   tfp->dump(contextp->time());
 
   contextp->timeInc(1);
-  top.clk = 1; top.eval();
+  top.clk = 0; top.eval();
   tfp->dump(contextp->time());
 
 }
