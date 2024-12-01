@@ -134,12 +134,14 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 
 void single_cycle() {
 
-  contextp->timeInc(1);
+  
   top.clk = 1; top.eval();
+  contextp->timeInc(1);
   tfp->dump(contextp->time());
 
-  contextp->timeInc(1);
+  
   top.clk = 0; top.eval();
+  contextp->timeInc(1);
   tfp->dump(contextp->time());
 
 }
