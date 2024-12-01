@@ -39,7 +39,6 @@ module ysyx_24100005_top(
 
   assign opcode = inst[6:0];
 
-
   // mux for update PC
   ysyx_24100005_MuxKeyWithDefault #(5, 7, 32) Mux_PC (.out(DPC), 
                                                       .key(opcode), 
