@@ -48,7 +48,7 @@ module ysyx_24100005_top(
                                                             7'b001_0011, SPC,         // partial I type
                                                             7'b000_0011, SPC,         // load
                                                             7'b010_0011, SPC,         // store
-                                                            7'b011_0111, SPC         // U type
+                                                            7'b011_0111, SPC          // U type
                                                             }));
 
   // ebreak
