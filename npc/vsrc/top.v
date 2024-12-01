@@ -301,7 +301,7 @@ module ysyx_24100005_top(
   // end
 
 
-  always @(add_output, read_mem, write_mem, rs2data, wmask) begin
+  always @(*) begin
     // $display("rs1addr = %h, ", rs1);
     // $display("rs1data = %h, ", rs1data);
     // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
