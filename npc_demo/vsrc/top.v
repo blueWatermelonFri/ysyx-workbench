@@ -288,20 +288,6 @@ module ysyx_24100005_top(
   // end
 
 
-  always @(add_output, mem_rdata, rs2data, wmask) begin
-    // $display("rs1addr = %h, ", rs1);
-    // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
-    if (read_mem ) begin 
-      mem_rdata = npcmem_read(add_output);
-    end
-    else begin 
-      mem_rdata = 0;
-    end
-    
-    if (write_mem && !rst) begin // 有写请求时
-        npcmem_write(add_output, rs2data, wmask);
-      end
-  end
 
   // ebreak
   always @(*) begin
