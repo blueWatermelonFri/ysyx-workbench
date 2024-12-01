@@ -33,20 +33,77 @@ extern char ftrace_func_name[100][128];
 
 // dummy 
 static const uint32_t img [] = {
-	0x00000413,
-	0x00009117,
-	0xffc10113,
-	0x00c000ef,
-	0x00000513,
-	0x00008067,
-	0xff410113,
-	0x00000517,
-	0x01c50513,
-	0x00112423,
-	0xfe9ff0ef,
-	0x00050513,
-	0x00100073,
-	0x0000006f
+    0x00000413,
+    0x00009117,
+    0xffc10113,
+    0x0f0000ef,
+    0x00050463,
+    0x00008067,
+    0xff410113,
+    0x00100513,
+    0x00112423,
+    0x0cc000ef,
+    0xfe410113,
+    0x00000797,
+    0x0f478793,
+    0x00f12423,
+    0x00000797,
+    0x1e878793,
+    0x00112c23,
+    0x00812a23,
+    0x00912823,
+    0x00f12223,
+    0x00012623,
+    0x00412783,
+    0x00812403,
+    0x00000497,
+    0x1c448493,
+    0x0007a783,
+    0x00f12023,
+    0x00012783,
+    0x0004a503,
+    0x00042683,
+    0x00448493,
+    0x00a78533,
+    0x40d50533,
+    0x00153513,
+    0xf89ff0ef,
+    0x00000797,
+    0x1b478793,
+    0x00440413,
+    0xfc979ae3,
+    0x00c12783,
+    0x00100513,
+    0x00878413,
+    0x00812623,
+    0xf65ff0ef,
+    0x00412783,
+    0x00478793,
+    0x00f12223,
+    0x00812783,
+    0x02078793,
+    0x00f12423,
+    0x04000793,
+    0xf8f414e3,
+    0x00100513,
+    0xf3dff0ef,
+    0x01812083,
+    0x01412403,
+    0x01012483,
+    0x00000513,
+    0x01c10113,
+    0x00008067,
+    0x00050513,
+    0x00100073,
+    0x0000006f,
+    0xff410113,
+    0x00000517,
+    0x01c50513,
+    0x00112423,
+    0xf1dff0ef,
+    0x00050513,
+    0x00100073,
+    0x0000006f
 };
 
 typedef struct {
@@ -74,7 +131,7 @@ const char *regs[] = {
 
 CPU_state cpu;
 void update_cpu(){
-  for(int i = 0; i<16; i++){
+  for(int i = 0; i<32; i++){
     cpu.gpr[i] = top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i];
   }
   cpu.pc = top.PC;
@@ -118,7 +175,9 @@ extern "C" void ebreak() {
 }
 
 extern "C" int npcmem_read(int raddr) {
-  return raddr;
+  printf("read_addr = %x\n", raddr);
+  uint32_t aligned_addr = raddr & (~0x3u);
+  return pmem_read(aligned_addr);
 }
 
 extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
@@ -132,12 +191,14 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 
 void single_cycle() {
 
+  
+  top.clk = 1; top.eval();
   contextp->timeInc(1);
-  top.clk = 1; top.inst = 0x80000001, top.eval();
   tfp->dump(contextp->time());
 
+  
+  top.clk = 0; top.eval();
   contextp->timeInc(1);
-  top.clk = 0; top.inst = 0x80000000, top.eval();
   tfp->dump(contextp->time());
 
 }
@@ -155,14 +216,34 @@ void end_wave(){
 }
 void reset(int n) {
 
-  top.rst = 1;
-  while (n -- > 0) single_cycle();
-  top.rst = 0;
+  // top.rst = 1;
+  // while (n -- > 0) single_cycle();
+  // top.rst = 0;
 
+  top.rst = 1;
+  top.clk = 0;
+  top.eval();
+  contextp->timeInc(1);
+  tfp->dump(contextp->time());  
+
+  while(n -- ){
+    top.clk = 1;
+    top.eval();
+    contextp->timeInc(1);
+    tfp->dump(contextp->time());  
+    if(n==0){
+      top.rst = 0;
+    }
+    top.clk = 0;
+    top.eval();
+    contextp->timeInc(1);
+    tfp->dump(contextp->time());  
+  }
 }
 
 void npc_execute_once(){
     printf("begin a cycle\n");
+    top.clk = 1;
     top.inst = pmem_read(top.PC);
     // printf("top.pc %x\n", top.PC);
     pre_pc = top.PC;
@@ -234,33 +315,9 @@ void npc_execute(__uint64_t n){
 
 }
 
-static long load_img(char* img_file) {
-  if (img_file == NULL) {
-    printf("No image is given. Use the default build-in image.");
-    return 4096; // built-in image size
-  }
 
-  FILE *fp = fopen(img_file, "rb");
-  if(!fp){
-    printf("Can not open '%s'", img_file);
-  }
-
-  fseek(fp, 0, SEEK_END);
-  long size = ftell(fp);
-
-  printf("The image is %s, size = %ld\n", img_file, size);
-
-  fseek(fp, 0, SEEK_SET);
-  int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
-  assert(ret == 1);
-
-  fclose(fp);
-  return size;
-}
-
-int init_img(char* img_file){
+int init_img(){
 
   memcpy(guest_to_host(0x80000000), img, sizeof(img));
-  long img_size = load_img(img_file);
-  return img_size;
+  return 0;
 }

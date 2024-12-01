@@ -31,7 +31,7 @@ void init_wave();
 void end_wave();
 
 
-int init_img(char* img_file);
+int init_img();
 uint8_t* guest_to_host(uint32_t paddr);
 void npc_reg_display();
 
