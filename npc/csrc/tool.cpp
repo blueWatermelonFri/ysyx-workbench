@@ -136,10 +136,7 @@ void single_cycle() {
 
 
   top.clk = 1; 
-  printf("pc = %x\n", top.PC);
-  top.inst = pmem_read(top.PC);
-  // printf("top.pc %x\n", top.PC);
-  pre_pc = top.PC;
+
   top.eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
@@ -177,6 +174,10 @@ void reset(int n) {
 
 void npc_execute_once(){
     printf("begin a cycle\n");
+    printf("pc = %x\n", top.PC);
+    top.inst = pmem_read(top.PC);
+    // printf("top.pc %x\n", top.PC);
+    pre_pc = top.PC;
     single_cycle();
     printf("over a cycle\n");
 }
