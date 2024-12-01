@@ -159,10 +159,29 @@ void end_wave(){
 }
 void reset(int n) {
 
-  top.rst = 1;
-  while (n -- > 0) single_cycle();
-  top.rst = 0;
+  // top.rst = 1;
+  // while (n -- > 0) single_cycle();
+  // top.rst = 0;
 
+  top.rst = 1;
+  top.clk = 0;
+  top.eval();
+  contextp->timeInc(1);
+  tfp->dump(contextp->time());  
+
+  while(n -- ){
+    top.clk = 1;
+    top.eval();
+    contextp->timeInc(1);
+    tfp->dump(contextp->time());  
+    if(n==0){
+      top.rst = 0;
+    }
+    top.clk = 0;
+    top.eval();
+    contextp->timeInc(1);
+    tfp->dump(contextp->time());  
+  }
 }
 
 void npc_execute_once(){
