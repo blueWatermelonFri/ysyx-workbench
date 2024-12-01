@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 
   init_wave();
 
-  reset(1);
+  reset(2);
 
   int img_size = init_img();
 
