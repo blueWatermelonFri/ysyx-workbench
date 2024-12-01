@@ -37,7 +37,8 @@ static const uint32_t img [] = {
     0x00009117,
     0xffc10113,
     0xffc10113,
-    0xffc10113
+    0xffc10113,
+    0x00100073
 };
 
 typedef struct {
