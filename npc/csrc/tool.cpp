@@ -134,11 +134,8 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
 
 void single_cycle() {
 
-
-  top.clk = 1; 
-
-  top.eval();
   contextp->timeInc(1);
+  top.clk = 1; top.eval();
   tfp->dump(contextp->time());
 
   contextp->timeInc(1);
@@ -161,20 +158,13 @@ void end_wave(){
 void reset(int n) {
 
   top.rst = 1;
-  while (n -- > 0){
-    top.eval();
-    contextp->timeInc(1);
-    tfp->dump(contextp->time());
-  };
+  while (n -- > 0) single_cycle();
   top.rst = 0;
-  top.eval();
-  contextp->timeInc(1);
-  tfp->dump(contextp->time());
+
 }
 
 void npc_execute_once(){
     printf("begin a cycle\n");
-    printf("pc = %x\n", top.PC);
     top.inst = pmem_read(top.PC);
     // printf("top.pc %x\n", top.PC);
     pre_pc = top.PC;
