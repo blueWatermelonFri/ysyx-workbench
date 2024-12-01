@@ -283,9 +283,6 @@ void npc_execute(__uint64_t n){
   }
 #endif
 
-#if 1
-  difftest_step();
-#endif
 
       if(state == 0) break;
   }
