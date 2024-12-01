@@ -33,7 +33,7 @@ module ysyx_24100005_top(
                                               .rst(rst), 
                                               .din(DPC), 
                                               .dout(PC), 
-                                              .wen(1'b1));
+                                              .wen(clk));
   // static next pc
   assign SPC = PC + 32'h0000_0004;
 
