@@ -291,7 +291,7 @@ module ysyx_24100005_top(
     // $display("rs1data = %h, ", rs1data);
     // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
-    if (read_mem) begin 
+    if (read_mem && !rst) begin 
 
       mem_rdata = npcmem_read(add_output);
     end
@@ -299,7 +299,7 @@ module ysyx_24100005_top(
       mem_rdata = 0;
     end
     
-    if (write_mem) begin // 有写请求时
+    if (write_mem && !rst) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
       end
   end
