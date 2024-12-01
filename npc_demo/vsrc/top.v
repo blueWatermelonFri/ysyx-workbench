@@ -290,7 +290,6 @@ module ysyx_24100005_top(
     // $display("rs1addr = %h, ", rs1);
     // $display("rs1data = %h, ", rs1data);
     // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
-
     if (read_mem && !rst) begin 
 
       mem_rdata = npcmem_read(add_output);
