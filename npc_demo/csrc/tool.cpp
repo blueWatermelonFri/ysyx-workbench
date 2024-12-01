@@ -77,7 +77,6 @@ static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
 
 void npc_reg_display(){
-  update_cpu();
   for (int i = 0;  i< 16; i ++){
     printf("%-4s =  0x%08x\n",regs[i], cpu.gpr[i]);
   }
@@ -87,41 +86,18 @@ static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;
 }
 
-static inline void host_write(void *addr, int wdata, char wmask) {
-  if( (wmask & 0x1u) == 1) {*(uint8_t  *)addr = (wdata & 0x000000ff);}
-  if( ((wmask >> 1) & 0x1u) == 1) {* ((uint8_t  *)addr + 1)= (unsigned int)(wdata & 0x0000ff00) >> 8;} // 确保wmask是正数，以及移位做0拓展
-  if( ((wmask >> 2) & 0x1u) == 1) {* ((uint8_t  *)addr + 2)= (unsigned int)(wdata & 0x00ff0000) >> 16;} 
-  if( ((wmask >> 3) & 0x1u) == 1) {* ((uint8_t  *)addr + 3)= (unsigned int)(wdata & 0xff000000) >> 24;} 
-}
 
 static uint32_t pmem_read(uint32_t addr) {
   uint32_t ret = host_read(guest_to_host(addr));
   return ret;
 }
 
-static void pmem_write(uint32_t addr, int wdata, char wmask) {
-  host_write(guest_to_host(addr), wdata, wmask);
-}
 
 extern "C" void ebreak() {
   printf("hit at goog trap\n");
   state = 0;
 }
 
-extern "C" int npcmem_read(int raddr) {
-  printf("read_addr = %x\n", raddr);
-  uint32_t aligned_addr = raddr & (~0x3u);
-  return pmem_read(aligned_addr);
-}
-
-extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
-  // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
-  // `wmask`中每比特表示`wdata`中1个字节的掩码,
-  // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
-  printf("write_addr = %x\n", waddr);
-  uint32_t aligned_addr = waddr & (~0x3u);
-  return pmem_write(aligned_addr, wdata, wmask);
-}
 
 void single_cycle() {
 
@@ -169,58 +145,27 @@ void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
       npc_execute_once();
 #if 1
-    char logbuf[128];
-    char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
-    int ilen = INST_LEN; // 优化一下？
-    int i;
-    uint8_t *inst = (uint8_t *)&(top.inst);
-    // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
-    for (i = ilen - 1; i >= 0; i --) {
-      p += snprintf(p, 4, " %02x", inst[i]);
-    }
-    int ilen_max = 4;
-    int space_len = ilen_max - ilen;
-    if (space_len < 0) space_len = 0;
-    space_len = space_len * 3 + 1;
-    memset(p, ' ', space_len);
-    p += space_len;
-    
-    disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
-    printf("%s\n", logbuf);
-#endif
-
-#if 0
-  static int ftrace_cnt = 0; // unit: us
-  unsigned int opcode = BITS(top.inst, 6, 0);
-  if(opcode == 0x0000006f || opcode == 0x00000067){
-    // printf("%08x\n",_this->isa.inst.val);
-    // s->dnpc表示跳转的下一条指令
-    if(top.inst == 0x00008067){ 
-      for(int i = 0 ; i < ftrace_func_count; i++){
-        if(pre_pc >= ftrace_func_begin[i] && pre_pc <= ftrace_func_end[i]){
-            printf("0x%08x:%*sret  [%s]\n",pre_pc, ftrace_cnt, "", ftrace_func_name[i]);
-            ftrace_cnt --;
-            break;
-        }
+      char logbuf[128];
+      char *p = logbuf;
+      p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
+      int ilen = INST_LEN; // 优化一下？
+      int i;
+      uint8_t *inst = (uint8_t *)&(top.inst);
+      // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
+      for (i = ilen - 1; i >= 0; i --) {
+        p += snprintf(p, 4, " %02x", inst[i]);
       }
-
-    }
-    else{ 
-      for(int i = 0 ; i < ftrace_func_count; i++){
-        if(top.PC == ftrace_func_begin[i]){
-          ftrace_cnt ++;
-          printf("0x%08x:%*scall [%s@0x%08x]\n",pre_pc, ftrace_cnt, "",  ftrace_func_name[i], top.PC);
-          break;
-        }
-      }
-    }
-  }
+      int ilen_max = 4;
+      int space_len = ilen_max - ilen;
+      if (space_len < 0) space_len = 0;
+      space_len = space_len * 3 + 1;
+      memset(p, ' ', space_len);
+      p += space_len;
+      
+      disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
+      printf("%s\n", logbuf);
 #endif
 
-#if 1
-  difftest_step();
-#endif
 
       if(state == 0) break;
   }

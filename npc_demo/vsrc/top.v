@@ -1,6 +1,4 @@
 import "DPI-C" function void ebreak();
-import "DPI-C" function int npcmem_read(input int raddr);
-import "DPI-C" function void npcmem_write(input int waddr, input int wdata, input byte wmask);
 
 module ysyx_24100005_top(
   input [31:0] inst,
