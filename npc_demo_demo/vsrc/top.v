@@ -37,21 +37,13 @@ module ysyx_24100005_top(
   // static next pc
   assign SPC = PC + 32'h0000_0004;
 
+
+
   assign opcode = inst[6:0];
 
-  assign DPC = SPC;
-
   // mux for update PC
-  // ysyx_24100005_MuxKeyWithDefault #(5, 7, 32) Mux_PC (.out(DPC), 
-  //                                                     .key(opcode), 
-  //                                                     .default_out(SPC), 
-  //                                                     .lut({
-  //                                                           7'b011_0011, SPC,         // R type
-  //                                                           7'b001_0011, SPC,         // partial I type
-  //                                                           7'b000_0011, SPC,         // load
-  //                                                           7'b010_0011, SPC,         // store
-  //                                                           7'b011_0111, SPC          // U type
-  //                                                           }));
+
+  assgin DPC = SPC;
 
   // ebreak
   always @(*) begin
