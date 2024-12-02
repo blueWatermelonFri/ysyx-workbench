@@ -31,7 +31,7 @@ module ysyx_24100005_top(
   // PC更新
   ysyx_24100005_Reg #(32, 32'h8000_0000) i0 (.clk(clk),
                                               .rst(rst), 
-                                              .din(DPC), 
+                                              .din(SPC), 
                                               .dout(PC), 
                                               .wen(clk));
   // static next pc
@@ -39,7 +39,7 @@ module ysyx_24100005_top(
 
   assign opcode = inst[6:0];
 
-  assign DPC = SPC;
+  // assign DPC = SPC;
 
   // mux for update PC
   // ysyx_24100005_MuxKeyWithDefault #(5, 7, 32) Mux_PC (.out(DPC), 
