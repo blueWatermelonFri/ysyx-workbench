@@ -71,7 +71,6 @@ static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
 
 
-
 static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;
 }
