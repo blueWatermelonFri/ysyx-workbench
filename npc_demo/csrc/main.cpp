@@ -5,7 +5,7 @@
 #include <string.h>
 
 VerilatedContext* contextp = new VerilatedContext;
-VerilatedVcdC* tfp = NULL;
+VerilatedVcdC* tfp = new VerilatedVcdC;
 static TOP_NAME top;
 
 void single_cycle() {
@@ -33,7 +33,6 @@ void reset(int n) {
 int main(int argc, char *argv[]) {
 
   contextp->traceEverOn(true);
-  tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc_demo/simx.vcd");
 

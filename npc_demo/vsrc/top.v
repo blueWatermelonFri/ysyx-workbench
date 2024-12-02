@@ -5,7 +5,7 @@ module ysyx_24100005_top(
 
 );
 
-  reg [31:0] PC; // reg read rs2
+  reg [31:0] PC; //
 
 
   always @(posedge clk) begin
