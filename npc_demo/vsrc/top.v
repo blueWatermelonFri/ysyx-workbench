@@ -14,10 +14,6 @@ module ysyx_24100005_top(
   wire [6:0] opcode;
 
   // 初始化寄存器堆
-  always @(posedge clk) begin
-    if (rst) PC <= 32'h0;
-    else PC <= SPC;
-  end
 
   // 初始化寄存器堆
   ysyx_24100005_RegisterFile #(5, 32) RegFile(
