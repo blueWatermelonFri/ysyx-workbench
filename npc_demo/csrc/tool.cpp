@@ -198,58 +198,28 @@ void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
       npc_execute_once();
 #if 1
-    char logbuf[128];
-    char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
-    int ilen = INST_LEN; // 优化一下？
-    int i;
-    uint8_t *inst = (uint8_t *)&(top.inst);
-    // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
-    for (i = ilen - 1; i >= 0; i --) {
-      p += snprintf(p, 4, " %02x", inst[i]);
-    }
-    int ilen_max = 4;
-    int space_len = ilen_max - ilen;
-    if (space_len < 0) space_len = 0;
-    space_len = space_len * 3 + 1;
-    memset(p, ' ', space_len);
-    p += space_len;
-    
-    disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
-    printf("%s\n", logbuf);
-#endif
-
-#if 0
-  static int ftrace_cnt = 0; // unit: us
-  unsigned int opcode = BITS(top.inst, 6, 0);
-  if(opcode == 0x0000006f || opcode == 0x00000067){
-    // printf("%08x\n",_this->isa.inst.val);
-    // s->dnpc表示跳转的下一条指令
-    if(top.inst == 0x00008067){ 
-      for(int i = 0 ; i < ftrace_func_count; i++){
-        if(pre_pc >= ftrace_func_begin[i] && pre_pc <= ftrace_func_end[i]){
-            printf("0x%08x:%*sret  [%s]\n",pre_pc, ftrace_cnt, "", ftrace_func_name[i]);
-            ftrace_cnt --;
-            break;
-        }
+      char logbuf[128];
+      char *p = logbuf;
+      p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
+      int ilen = INST_LEN; // 优化一下？
+      int i;
+      uint8_t *inst = (uint8_t *)&(top.inst);
+      // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
+      for (i = ilen - 1; i >= 0; i --) {
+        p += snprintf(p, 4, " %02x", inst[i]);
       }
-
-    }
-    else{ 
-      for(int i = 0 ; i < ftrace_func_count; i++){
-        if(top.PC == ftrace_func_begin[i]){
-          ftrace_cnt ++;
-          printf("0x%08x:%*scall [%s@0x%08x]\n",pre_pc, ftrace_cnt, "",  ftrace_func_name[i], top.PC);
-          break;
-        }
-      }
-    }
-  }
+      int ilen_max = 4;
+      int space_len = ilen_max - ilen;
+      if (space_len < 0) space_len = 0;
+      space_len = space_len * 3 + 1;
+      memset(p, ' ', space_len);
+      p += space_len;
+      
+      disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
+      printf("%s\n", logbuf);
 #endif
 
-#if 1
-  difftest_step();
-#endif
+
 
       if(state == 0) break;
   }
@@ -258,33 +228,10 @@ void npc_execute(__uint64_t n){
 
 }
 
-static long load_img(char* img_file) {
-  if (img_file == NULL) {
-    printf("No image is given. Use the default build-in image.");
-    return 4096; // built-in image size
-  }
-
-  FILE *fp = fopen(img_file, "rb");
-  if(!fp){
-    printf("Can not open '%s'", img_file);
-  }
-
-  fseek(fp, 0, SEEK_END);
-  long size = ftell(fp);
-
-  printf("The image is %s, size = %ld\n", img_file, size);
-
-  fseek(fp, 0, SEEK_SET);
-  int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
-  assert(ret == 1);
-
-  fclose(fp);
-  return size;
-}
 
 int init_img(char* img_file){
 
   memcpy(guest_to_host(0x80000000), img, sizeof(img));
-  long img_size = load_img(img_file);
-  return img_size;
+
+  return sizeof(img);
 }
