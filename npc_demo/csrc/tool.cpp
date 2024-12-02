@@ -33,20 +33,13 @@ extern char ftrace_func_name[100][128];
 
 // dummy 
 static const uint32_t img [] = {
-	0x00000413,
-	0x00009117,
-	0xffc10113,
-	0x00c000ef,
-	0x00000513,
-	0x00008067,
-	0xff410113,
-	0x00000517,
-	0x01c50513,
-	0x00112423,
-	0xfe9ff0ef,
-	0x00050513,
-	0x00100073,
-	0x0000006f
+      0x00000413, //li	   s0,0
+      0x00009117, //auipc	 sp,0x9
+      0xffc10113, //addi	 sp,sp,-4 
+      0xffc10113, //addi	 sp,sp,-4 
+      0xffc10113, //addi	 sp,sp,-4 
+      0xffc10113, //addi	 sp,sp,-4 
+      0x00100073  //ebreak
 };
 
 typedef struct {
