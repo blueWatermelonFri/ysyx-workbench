@@ -15,6 +15,9 @@ int main(int argc, char *argv[]) {
 
   single_cycle();
 
+  single_cycle();
+
+
   end_wave();
 
 }
