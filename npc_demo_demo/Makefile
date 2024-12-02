@@ -1,6 +1,6 @@
 TOPNAME = ysyx_24100005_top
 NXDC_FILES = constr/top.nxdc
-INC_PATH ?= /home/myuser/ysyx/ysyx-workbench/npc_demo_dmeo/include
+INC_PATH ?= /home/myuser/ysyx/ysyx-workbench/npc_demo_demo/include
 
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc  \
@@ -45,7 +45,7 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
                 $(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 				-LDFLAGS $(LIBS) \
                 --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) \
-				-I/home/myuser/ysyx/ysyx-workbench/npc_demo_dmeo/vsrc
+				-I/home/myuser/ysyx/ysyx-workbench/npc_demo_demo/vsrc
 
 
 IMG ?= 
