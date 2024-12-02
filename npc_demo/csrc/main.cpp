@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc_demo/simx.vcd");
 
-  reset(5);
+  reset(2);
 
   single_cycle();
 
