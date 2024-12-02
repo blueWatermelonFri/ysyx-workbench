@@ -101,6 +101,7 @@ extern "C" void ebreak() {
 
 void single_cycle() {
 
+  printf("%x\n", top.PC);
   top.clk = 1; top.eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
@@ -110,6 +111,7 @@ void single_cycle() {
   contextp->timeInc(1);
   tfp->dump(contextp->time());
 
+  
 }
 
 void init_wave(){
