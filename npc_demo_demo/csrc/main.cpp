@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   contextp->traceEverOn(true);
   tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
-  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc_demo/simx.vcd");
+  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc_demo_demo/simx.vcd");
 
   reset(5);
 
