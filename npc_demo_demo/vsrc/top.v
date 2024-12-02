@@ -1,6 +1,7 @@
 module ysyx_24100005_top(
   input rst,
-  input clk
+  input clk,
+  input sig
 
 );
 
@@ -8,7 +9,7 @@ module ysyx_24100005_top(
 
   always @(posedge clk) begin
     if (rst) PC <= 0;
-    else  PC <= clk;
+    else  PC <= sig;
   end
 
 
