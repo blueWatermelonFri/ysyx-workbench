@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
   long img_size = init_img(argv[1]);
   printf("image init success\n");
 
+  printf("elffffffffffff = %s\n", argv[2]);
   init_elf(argv[2]);
   printf("elf init success\n");
 
