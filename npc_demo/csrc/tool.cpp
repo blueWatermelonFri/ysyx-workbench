@@ -106,6 +106,9 @@ void single_cycle() {
   contextp->timeInc(1);
   tfp->dump(contextp->time());
 
+  printf("%x\n", top.PC);
+  printf("xxxxxxxxx\n");
+
   
   top.clk = 0; top.eval();
   contextp->timeInc(1);
