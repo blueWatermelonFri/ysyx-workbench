@@ -13,15 +13,7 @@ int main(int argc, char *argv[]) {
 
   reset(5);
 
-  int img_size = init_img();
-
-  // init_disasm("riscv32-pc-linux-gnu");
-  // printf("disasm init success\n");
-
   single_cycle();
-
-  // npc_sdb_mainloop();
-
 
   end_wave();
 
