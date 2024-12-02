@@ -302,7 +302,7 @@ module ysyx_24100005_top(
 
 
   // ebreak
-  always @(*) begin
+  always @(posedge clk) begin
     if(opcode == 7'b1110011) begin
       $display("break");
       ebreak();
