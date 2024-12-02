@@ -4,9 +4,7 @@ module ysyx_24100005_top(
   input clk
 
 );
-  wire [31:0] rs1data; // reg read rs1
-  wire [31:0] rs2data; // reg read rs2
-  wire [6:0] opcode;
+
   reg [31:0] PC; // reg read rs2
 
 
