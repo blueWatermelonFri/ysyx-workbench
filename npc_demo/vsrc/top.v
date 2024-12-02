@@ -33,7 +33,7 @@ module ysyx_24100005_top(
 
   always @(posedge clk) begin
     if (rst) PC <= 32'h8000_0000;
-    else  PC <= SPC;
+    else  PC <= PC + 32'h4;
   end
 
 
