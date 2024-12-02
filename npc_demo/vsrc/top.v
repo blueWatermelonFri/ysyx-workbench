@@ -304,6 +304,7 @@ module ysyx_24100005_top(
   // ebreak
   always @(*) begin
     if(opcode == 7'b1110011) begin
+      $display("break");
       ebreak();
     end
   end
