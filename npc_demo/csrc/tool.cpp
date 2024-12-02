@@ -106,8 +106,7 @@ static void pmem_write(uint32_t addr, int wdata, char wmask) {
 }
 
 extern "C" void ebreak() {
-  printf("hit at goog trap1\n");
-  printf("hit at goog trap2\n");
+  printf("hit at goog trap\n");
 
   state = 0;
 }
