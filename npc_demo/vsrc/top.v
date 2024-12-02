@@ -31,12 +31,12 @@ module ysyx_24100005_top(
   .rs2data(rs2data)
   );
 
-  // PC更新
-  ysyx_24100005_Reg #(32, 32'h8000_0000) i0 (.clk(clk),
-                                              .rst(rst), 
-                                              .din(SPC), 
-                                              .dout(PC), 
-                                              .wen(clk));
+  always @(posedge clk) begin
+    if (rst) PC <= 32'h8000_0000;
+    else  PC <= SPC;
+  end
+
+
   // static next pc
   assign SPC = PC + 32'h0000_0004;
 
