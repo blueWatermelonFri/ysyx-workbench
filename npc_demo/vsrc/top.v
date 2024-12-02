@@ -318,12 +318,12 @@ module ysyx_24100005_top(
       end
   end
 
-  // // ebreak
-  // always @(*) begin
-  //   if(opcode == 7'b1110011) begin
-  //     ebreak();
-  //   end
-  // end
+  // ebreak
+  always @(*) begin
+    if(opcode == 7'b1110011) begin
+      ebreak();
+    end
+  end
 
   // always @(posedge clk) begin
   //   $display("inst=%h, ", inst);
