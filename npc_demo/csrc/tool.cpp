@@ -64,23 +64,13 @@ const char *regs[] = {
 };
 
 
-CPU_state cpu;
-void update_cpu(){
-  for(int i = 0; i<32; i++){
-    cpu.gpr[i] = top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i];
-  }
-  cpu.pc = top.PC;
-}
+
 
 static uint8_t pmem[NPC_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
 
-void npc_reg_display(){
-  for (int i = 0;  i< 16; i ++){
-    printf("%-4s =  0x%08x\n",regs[i], cpu.gpr[i]);
-  }
-}
+
 
 static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;

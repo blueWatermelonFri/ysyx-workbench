@@ -11,19 +11,6 @@ module ysyx_24100005_top(
   wire [31:0] rs2data; // reg read rs2
   wire [6:0] opcode;
 
-  // 初始化寄存器堆
-
-  // 初始化寄存器堆
-  ysyx_24100005_RegisterFile #(5, 32) RegFile(
-  .clk(clk),
-  .wen(1),
-  .wdata(1),
-  .waddr(1),
-  .rs1addr(1),
-  .rs2addr(1),
-  .rs1data(rs1data),
-  .rs2data(rs2data)
-  );
 
   always @(posedge clk) begin
     if (rst) PC <= 32'h8000_0000;
