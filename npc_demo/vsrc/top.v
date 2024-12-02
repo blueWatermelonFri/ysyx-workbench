@@ -1,13 +1,13 @@
 module ysyx_24100005_top(
   input [31:0] inst,
   input rst,
-  input clk,
+  input clk
 
-  output reg [31:0] PC
 );
   wire [31:0] rs1data; // reg read rs1
   wire [31:0] rs2data; // reg read rs2
   wire [6:0] opcode;
+  reg [31:0] PC; // reg read rs2
 
 
   always @(posedge clk) begin

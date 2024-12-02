@@ -76,27 +76,14 @@ static inline uint32_t host_read(void *addr) {
 }
 
 
-static uint32_t pmem_read(uint32_t addr) {
-  uint32_t ret = host_read(guest_to_host(addr));
-  return ret;
-}
-
-
-extern "C" void ebreak() {
-  printf("hit at goog trap\n");
-  state = 0;
-}
 
 
 void single_cycle() {
 
-  printf("%x\n", top.PC);
   top.clk = 1; top.eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
 
-  printf("%x\n", top.PC);
-  printf("xxxxxxxxx\n");
 
   
   top.clk = 0; top.eval();
@@ -125,48 +112,8 @@ void reset(int n) {
 
 }
 
-void npc_execute_once(){
-    printf("begin a cycle\n");
-    top.clk = 1;
-    top.inst = pmem_read(top.PC);
-    // printf("top.pc %x\n", top.PC);
-    pre_pc = top.PC;
-    single_cycle();
-    printf("over a cycle\n");
-}
-
-void npc_execute(__uint64_t n){
-    for (;n > 0; n --) {
-      npc_execute_once();
-#if 1
-      char logbuf[128];
-      char *p = logbuf;
-      p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
-      int ilen = INST_LEN; // 优化一下？
-      int i;
-      uint8_t *inst = (uint8_t *)&(top.inst);
-      // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
-      for (i = ilen - 1; i >= 0; i --) {
-        p += snprintf(p, 4, " %02x", inst[i]);
-      }
-      int ilen_max = 4;
-      int space_len = ilen_max - ilen;
-      if (space_len < 0) space_len = 0;
-      space_len = space_len * 3 + 1;
-      memset(p, ' ', space_len);
-      p += space_len;
-      
-      disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
-      printf("%s\n", logbuf);
-#endif
 
 
-      if(state == 0) break;
-  }
-  
-  end_wave();
-
-}
 
 
 int init_img(){
