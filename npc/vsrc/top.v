@@ -286,8 +286,8 @@ module ysyx_24100005_top(
   // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
   // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
 
-  always @(PC) begin
-    if( PC != 0) begin
+  always @(PC, clk) begin
+    if( PC != 0 && !clk) begin
       inst = npcmem_read(PC);
     end
     else begin
