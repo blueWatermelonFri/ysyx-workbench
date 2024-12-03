@@ -290,9 +290,6 @@ module ysyx_24100005_top(
     if( PC != 0 && !clk) begin
       inst = npcmem_read(PC);
     end
-    else begin
-      inst = 0;
-    end
   end
 
 
