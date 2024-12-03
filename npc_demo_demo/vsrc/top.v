@@ -9,7 +9,7 @@ module ysyx_24100005_top(
 
   always @(posedge clk) begin
     if (rst) PC <= 0;
-    else  PC <= sig;
+    else  PC <= 1;
   end
 
 
