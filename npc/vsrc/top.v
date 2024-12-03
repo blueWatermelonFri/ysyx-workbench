@@ -300,17 +300,16 @@ module ysyx_24100005_top(
   // end
 
 
-  always @(*) begin
+  always @(read_mem, add_output, write_mem, rs2data, wmask) begin
 
-    if (read_mem && !rst) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
-      $display("rst = %h\n", rst);
+    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
       mem_rdata = npcmem_read(add_output);
     end
     else begin 
       mem_rdata = 0;
     end
     
-    if (write_mem && !rst) begin // 有写请求时
+    if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
       end
   end
