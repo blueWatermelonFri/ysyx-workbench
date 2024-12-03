@@ -145,7 +145,7 @@ void init_wave(){
   contextp->traceEverOn(true);
   tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
-  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
+  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc_demo/simx.vcd");
 }
 
 void end_wave(){  
