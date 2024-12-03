@@ -298,7 +298,7 @@ module ysyx_24100005_top(
 
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
 
-    if (read_mem ) begin // 防止写回寄存器的值是0，导致立马读取了0这个地址
+    if (read_mem ) begin // 
       mem_rdata = npcmem_read(add_output);
     end
     else begin 
@@ -311,7 +311,7 @@ module ysyx_24100005_top(
   end
 
   // // ebreak
-  always @(*) begin
+  always @(opcode) begin
     if(opcode == 7'b1110011) begin
       ebreak();
     end
