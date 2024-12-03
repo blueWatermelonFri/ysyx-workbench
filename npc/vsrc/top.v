@@ -287,8 +287,11 @@ module ysyx_24100005_top(
   // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
 
   always @(PC) begin
-    if( PC != 0 && !clk) begin
+    if( PC != 0) begin
       inst = npcmem_read(PC);
+    end
+    else begin
+      inst = 0;
     end
   end
 
