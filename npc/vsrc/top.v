@@ -286,7 +286,7 @@ module ysyx_24100005_top(
   // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
   // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
   
-  assign inst = (PC == 32'h0) ? 0 : npcmem_read(PC);
+  assign inst = (rst) ? 0 : npcmem_read(PC);
 
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
 
