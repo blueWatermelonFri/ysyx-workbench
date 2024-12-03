@@ -10,7 +10,7 @@ module ysyx_24100005_top(
 );
   wire [31:0] SPC;
   wire [31:0] DPC;
-  wire [31:0] inst;
+  reg [31:0] inst;
 
   wire wen; // reg write
   wire read_mem; // mem read
@@ -286,9 +286,10 @@ module ysyx_24100005_top(
   // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
   // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
   
-  assign inst = (rst) ? 0 : npcmem_read(PC);
 
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
+
+    inst = npcmem_read(PC);
 
     if (read_mem && !clk) begin // 防止写回寄存器的值是0，导致立马读取了0这个地址
       mem_rdata = npcmem_read(add_output);
