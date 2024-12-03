@@ -7,7 +7,7 @@
 VerilatedContext* contextp = new VerilatedContext;
 VerilatedVcdC* tfp = NULL;
 static TOP_NAME top;
-
+ 
 void single_cycle() {
 
   top.clk = 0;top.eval();
