@@ -128,13 +128,14 @@ module ysyx_24100005_top(
 
   // write back 
   // mux for weather write back 
-  ysyx_24100005_MuxKeyWithDefault #(3, 7, 1) Mux_write_reg (.out(wen), 
+  ysyx_24100005_MuxKeyWithDefault #(4, 7, 1) Mux_write_reg (.out(wen), 
                                                         .key(opcode), 
                                                         .default_out(1'b0), 
                                                         .lut({
                                                               7'b110_0011, 1'b0, // B type
                                                               7'b010_0011, 1'b0,  // store
-                                                              7'b001_0011, 1'b1
+                                                              7'b001_0011, 1'b1,
+                                                              7'b001_0111, 1'b1
                                                               }));
 
   // mux for update PC
