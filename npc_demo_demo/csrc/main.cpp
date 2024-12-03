@@ -10,11 +10,11 @@ static TOP_NAME top;
 
 void single_cycle() {
 
-  top.clk = 1; top.sig = 1; top.eval();
+  top.clk = 0;top.eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
 
-  top.clk = 0; top.sig = 0; top.eval();
+  top.clk = 1; top.eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
 
