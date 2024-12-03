@@ -51,7 +51,6 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 }
 
 bool isa_difftest_checkregs(CPU_state *ref_r) {
-    printf("checccc\n");
     if(ref_r->pc != cpu.pc) {
       printf("ref_r->pc = %x,  cpu.pc = %x\n", ref_r->pc, cpu.pc);
       return false;

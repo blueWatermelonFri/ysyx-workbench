@@ -12,8 +12,8 @@
 // VerilatedVcdC* tfp = new VerilatedVcdC;
 // topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
 // 必须要先new， 不可以 VerilatedContext* contextp = nullptr;
-VerilatedContext* contextp = new VerilatedContext;
-
+VerilatedContext* contextp = NULL;
+// new VerilatedContext
 VerilatedVcdC* tfp = NULL;
 
 static TOP_NAME top;
@@ -148,7 +148,7 @@ void single_cycle() {
 }
 
 void init_wave(){
-  
+  contextp = new VerilatedContext;
   contextp->traceEverOn(true);
   tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
@@ -159,40 +159,17 @@ void end_wave(){
   tfp->close();
 }
 void reset(int n) {
-
   top.rst = 1;
   while (n -- > 0) single_cycle();
   top.rst = 0;
-
-  // top.rst = 1;
-  // top.clk = 0;
-  // top.eval();
-  // contextp->timeInc(1);
-  // tfp->dump(contextp->time());  
-
-  // while(n -- ){
-  //   top.clk = 1;
-  //   top.eval();
-  //   contextp->timeInc(1);
-  //   tfp->dump(contextp->time());  
-  //   if(n==0){
-  //     top.rst = 0;
-  //   }
-  //   top.clk = 0;
-  //   top.eval();
-  //   contextp->timeInc(1);
-  //   tfp->dump(contextp->time());  
-  // }
 }
 
 void npc_execute_once(){
-    printf("begin a cycle\n");
     // instruction = pmem_read(top.PC);
     // printf("top.pc %x\n", top.PC);
     pre_pc = top.PC;
     instruction = pmem_read(top.PC);
     single_cycle();
-    printf("over a cycle\n");
 }
 
 void npc_execute(__uint64_t n){
