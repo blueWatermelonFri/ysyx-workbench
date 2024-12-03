@@ -9,8 +9,6 @@
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
 #define INST_LEN 4 //指令的长度， 4字节
 
-// VerilatedVcdC* tfp = new VerilatedVcdC;
-// topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
 // 必须要先new， 不可以 VerilatedContext* contextp = nullptr;
 VerilatedContext* contextp = new VerilatedContext;
 VerilatedVcdC* tfp = new VerilatedVcdC;
@@ -74,7 +72,7 @@ const char *regs[] = {
 
 CPU_state cpu;
 void update_cpu(){
-  for(int i = 0; i<32; i++){
+  for(int i = 0; i<16; i++){
     cpu.gpr[i] = top.rootp->ysyx_24100005_top__DOT__RegFile__DOT__rf[i];
   }
   cpu.pc = top.PC;
@@ -104,7 +102,7 @@ static inline void host_write(void *addr, int wdata, char wmask) {
 
 static uint32_t pmem_read(uint32_t addr) {
   uint32_t ret = host_read(guest_to_host(addr));
-  printf("read data %x\n", ret);
+  // printf("read data %x\n", ret);
   return ret;
 }
 
@@ -118,7 +116,7 @@ extern "C" void ebreak() {
 }
 
 extern "C" int npcmem_read(int raddr) {
-  printf("read_addr = %x\n", raddr);
+  // printf("read_addr = %x\n", raddr);
   uint32_t aligned_addr = raddr & (~0x3u);
   return pmem_read(aligned_addr);
 }
@@ -127,20 +125,20 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
-  printf("write_addr = %x\n", waddr);
+  // printf("write_addr = %x\n", waddr);
   uint32_t aligned_addr = waddr & (~0x3u);
   return pmem_write(aligned_addr, wdata, wmask);
 }
 
 void single_cycle() {
 
-  
-  top.clk = 0; top.eval();
+  top.clk = 0; 
+  top.eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
-
   
-  top.clk = 1; top.eval();
+  top.clk = 1; 
+  top.eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
 
