@@ -301,11 +301,8 @@ module ysyx_24100005_top(
 
 
   always @(*) begin
-    // $display("rs1addr = %h, ", rs1);
-    // $display("rs1data = %h, ", rs1data);
-    // $display("%h %h %h %h %h, ", read_mem, write_mem, add_output, rs2data, wmask);
 
-    if (0) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
+    if (read_mem) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
 
       mem_rdata = npcmem_read(add_output);
     end
@@ -313,7 +310,7 @@ module ysyx_24100005_top(
       mem_rdata = 0;
     end
     
-    if (0) begin // 有写请求时
+    if (write_mem) begin // 有写请求时
         npcmem_write(add_output, rs2data, wmask);
       end
   end
