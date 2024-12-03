@@ -159,6 +159,7 @@ void reset(int n) {
 
   top.rst = 1;
   single_cycle();
+  single_cycle();
   top.rst = 0;
 
 }
