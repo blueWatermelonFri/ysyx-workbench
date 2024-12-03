@@ -8,9 +8,17 @@
 #define BITMASK(bits) ((1ull << (bits)) - 1)
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
 #define INST_LEN 4 //指令的长度， 4字节
+
+// 必须要先new， 不可以 VerilatedContext* contextp = nullptr;
+VerilatedContext* contextp = new VerilatedContext;
+VerilatedVcdC* tfp = new VerilatedVcdC;
+
 static TOP_NAME top;
+
+
 static int state = 1;
 unsigned int pre_pc;
+unsigned int instruction;
 
 extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void difftest_step();
@@ -94,6 +102,7 @@ static inline void host_write(void *addr, int wdata, char wmask) {
 
 static uint32_t pmem_read(uint32_t addr) {
   uint32_t ret = host_read(guest_to_host(addr));
+  // printf("read data %x\n", ret);
   return ret;
 }
 
@@ -107,22 +116,43 @@ extern "C" void ebreak() {
 }
 
 extern "C" int npcmem_read(int raddr) {
+  // printf("read_addr = %x\n", raddr);
   uint32_t aligned_addr = raddr & (~0x3u);
   return pmem_read(aligned_addr);
 }
+
 extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
+  // printf("write_addr = %x\n", waddr);
   uint32_t aligned_addr = waddr & (~0x3u);
   return pmem_write(aligned_addr, wdata, wmask);
 }
 
 void single_cycle() {
-  top.clk = 0; top.eval();
-  top.clk = 1; top.eval();
+
+  top.clk = 0; 
+  top.eval();
+  contextp->timeInc(1);
+  tfp->dump(contextp->time());
+  
+  top.clk = 1; 
+  top.eval();
+  contextp->timeInc(1);
+  tfp->dump(contextp->time());
+
 }
 
+void init_wave(){
+  contextp->traceEverOn(true);
+  top.trace(tfp, 0);
+  tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
+}
+
+void end_wave(){  
+  tfp->close();
+}
 void reset(int n) {
   top.rst = 1;
   while (n -- > 0) single_cycle();
@@ -130,8 +160,10 @@ void reset(int n) {
 }
 
 void npc_execute_once(){
-    top.inst = pmem_read(top.PC);
+    // instruction = pmem_read(top.PC);
+    // printf("top.pc %x\n", top.PC);
     pre_pc = top.PC;
+    instruction = pmem_read(top.PC);
     single_cycle();
 }
 
@@ -144,7 +176,7 @@ void npc_execute(__uint64_t n){
     p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
     int ilen = INST_LEN; // 优化一下？
     int i;
-    uint8_t *inst = (uint8_t *)&(top.inst);
+    uint8_t *inst = (uint8_t *)&(instruction);
     // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
     for (i = ilen - 1; i >= 0; i --) {
       p += snprintf(p, 4, " %02x", inst[i]);
@@ -156,17 +188,17 @@ void npc_execute(__uint64_t n){
     memset(p, ' ', space_len);
     p += space_len;
     
-    disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
+    disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(instruction), ilen);
     printf("%s\n", logbuf);
 #endif
 
 #if 0
   static int ftrace_cnt = 0; // unit: us
-  unsigned int opcode = BITS(top.inst, 6, 0);
+  unsigned int opcode = BITS(instruction, 6, 0);
   if(opcode == 0x0000006f || opcode == 0x00000067){
     // printf("%08x\n",_this->isa.inst.val);
     // s->dnpc表示跳转的下一条指令
-    if(top.inst == 0x00008067){ 
+    if(instruction == 0x00008067){ 
       for(int i = 0 ; i < ftrace_func_count; i++){
         if(pre_pc >= ftrace_func_begin[i] && pre_pc <= ftrace_func_end[i]){
             printf("0x%08x:%*sret  [%s]\n",pre_pc, ftrace_cnt, "", ftrace_func_name[i]);
@@ -194,6 +226,9 @@ void npc_execute(__uint64_t n){
 
       if(state == 0) break;
   }
+  
+  end_wave();
+
 }
 
 static long load_img(char* img_file) {

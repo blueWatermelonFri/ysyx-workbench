@@ -69,25 +69,30 @@ module ysyx_24100005_Reg #(WIDTH = 1, RESET_VAL = 0) (
 endmodule
 
 module ysyx_24100005_RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
-  input clk,
-  input wen,
-  input [DATA_WIDTH-1:0] wdata,
-  input [ADDR_WIDTH-1:0] waddr,
-  input [ADDR_WIDTH-1:0] rs1addr,
-  input [ADDR_WIDTH-1:0] rs2addr,
-  output [DATA_WIDTH-1:0] rs1data,
-  output [DATA_WIDTH-1:0] rs2data
-
+    input         clk,
+    // READ PORT 1
+    input  [ 4:0] rs1addr,
+    output [31:0] rs1data,
+    // READ PORT 2
+    input  [ 4:0] rs2addr,
+    output [31:0] rs2data,
+    // WRITE PORT
+    input         wen,       //write enable, HIGH valid
+    input  [ 4:0] waddr,
+    input  [31:0] wdata
 );
-  reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
-  always @(posedge clk) begin
-    if (wen && waddr != 5'd0) rf[waddr] <= wdata;
-    // $display("xxxx=%h, ", rf[5'b00001]);
-    // $display("**************************************");
-  end
+reg [31:0] rf[31:0];
 
-  assign rs1data = wen?(rs1addr == 0 ? 32'd0: rf[rs1addr]) : 32'd0;
-  assign rs2data = wen?(rs2addr == 0 ? 32'd0: rf[rs2addr]) : 32'd0;
+//WRITE
+always @(posedge clk) begin
+    if (wen && waddr != 0) rf[waddr]<= wdata;
+end
+
+//READ OUT 1
+assign rs1data = (rs1addr==5'b0) ? 32'b0  : rf[rs1addr];
+
+//READ OUT 2
+assign rs2data = (rs2addr==5'b0) ? 32'b0 :  rf[rs2addr];
 
 endmodule
 
