@@ -298,7 +298,7 @@ module ysyx_24100005_top(
 
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
 
-    if (read_mem && !clk) begin // 防止写回寄存器的值是0，导致立马读取了0这个地址
+    if (read_mem ) begin // 防止写回寄存器的值是0，导致立马读取了0这个地址
       mem_rdata = npcmem_read(add_output);
     end
     else begin 
