@@ -3,7 +3,6 @@ import "DPI-C" function int npcmem_read(input int raddr);
 import "DPI-C" function void npcmem_write(input int waddr, input int wdata, input byte wmask);
 
 module ysyx_24100005_top(
-  input [31:0] inst,
   input rst,
   input clk,
 
@@ -11,6 +10,7 @@ module ysyx_24100005_top(
 );
   wire [31:0] SPC;
   wire [31:0] DPC;
+  wire [31:0] inst;
 
   wire wen; // reg write
   wire read_mem; // mem read
@@ -18,7 +18,6 @@ module ysyx_24100005_top(
   wire [31:0] wdata; // reg write
   wire [31:0] rs1data; // reg read rs1
   wire [31:0] rs2data; // reg read rs2
-
 
   // for mem read extract and sext
   reg [31:0] mem_rdata;
@@ -252,15 +251,7 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(mem_lh_sext));
 
-// memory read no extent  
-  // ysyx_24100005_MuxKeyWithDefault #(3, 3, 32) Mux_no_sext(.key(funct3),
-  //                                                         .default_out({32'h0000_0000}),
-  //                                                         .lut({
-  //                                                               3'b010, mem_rdata, // lw
-  //                                                               3'b011, mem_rdata, // lbu
-  //                                                               3'b100, mem_rdata  // lhu
-  //                                                             }),
-  //                                                         .out(mem_no_sext));
+  assign mem_no_sext = mem_rdata;
   // memory read res 
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
                                                           .default_out({32'h0000_0000}),
@@ -294,17 +285,12 @@ module ysyx_24100005_top(
   // memory access
   // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
   // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
-  // 那为什么一个周期的第一eval为上升沿，rs1addr和rs1data同时变化，add_output也会变化两次
-  assign mem_no_sext = mem_rdata;
   
-  // always @( mem_no_sext) begin
-  //   $display("mem_no_sext = %h, ", mem_no_sext);
-  // end
-
+  assign inst = npcmem_read(PC);
 
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
 
-    if (read_mem && !clk) begin // 有读写请求时 // 可以进一步优化吗，因为代码的逻辑是要写的话就必须读
+    if (read_mem && !clk) begin // 防止写回寄存器的值是0，导致立马读取了0这个地址
       mem_rdata = npcmem_read(add_output);
     end
     else begin 

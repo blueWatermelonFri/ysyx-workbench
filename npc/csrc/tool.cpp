@@ -21,6 +21,7 @@ static TOP_NAME top;
 
 static int state = 1;
 unsigned int pre_pc;
+unsigned int instruction;
 
 extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void difftest_step();
@@ -186,10 +187,10 @@ void reset(int n) {
 
 void npc_execute_once(){
     printf("begin a cycle\n");
-    top.clk = 1;
-    top.inst = pmem_read(top.PC);
+    // instruction = pmem_read(top.PC);
     // printf("top.pc %x\n", top.PC);
     pre_pc = top.PC;
+    instruction = pmem_read(top.PC);
     single_cycle();
     printf("over a cycle\n");
 }
@@ -203,7 +204,7 @@ void npc_execute(__uint64_t n){
     p += snprintf(p, sizeof(logbuf), "0x%08x:", pre_pc);
     int ilen = INST_LEN; // 优化一下？
     int i;
-    uint8_t *inst = (uint8_t *)&(top.inst);
+    uint8_t *inst = (uint8_t *)&(instruction);
     // 按照小端模式打印，i从3开始，但是这里似乎直接 %x 打印就好了，不需要这么麻烦
     for (i = ilen - 1; i >= 0; i --) {
       p += snprintf(p, 4, " %02x", inst[i]);
@@ -215,17 +216,17 @@ void npc_execute(__uint64_t n){
     memset(p, ' ', space_len);
     p += space_len;
     
-    disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(top.inst), ilen);
+    disassemble(p, logbuf + sizeof(logbuf) - p, pre_pc, (uint8_t *)&(instruction), ilen);
     printf("%s\n", logbuf);
 #endif
 
 #if 0
   static int ftrace_cnt = 0; // unit: us
-  unsigned int opcode = BITS(top.inst, 6, 0);
+  unsigned int opcode = BITS(instruction, 6, 0);
   if(opcode == 0x0000006f || opcode == 0x00000067){
     // printf("%08x\n",_this->isa.inst.val);
     // s->dnpc表示跳转的下一条指令
-    if(top.inst == 0x00008067){ 
+    if(instruction == 0x00008067){ 
       for(int i = 0 ; i < ftrace_func_count; i++){
         if(pre_pc >= ftrace_func_begin[i] && pre_pc <= ftrace_func_end[i]){
             printf("0x%08x:%*sret  [%s]\n",pre_pc, ftrace_cnt, "", ftrace_func_name[i]);
