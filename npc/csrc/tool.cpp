@@ -12,9 +12,8 @@
 // VerilatedVcdC* tfp = new VerilatedVcdC;
 // topp->trace(tfp, 99);  // Trace 99 levels of hierarchy (or see below)
 // 必须要先new， 不可以 VerilatedContext* contextp = nullptr;
-VerilatedContext* contextp = NULL;
-// new VerilatedContext
-VerilatedVcdC* tfp = NULL;
+VerilatedContext* contextp = new VerilatedContext;
+VerilatedVcdC* tfp = new VerilatedVcdC;
 
 static TOP_NAME top;
 
@@ -148,9 +147,7 @@ void single_cycle() {
 }
 
 void init_wave(){
-  contextp = new VerilatedContext;
   contextp->traceEverOn(true);
-  tfp = new VerilatedVcdC;
   top.trace(tfp, 0);
   tfp->open("/home/myuser/ysyx/ysyx-workbench/npc/simx.vcd");
 }
