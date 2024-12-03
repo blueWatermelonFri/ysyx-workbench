@@ -196,7 +196,7 @@ module ysyx_24100005_top(
                                                               .default_out(1'b0), 
                                                               .lut({
                                                                     7'b000_0011,  1'b1,  // load
-                                                                    7'b010_0011,  1'b1  // store                                                           
+                                                                    7'b010_0011,  1'b0  // store                                                           
                                                                     }));
 
 
@@ -293,7 +293,6 @@ module ysyx_24100005_top(
     else begin
       inst = 0;
     end
-
   end
 
 
