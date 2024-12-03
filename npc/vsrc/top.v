@@ -285,11 +285,19 @@ module ysyx_24100005_top(
   // memory access
   // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
   // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
-  
+
+  always @(PC) begin
+    if( PC != 0) begin
+      inst = npcmem_read(PC);
+    end
+    else begin
+      inst = 0;
+    end
+
+  end
+
 
   always @(read_mem, add_output, write_mem, rs2data, wmask) begin
-
-    inst = npcmem_read(PC);
 
     if (read_mem && !clk) begin // 防止写回寄存器的值是0，导致立马读取了0这个地址
       mem_rdata = npcmem_read(add_output);
