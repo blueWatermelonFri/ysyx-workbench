@@ -33,6 +33,7 @@ module ysyx_24100005_top(
 
   wire [6:0] opcode;
   wire [2:0] funct3;
+  wire [6:0] funct7;
   wire [4:0] rs1;
   wire [4:0] rs2;
   wire [11:0] imm;
@@ -80,6 +81,9 @@ module ysyx_24100005_top(
   assign opcode = inst[6:0];
   assign rd = inst[11:7];
 
+  // R type instruction
+  assign funct7 = inst[31:25];
+
   // I type instruction
   assign funct3 = inst[14:12];
   // imm extension
@@ -120,7 +124,7 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(immS));
 
-  // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
+  // mux for adder input2(rs2 reg/imm)     NR_KEY , KEY_LEN , DATA_LEN 
   ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
@@ -134,7 +138,7 @@ module ysyx_24100005_top(
                                                                 7'b010_0011, immS  // store                                                                
                                                                 }));
 
-  // mux for adder input1 (reg/pc)
+  // mux for adder input1 (rs1 reg/pc)
   ysyx_24100005_MuxKeyWithDefault #(6, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
@@ -149,10 +153,20 @@ module ysyx_24100005_top(
 
   wire Cin;
   wire [31:0] t_no_Cin;
+  // mux for add or sub
+  ysyx_24100005_MuxKeyWithDefault #(1, 17, 1) Mux_add_sub (.out(Cin), 
+                                                          .key({opcode, funct3, funct7}), 
+                                                          .default_out(1'b0), 
+                                                          .lut({
+                                                                17'b0110011_000_0100000, 1'b1 // sub
+                                                                }));
 
-  assign Cin = 0;
+
+
+  // adder
   assign t_no_Cin = {32{ Cin }}^add_input2;
   assign add_output = add_input1 + t_no_Cin + {31'b0000, Cin};
+
   // assign add_output = add_input1 + add_input2;
 
   // write back 
