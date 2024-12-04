@@ -150,16 +150,17 @@ module ysyx_24100005_top(
                                                                 }));
 
   // mux for adder input1 (rs1data/pc)
-  ysyx_24100005_MuxKeyWithDefault #(6, 7, 32) Mux_input1 (.out(add_input1), 
+  ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, rs1data, // partial I type
                                                                 7'b001_0111, PC, // lui
                                                                 7'b110_1111, PC, // jal
+                                                                7'b110_0011, PC, // B type
                                                                 7'b110_0111, rs1data,  // jalr
                                                                 7'b000_0011, rs1data, // load
-                                                                7'b010_0011, rs1data // store
+                                                                7'b010_0011, rs1data  // store
                                                                 }));
 
   wire Cin;
@@ -194,12 +195,11 @@ module ysyx_24100005_top(
                                                               }));
 
   // mux for update PC
-  ysyx_24100005_MuxKeyWithDefault #(6, 8, 32) Mux_PC (.out(DPC), 
+  ysyx_24100005_MuxKeyWithDefault #(5, 8, 32) Mux_PC (.out(DPC), 
                                                       .key({opcode, is_jump}), 
                                                       .default_out(SPC), 
                                                       .lut({
                                                             8'b110_0011_1, add_output, // B type
-                                                            8'b110_0011_0, add_output, // B type
                                                             8'b110_1111_0, add_output,  // jal
                                                             8'b110_1111_1, add_output,  // jal
                                                             8'b110_0111_0, add_output,  // jalr                                                            
