@@ -205,10 +205,14 @@ module ysyx_24100005_top(
                                                             8'b110_0111_0, add_output,  // jalr                                                            
                                                             8'b110_0111_1, add_output  // jalr
                                                             }));
-
   wire is_jump;
   wire reduce_or;
-  assign reduce_or = |add_output; // 0表示add_output为0，为1表示不为0
+  wire [31:0] jump_t_no_Cin;
+  wire [31:0] jump_data;
+
+  assign jump_t_no_Cin = {32{ 1'b1 }}^rs2data;
+  assign jump_data = rs1data + jump_t_no_Cin + {31'b0000, 1'b1};
+  assign reduce_or = |jump_data; // 0表示add_output为0，为1表示不为0
 
   // mux for whether jump
   ysyx_24100005_MuxKeyWithDefault #(9, 5, 1) Mux_jump (.out(is_jump), 
