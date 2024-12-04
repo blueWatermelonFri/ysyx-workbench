@@ -44,7 +44,6 @@ module ysyx_24100005_top(
   wire [31:0] immU;
   wire [31:0] immS;
   wire [31:0] immB;
-  wire [31:0] USimmB;
   wire [31:0] shiftimmU;
 
   // adder input output
@@ -125,6 +124,15 @@ module ysyx_24100005_top(
                                                                 1'b1, {20'hfffff, inst[31:25], inst[11:7]}
                                                               }),
                                                           .out(immS));
+
+  // B type imm extension
+  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Bimm_SEXT(.key(inst[31]),
+                                                          .default_out({32'h0000_0000}),
+                                                          .lut({
+                                                                1'b0, {19'h00000, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0},
+                                                                1'b0, {19'h00000, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0}
+                                                              }),
+                                                          .out(immB));
 
   // mux for adder input2(rs2data/imm)     NR_KEY , KEY_LEN , DATA_LEN 
   ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_input2 (.out(add_input2), 
