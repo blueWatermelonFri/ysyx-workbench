@@ -101,13 +101,15 @@ static inline void host_write(void *addr, int wdata, char wmask) {
 }
 
 static uint32_t pmem_read(uint32_t addr) {
+  printf("read addr %x\n", addr);
   uint32_t ret = host_read(guest_to_host(addr));
-  // printf("read data %x\n", ret);
   return ret;
 }
 
 static void pmem_write(uint32_t addr, int wdata, char wmask) {
+  printf("write addr %x\n", addr);
   host_write(guest_to_host(addr), wdata, wmask);
+
 }
 
 extern "C" void ebreak() {
