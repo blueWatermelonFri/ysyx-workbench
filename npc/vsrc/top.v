@@ -123,7 +123,7 @@ module ysyx_24100005_top(
   // mux for adder input2(imm)     NR_KEY , KEY_LEN , DATA_LEN 
   ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
-                                                          .default_out(32'h0000_0000), 
+                                                          .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, immI,
                                                                 7'b001_0111, shiftimmU, // aipuc
@@ -137,7 +137,7 @@ module ysyx_24100005_top(
   // mux for adder input1 (reg/pc)
   ysyx_24100005_MuxKeyWithDefault #(6, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
-                                                          .default_out(32'h0000_0000), 
+                                                          .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, rs1data, // partial I type
                                                                 7'b001_0111, PC, // lui
@@ -147,7 +147,13 @@ module ysyx_24100005_top(
                                                                 7'b010_0011, rs1data // store
                                                                 }));
 
-  assign add_output = add_input1 + add_input2;
+  wire Cin;
+  wire [31:0] t_no_Cin;
+
+  assign Cin = 0;
+  assign t_no_Cin = {32{ Cin }}^add_input2;
+  assign add_output = add_input1 + t_no_Cin + {31'b0000, Cin};
+  // assign add_output = add_input1 + add_input2;
 
   // write back 
   // mux for weather write back 
@@ -190,7 +196,6 @@ module ysyx_24100005_top(
                                                                     }));
 
   // mux for weather load
-  wire tmp ;
   ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_read_mem (.out(read_mem), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
