@@ -43,6 +43,8 @@ module ysyx_24100005_top(
   wire [31:0] immJ;
   wire [31:0] immU;
   wire [31:0] immS;
+  wire [31:0] immB;
+  wire [31:0] USimmB;
   wire [31:0] shiftimmU;
 
   // adder input output
@@ -161,8 +163,6 @@ module ysyx_24100005_top(
                                                                 17'b0110011_000_0100000, 1'b1 // sub
                                                                 }));
 
-
-
   // adder
   assign t_no_Cin = {32{ Cin }}^add_input2;
   assign add_output = add_input1 + t_no_Cin + {31'b0000, Cin};
@@ -185,15 +185,10 @@ module ysyx_24100005_top(
                                                               }));
 
   // mux for update PC
-  ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_PC (.out(DPC), 
+  ysyx_24100005_MuxKeyWithDefault #(3, 7, 32) Mux_PC (.out(DPC), 
                                                       .key(opcode), 
                                                       .default_out(SPC), 
                                                       .lut({
-                                                            7'b011_0011, SPC,         // R type
-                                                            7'b001_0011, SPC,         // partial I type
-                                                            7'b000_0011, SPC,         // load
-                                                            7'b010_0011, SPC,         // store
-                                                            7'b011_0111, SPC,         // U type
                                                             7'b110_0011, add_output, // B type
                                                             7'b110_1111, add_output,  // jal
                                                             7'b110_0111, add_output  // jalr                                                            
