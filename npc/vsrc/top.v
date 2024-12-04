@@ -126,8 +126,8 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(immS));
 
-  // mux for adder input2(rs2 reg/imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input2 (.out(add_input2), 
+  // mux for adder input2(rs2data/imm)     NR_KEY , KEY_LEN , DATA_LEN 
+  ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
@@ -137,10 +137,11 @@ module ysyx_24100005_top(
                                                                 7'b110_1111, immJ,      // jal
                                                                 7'b110_0111, immI,      // jalr
                                                                 7'b000_0011, immI, // load
-                                                                7'b010_0011, immS  // store                                                                
+                                                                7'b010_0011, immS,  // store
+                                                                7'b110_0011, rs2data // B type
                                                                 }));
 
-  // mux for adder input1 (rs1 reg/pc)
+  // mux for adder input1 (rs1data/pc)
   ysyx_24100005_MuxKeyWithDefault #(6, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
@@ -170,7 +171,7 @@ module ysyx_24100005_top(
   // assign add_output = add_input1 + add_input2;
 
   // write back 
-  // mux for weather write back 
+  // mux for whether write back 
   ysyx_24100005_MuxKeyWithDefault #(7, 7, 1) Mux_write_reg (.out(wen), 
                                                         .key(opcode), 
                                                         .default_out(1'b0), 
@@ -185,14 +186,37 @@ module ysyx_24100005_top(
                                                               }));
 
   // mux for update PC
-  ysyx_24100005_MuxKeyWithDefault #(3, 7, 32) Mux_PC (.out(DPC), 
-                                                      .key(opcode), 
+  ysyx_24100005_MuxKeyWithDefault #(5, 8, 32) Mux_PC (.out(DPC), 
+                                                      .key({opcode, is_jump}), 
                                                       .default_out(SPC), 
                                                       .lut({
-                                                            7'b110_0011, add_output, // B type
-                                                            7'b110_1111, add_output,  // jal
-                                                            7'b110_0111, add_output  // jalr                                                            
+                                                            8'b110_0011_1, add_output, // B type
+                                                            8'b110_1111_0, add_output,  // jal
+                                                            8'b110_1111_1, add_output,  // jal
+                                                            8'b110_0111_0, add_output,  // jalr                                                            
+                                                            8'b110_0111_1, add_output  // jalr
                                                             }));
+
+  wire is_jump;
+  wire reduce_or;
+  assign reduce_or = |add_output; // 0表示add_output为0，为1表示不为0
+
+  // mux for whether jump
+  ysyx_24100005_MuxKeyWithDefault #(9, 5, 1) Mux_jump (.out(is_jump), 
+                                                      .key({funct3, reduce_or, add_output[31]}), 
+                                                      .default_out(1'b0), 
+                                                      .lut({
+                                                            5'b000_0_0, 1'b1, // beq 只需要reduce_or=0
+                                                            5'b001_1_0, 1'b1, // bnq 只需要reduce_or=1
+                                                            5'b001_1_1, 1'b1, // bnq 
+                                                            5'b100_1_1, 1'b1, // blt 只需要符号位为1
+                                                            5'b101_0_0, 1'b1, // bge 只需要符号位为0
+                                                            5'b101_1_0, 1'b1, // bge
+                                                            5'b110_0_1, 1'b1, // bltu 只需要符号位为1
+                                                            5'b111_0_0, 1'b1, // bgeu 只需要符号位为0
+                                                            5'b111_1_0, 1'b1 // bgeu
+                                                            }));
+
 
   // mux for write back in [add_output , SNPC, mem_read_res]
   ysyx_24100005_MuxKeyWithDefault #(3, 7, 32) Mux_writedata (.out(wdata), 
@@ -204,7 +228,7 @@ module ysyx_24100005_top(
                                                                     7'b000_0011, mem_read_res  // load
                                                                     }));
 
-  // mux for weather load
+  // mux for whether load
   ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_read_mem (.out(read_mem), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
@@ -214,7 +238,7 @@ module ysyx_24100005_top(
                                                                     }));
 
 
-  // mux for weather store
+  // mux for whether store
   ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_write_mem (.out(write_mem), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
