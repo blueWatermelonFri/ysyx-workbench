@@ -194,11 +194,12 @@ module ysyx_24100005_top(
                                                               }));
 
   // mux for update PC
-  ysyx_24100005_MuxKeyWithDefault #(5, 8, 32) Mux_PC (.out(DPC), 
+  ysyx_24100005_MuxKeyWithDefault #(6, 8, 32) Mux_PC (.out(DPC), 
                                                       .key({opcode, is_jump}), 
                                                       .default_out(SPC), 
                                                       .lut({
                                                             8'b110_0011_1, add_output, // B type
+                                                            8'b110_0011_0, add_output, // B type
                                                             8'b110_1111_0, add_output,  // jal
                                                             8'b110_1111_1, add_output,  // jal
                                                             8'b110_0111_0, add_output,  // jalr                                                            
