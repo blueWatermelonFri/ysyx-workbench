@@ -130,7 +130,7 @@ module ysyx_24100005_top(
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
                                                                 1'b0, {19'h00000, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0},
-                                                                1'b0, {19'h00000, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0}
+                                                                1'b1, {19'h7ffff, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0}
                                                               }),
                                                           .out(immB));
 
@@ -216,8 +216,8 @@ module ysyx_24100005_top(
                                                       .default_out(1'b0), 
                                                       .lut({
                                                             5'b000_0_0, 1'b1, // beq 只需要reduce_or=0
-                                                            5'b001_1_0, 1'b1, // bnq 只需要reduce_or=1
-                                                            5'b001_1_1, 1'b1, // bnq 
+                                                            5'b001_1_0, 1'b1, // bne 只需要reduce_or=1
+                                                            5'b001_1_1, 1'b1, // bne 
                                                             5'b100_1_1, 1'b1, // blt 只需要符号位为1
                                                             5'b101_0_0, 1'b1, // bge 只需要符号位为0
                                                             5'b101_1_0, 1'b1, // bge
