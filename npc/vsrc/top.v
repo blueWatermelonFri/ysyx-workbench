@@ -238,12 +238,11 @@ module ysyx_24100005_top(
                                                                     }));
 
   // mux for whether load
-  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_read_mem (.out(read_mem), 
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_read_mem (.out(read_mem), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
                                                               .lut({
-                                                                    7'b000_0011,  1'b1,  // load
-                                                                    7'b010_0011,  1'b0  // store                                                           
+                                                                    7'b000_0011,  1'b1  // load
                                                                     }));
 
 
