@@ -211,13 +211,13 @@ module ysyx_24100005_top(
   assign reduce_or = |add_output; // 0表示add_output为0，为1表示不为0
 
   // mux for whether jump
-  ysyx_24100005_MuxKeyWithDefault #(9, 5, 1) Mux_jump (.out(is_jump), 
+  ysyx_24100005_MuxKeyWithDefault #(7, 5, 1) Mux_jump (.out(is_jump), 
                                                       .key({funct3, reduce_or, add_output[31]}), 
                                                       .default_out(1'b0), 
                                                       .lut({
                                                             5'b000_0_0, 1'b1, // beq 只需要reduce_or=0
-                                                            5'b001_1_0, 1'b1, // bne 只需要reduce_or=1
-                                                            5'b001_1_1, 1'b1, // bne 
+                                                            // 5'b001_1_0, 1'b1, // bne 只需要reduce_or=1
+                                                            // 5'b001_1_1, 1'b1, // bne 
                                                             5'b100_1_1, 1'b1, // blt 只需要符号位为1
                                                             5'b101_0_0, 1'b1, // bge 只需要符号位为0
                                                             5'b101_1_0, 1'b1, // bge
