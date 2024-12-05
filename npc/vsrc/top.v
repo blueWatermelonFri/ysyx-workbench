@@ -135,7 +135,7 @@ module ysyx_24100005_top(
                                                           .out(immB));
 
   // mux for adder input2(rs2data/imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_input2 (.out(add_input2), 
+  ysyx_24100005_MuxKeyWithDefault #(9, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
@@ -146,18 +146,20 @@ module ysyx_24100005_top(
                                                                 7'b110_0111, immI,      // jalr
                                                                 7'b000_0011, immI, // load
                                                                 7'b010_0011, immS,  // store
-                                                                7'b110_0011, immB // B type
+                                                                7'b110_0011, immB, // B type
+                                                                7'b011_0011, rs2data  // R type
                                                                 }));
 
   // mux for adder input1 (rs1data/pc)
-  ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_input1 (.out(add_input1), 
+  ysyx_24100005_MuxKeyWithDefault #(8, 7, 32) Mux_input1 (.out(add_input1), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b001_0011, rs1data, // partial I type
                                                                 7'b001_0111, PC, // lui
                                                                 7'b110_1111, PC, // jal
                                                                 7'b110_0011, PC, // B type
+                                                                7'b001_0011, rs1data, // partial I type
+                                                                7'b011_0011, rs1data,  // R type
                                                                 7'b110_0111, rs1data,  // jalr
                                                                 7'b000_0011, rs1data, // load
                                                                 7'b010_0011, rs1data  // store
@@ -177,7 +179,6 @@ module ysyx_24100005_top(
   assign t_no_Cin = {32{ Cin }}^add_input2;
   assign add_output = add_input1 + t_no_Cin + {31'b0000, Cin};
 
-  // assign add_output = add_input1 + add_input2;
 
   // write back 
   // mux for whether write back 
