@@ -295,7 +295,7 @@ module ysyx_24100005_top(
   // 借位标志 borrow 由加法操作中的进位标志 cout 来确定：
   // 借位发生时：carry = 0，borrow = 1，表示 A < B。
   // 没有借位时：carry = 1，borrow = 0，表示 A >= B。
-  assign is_equal = (zero == 0);
+  assign is_equal = zero;
   assign is_lt = (overflow == 0 && jump_data[31] == 1) || (overflow == 1 && add_input1[0] == 1);
   assign is_gt = (overflow == 0 && jump_data[31] == 0) || (overflow == 1 && add_input1[0] == 0); //严格大于，不包括等于
   assign is_ltu = carry == 0 ;
@@ -322,9 +322,9 @@ module ysyx_24100005_top(
                                                             8'b110_10110, 1'b1, // bltu 
                                                             8'b111_00101, 1'b1, // bgeu is_ltu = 0, is_gtu = 1
                                                             8'b111_01001, 1'b1, // bgeu is_ltu = 0, is_gtu = 1
-                                                            8'b010_11010, 1'b1, // slt/slti  zero = 1, is_lt = 1, is_gt = 0
+                                                            8'b010_11010, 1'b1, // slt/slti  zero = 0, is_lt = 1, is_gt = 0
                                                             8'b010_11001, 1'b1, // 
-                                                            8'b011_11010, 1'b1, // sltu/sltiu zero = 1, is_ltu = 1, is_gtu = 0
+                                                            8'b011_11010, 1'b1, // sltu/sltiu zero = 0, is_ltu = 1, is_gtu = 0
                                                             8'b011_10110, 1'b1 // 
                                                             }));
 
