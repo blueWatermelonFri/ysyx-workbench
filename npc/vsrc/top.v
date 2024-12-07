@@ -307,9 +307,9 @@ module ysyx_24100005_top(
   // 没有借位时：carry = 1，borrow = 0，表示 A >= B。
   assign is_equal = zero;
   assign is_lt = (overflow == 0 && jump_data[31] == 1) || (overflow == 1 && add_input1[31] == 1);
-  assign is_gt = (overflow == 0 && jump_data[31] == 0) || (overflow == 1 && add_input1[31] == 0); //严格大于，不包括等于
+  assign is_gt = (overflow == 0 && jump_data[31] == 0) || (overflow == 1 && add_input1[31] == 0); //大于等于
   assign is_ltu = carry == 0 ;
-  assign is_gtu = carry == 1 ; //严格大于，不包括等于
+  assign is_gtu = carry == 1 ; //大于等于（0-0的情况，有carry==1）
 
   // mux for whether jump
   // slt/slti的判断逻辑是一样的，所以共用一套条件，这也是为什么slt和slt的funct3是相同的，sltu/sltiu同理
@@ -317,7 +317,6 @@ module ysyx_24100005_top(
                                                       .key({funct3, is_equal, is_lt, is_gt, is_ltu, is_gtu}), 
                                                       .default_out(1'b0), 
                                                       .lut({
-                                                            // 8'b000_00000, 1'b1, // beq zero = 0
                                                             8'b000_00101, 1'b1, // beq zero = 0
                                                             8'b000_00110, 1'b1, // beq zero = 0
                                                             8'b000_01001, 1'b1, // beq zero = 0
@@ -401,7 +400,7 @@ module ysyx_24100005_top(
                                                                 5'b000_01, {24'h000000, mem_read[15:8]},
                                                                 5'b000_10, {24'h000000, mem_read[23:16]},
                                                                 5'b000_11, {24'h000000, mem_read[31:24]},
-                                                                // lh|lhu
+                                                                // lh
                                                                 5'b001_00, {16'h000000, mem_read[15:0]},
                                                                 5'b001_10, {16'h000000, mem_read[31:16]},
                                                                 // lw
