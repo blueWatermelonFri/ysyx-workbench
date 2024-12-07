@@ -93,6 +93,8 @@ static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;
 }
 
+// mem read的打印和预期不一致
+// 之前对于mem write的实现理解有偏差
 static inline void host_write(void *addr, int wdata, char wmask) {
   
   switch (wmask) {
@@ -141,12 +143,7 @@ static void pmem_write(uint32_t addr, int wdata, char wmask) {
   // printf("write addr %x\n", addr);
   check_addr(addr);
   // printf("write addr %x\n", addr);
-  printf("write addr = %x\n", addr);
-  printf("before write = %x\n", pmem_read(addr));
-
   host_write(guest_to_host(addr), wdata, wmask);
-
-  printf("after write = %x\n", pmem_read(addr));
 }
 
 extern "C" void ebreak() {
