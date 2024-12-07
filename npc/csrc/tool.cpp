@@ -127,7 +127,7 @@ extern "C" void ebreak() {
 }
 
 extern "C" int npcmem_read(int raddr) {
-  // printf("read_addr = %x\n", raddr);
+  printf("read_addr = %x\n", raddr);
   uint32_t aligned_addr = raddr & (~0x3u);
   return pmem_read(aligned_addr);
 }
