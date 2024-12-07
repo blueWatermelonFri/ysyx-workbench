@@ -301,6 +301,9 @@ module ysyx_24100005_top(
   assign is_ltu = carry == 0 ;
   assign is_gtu = carry == 1 ; //严格大于，不包括等于
 
+  always@(is_jump)begin
+    $display("is jump = %h\n", is_jump);
+  end
   // mux for whether jump
   // slt/slti的判断逻辑是一样的，所以共用一套条件，这也是为什么slt和slt的funct3是相同的，sltu/sltiu同理
   ysyx_24100005_MuxKeyWithDefault #(19, 8, 1) Mux_jump (.out(is_jump), 
