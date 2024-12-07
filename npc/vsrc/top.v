@@ -306,6 +306,8 @@ module ysyx_24100005_top(
     $display("is_equal = %h\n", is_equal);
     $display("zero = %h\n", zero);
     $display("jump_data = %h\n", jump_data);
+    $display("jump_data = %h\n", add_input1);
+    $display("jump_data = %h\n", jump_t_no_Cin);
   end
   // mux for whether jump
   // slt/slti的判断逻辑是一样的，所以共用一套条件，这也是为什么slt和slt的funct3是相同的，sltu/sltiu同理
