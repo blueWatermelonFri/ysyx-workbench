@@ -160,7 +160,7 @@ module ysyx_24100005_top(
   assign add_input1 = rs1data;
 
   // mux for adder input2(rs2data/imm)     NR_KEY , KEY_LEN , DATA_LEN 
-  ysyx_24100005_MuxKeyWithDefault #(10, 7, 32) Mux_input2 (.out(add_input2), 
+  ysyx_24100005_MuxKeyWithDefault #(9, 7, 32) Mux_input2 (.out(add_input2), 
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
@@ -171,7 +171,6 @@ module ysyx_24100005_top(
                                                                 7'b110_0111, immI,      // jalr
                                                                 7'b000_0011, immI, // load
                                                                 7'b010_0011, immS,  // store
-                                                                7'b110_0011, immB, // B type
                                                                 7'b011_0011, rs2data,  // R type
                                                                 7'b110_0011, rs2data   // B type
                                                                 }));
