@@ -118,8 +118,6 @@ static void pmem_write(uint32_t addr, int wdata, char wmask) {
   // printf("write addr %x\n", addr);
   check_addr(addr);
   // printf("write addr %x\n", addr);
-  addr = addr & (~0x3u);
-  printf("write addr = %x, data = %x\n", addr, wdata);
   host_write(guest_to_host(addr), wdata, wmask);
 
 }
@@ -141,6 +139,8 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   // printf("write_addr = %x\n", waddr);
   uint32_t aligned_addr = waddr & (~0x3u);
+  printf("write addr = %x, data = %x\n", aligned_addr, wdata);
+
   return pmem_write(aligned_addr, wdata, wmask);
 }
 
