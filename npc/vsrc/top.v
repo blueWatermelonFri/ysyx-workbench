@@ -319,8 +319,8 @@ module ysyx_24100005_top(
                                                             8'b001_11010, 1'b1, // bne zero != 0
                                                             8'b001_10101, 1'b1, // bne zero != 0
                                                             8'b001_10110, 1'b1, // bne zero != 0
-                                                            8'b100_10110, 1'b1, // blt zero = 1, is_lt = 1, is_gt = 0
-                                                            8'b100_10101, 1'b1, // blt 
+                                                            8'b100_11010, 1'b1, // blt zero = 1, is_lt = 1, is_gt = 0
+                                                            8'b100_11001, 1'b1, // blt 
                                                             8'b101_00101, 1'b1, // bge is_lt = 0, is_gt = 1
                                                             8'b101_00110, 1'b1, // bge 
                                                             8'b101_10101, 1'b1, // bge 
