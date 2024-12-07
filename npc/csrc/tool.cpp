@@ -209,6 +209,7 @@ void npc_execute_once(){
     pre_pc = top.PC;
     instruction = pmem_read(top.PC);
     single_cycle();
+    printf("finish pc = %x\n", pre_pc);
 }
 
 void npc_execute(__uint64_t n){
