@@ -94,10 +94,25 @@ static inline uint32_t host_read(void *addr) {
 }
 
 static inline void host_write(void *addr, int wdata, char wmask) {
-  if( (wmask & 0x1u) == 1) {*(uint8_t  *)addr = (wdata & 0x000000ff);}
-  if( ((wmask >> 1) & 0x1u) == 1) {* ((uint8_t  *)addr + 1)= (unsigned int)(wdata & 0x0000ff00) >> 8;} // 确保wmask是正数，以及移位做0拓展
-  if( ((wmask >> 2) & 0x1u) == 1) {* ((uint8_t  *)addr + 2)= (unsigned int)(wdata & 0x00ff0000) >> 16;} 
-  if( ((wmask >> 3) & 0x1u) == 1) {* ((uint8_t  *)addr + 3)= (unsigned int)(wdata & 0xff000000) >> 24;} 
+  
+  switch (wmask) {
+    case 0x01:
+      *(uint8_t  *)addr = (wdata & 0x000000ff);
+    case 0x02:              
+      *((uint8_t  *)addr + 1) = (wdata & 0x000000ff);
+    case 0x04:              
+      *((uint8_t  *)addr + 2) = (wdata & 0x000000ff);
+    case 0x08:              
+      *((uint8_t  *)addr + 3) = (wdata & 0x000000ff);
+    case 0x03:              
+      *(uint16_t *)addr = (wdata & 0x0000ffff);
+    case 0x0c:              
+      *((uint16_t *)addr + 1) = (wdata & 0x0000ffff);
+    case 0x0f:              
+      *(uint32_t *)addr = wdata;
+    default:
+      printf("wmask error\n");
+  }
 }
 
 static void check_addr(uint32_t addr) {
