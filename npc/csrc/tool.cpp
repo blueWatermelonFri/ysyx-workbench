@@ -102,6 +102,7 @@ static inline void host_write(void *addr, int wdata, char wmask) {
 
 static uint32_t pmem_read(uint32_t addr) {
   // printf("read addr %x\n", addr);
+  if(addr < 0x80000000 || addr > 0x8)
   uint32_t ret = host_read(guest_to_host(addr));
   return ret;
 }
@@ -155,6 +156,7 @@ void init_wave(){
 void end_wave(){  
   tfp->close();
 }
+
 void reset(int n) {
   top.rst = 1;
   while (n -- > 0) single_cycle();
@@ -226,10 +228,11 @@ void npc_execute(__uint64_t n){
   difftest_step();
 #endif
 
-      if(npc_state == 0) break;
+      if(npc_state == 0) {
+        end_wave();
+        break;
+      }
   }
-  
-  end_wave();
 
 }
 

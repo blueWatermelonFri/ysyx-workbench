@@ -32,4 +32,7 @@ int main(int argc, char *argv[]) {
 
   npc_sdb_mainloop();
 
+  end_wave();
+
+
 }
