@@ -480,7 +480,6 @@ module ysyx_24100005_top(
     end
     
     if (write_en) begin // 有写请求时
-        $display("write en = %h", write_en);
         npcmem_write(adder_output, rs2data, wmask);
       end
   end

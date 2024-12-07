@@ -143,7 +143,12 @@ static void pmem_write(uint32_t addr, int wdata, char wmask) {
   // printf("write addr %x\n", addr);
   check_addr(addr);
   // printf("write addr %x\n", addr);
+  // printf("write addr = %x\n", addr);
+  // printf("before write = %x\n", pmem_read(addr));
+
   host_write(guest_to_host(addr), wdata, wmask);
+
+  // printf("after write = %x\n", pmem_read(addr));
 }
 
 extern "C" void ebreak() {
