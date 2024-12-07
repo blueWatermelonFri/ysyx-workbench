@@ -476,6 +476,7 @@ module ysyx_24100005_top(
 
     if (read_mem ) begin // 
       mem_rdata = npcmem_read(adder_output);
+      $display("mem rdata = %h", mem_rdata);
     end
     else begin 
       mem_rdata = 0;
