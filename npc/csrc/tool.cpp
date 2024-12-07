@@ -107,7 +107,7 @@ static void check_addr(uint32_t addr) {
   }
 }
 static uint32_t pmem_read(uint32_t addr) {
-  printf("read addr %x\n", addr);
+  // printf("read addr %x\n", addr);
   
   check_addr(addr);
   uint32_t ret = host_read(guest_to_host(addr));
@@ -119,6 +119,7 @@ static void pmem_write(uint32_t addr, int wdata, char wmask) {
   check_addr(addr);
   // printf("write addr %x\n", addr);
   addr = addr & (~0x3u);
+  printf("write addr = %x\n", addr);
   host_write(guest_to_host(addr), wdata, wmask);
 
 }
@@ -129,7 +130,7 @@ extern "C" void ebreak() {
 }
 
 extern "C" int npcmem_read(int raddr) {
-  printf("npcmem_read = %x\n", raddr);
+  // printf("npcmem_read = %x\n", raddr);
   uint32_t aligned_addr = raddr & (~0x3u);
   return pmem_read(aligned_addr);
 }
