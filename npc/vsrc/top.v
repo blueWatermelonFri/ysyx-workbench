@@ -207,7 +207,7 @@ module ysyx_24100005_top(
   // shift
   assign sll_output = add_input1 << add_input2;
   assign srl_output = add_input1 >> add_input2;
-  assign sra_output = add_input1 >>> add_input2;
+  assign sra_output = $signed(add_input1) >>> add_input2;
 
   reg signed [7:0] real_sra;
   assign real_sra = 8'b1000_0000 >>> 3'b001;
