@@ -16,7 +16,7 @@ VerilatedVcdC* tfp = new VerilatedVcdC;
 static TOP_NAME top;
 
 
-static int state = 1;
+int npc_state = 1;
 unsigned int pre_pc;
 unsigned int instruction;
 
@@ -93,30 +93,71 @@ static inline uint32_t host_read(void *addr) {
     return *(uint32_t *)addr;
 }
 
+// mem read的打印和预期不一致
+// 之前对于mem write的实现理解有偏差
 static inline void host_write(void *addr, int wdata, char wmask) {
-  if( (wmask & 0x1u) == 1) {*(uint8_t  *)addr = (wdata & 0x000000ff);}
-  if( ((wmask >> 1) & 0x1u) == 1) {* ((uint8_t  *)addr + 1)= (unsigned int)(wdata & 0x0000ff00) >> 8;} // 确保wmask是正数，以及移位做0拓展
-  if( ((wmask >> 2) & 0x1u) == 1) {* ((uint8_t  *)addr + 2)= (unsigned int)(wdata & 0x00ff0000) >> 16;} 
-  if( ((wmask >> 3) & 0x1u) == 1) {* ((uint8_t  *)addr + 3)= (unsigned int)(wdata & 0xff000000) >> 24;} 
+  
+  switch (wmask) {
+    case 0x01:
+      *(uint8_t  *)addr = (wdata & 0x000000ff);
+      break;
+    case 0x02:              
+      *((uint8_t  *)addr + 1) = (wdata & 0x000000ff);
+      break;
+    case 0x04:              
+      *((uint8_t  *)addr + 2) = (wdata & 0x000000ff);
+      break;
+    case 0x08:              
+      *((uint8_t  *)addr + 3) = (wdata & 0x000000ff);
+      break;
+    case 0x03:              
+      *(uint16_t *)addr = (wdata & 0x0000ffff);
+      break;
+    case 0x0c:              
+      *((uint16_t *)addr + 1) = (wdata & 0x0000ffff);
+      break;
+    case 0x0f:              
+      *(uint32_t *)addr = wdata;
+      break;
+    default:
+      printf("wmask error\n");
+      break;
+  }
 }
 
+static void check_addr(uint32_t addr) {
+ if(addr < 0x80000000 || addr > 0x87ffffff){
+    end_wave();
+    printf("addr not in [0x80000000, 0x87ffffff]");
+  }
+}
 static uint32_t pmem_read(uint32_t addr) {
+  // printf("read addr %x\n", addr);
+  
+  check_addr(addr);
   uint32_t ret = host_read(guest_to_host(addr));
-  // printf("read data %x\n", ret);
   return ret;
 }
 
 static void pmem_write(uint32_t addr, int wdata, char wmask) {
+  // printf("write addr %x\n", addr);
+  check_addr(addr);
+  // printf("write addr %x\n", addr);
+  // printf("write addr = %x\n", addr);
+  // printf("before write = %x\n", pmem_read(addr));
+
   host_write(guest_to_host(addr), wdata, wmask);
+
+  // printf("after write = %x\n", pmem_read(addr));
 }
 
 extern "C" void ebreak() {
   printf("hit at goog trap\n");
-  state = 0;
+  npc_state = 0;
 }
 
 extern "C" int npcmem_read(int raddr) {
-  // printf("read_addr = %x\n", raddr);
+  // printf("npcmem_read = %x\n", raddr);
   uint32_t aligned_addr = raddr & (~0x3u);
   return pmem_read(aligned_addr);
 }
@@ -127,6 +168,8 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   // printf("write_addr = %x\n", waddr);
   uint32_t aligned_addr = waddr & (~0x3u);
+  // printf("write addr = %x, data = %x, wmask = %x\n", aligned_addr, wdata, wmask);
+
   return pmem_write(aligned_addr, wdata, wmask);
 }
 
@@ -153,6 +196,7 @@ void init_wave(){
 void end_wave(){  
   tfp->close();
 }
+
 void reset(int n) {
   top.rst = 1;
   while (n -- > 0) single_cycle();
@@ -224,10 +268,11 @@ void npc_execute(__uint64_t n){
   difftest_step();
 #endif
 
-      if(state == 0) break;
+      if(npc_state == 0) {
+        end_wave();
+        break;
+      }
   }
-  
-  end_wave();
 
 }
 

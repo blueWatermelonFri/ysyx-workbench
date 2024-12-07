@@ -3,6 +3,8 @@
 #include "tool.h"
 
 extern CPU_state cpu;
+extern int npc_state;
+
 void update_cpu();
 
 void (*ref_difftest_memcpy)(unsigned int addr, void *buf, size_t n, bool direction) = NULL;
@@ -68,6 +70,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r) {
 static void checkregs(CPU_state *ref) {
   if (!isa_difftest_checkregs(ref)) {
     npc_reg_display();
+    npc_state = 0;
   }
 }
 
