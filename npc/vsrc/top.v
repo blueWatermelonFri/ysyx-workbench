@@ -38,7 +38,9 @@ module ysyx_24100005_top(
   wire [4:0] rs2;
   wire [4:0] rd;
 
-  wire [31:0] immI_typ1;
+  wire [31:0] immI_1;
+  wire [31:0] immI_2;
+  wire [31:0] immI;
   wire [31:0] immI;
   wire [31:0] immJ;
   wire [31:0] immU;
@@ -108,19 +110,36 @@ module ysyx_24100005_top(
   // I type instruction 
   assign funct3 = inst[14:12];
   // imm extension
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Iimm_SEXT(.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
+  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Iimm_SEXT_1(.key(inst[31]),
+                                                          .default_out({32'h0}),
                                                           .lut({
                                                                 1'b0, {20'h00000, inst[31:20]},
                                                                 1'b1, {20'hfffff, inst[31:20]}
                                                               }),
+                                                          .out(immI_1));
+
+  ysyx_24100005_MuxKeyWithDefault #(2, 3, 32) Iimm_SEXT_2(.key(funct3),
+                                                          .default_out({32'h0}),
+                                                          .lut({
+                                                                3'b001, {27'h00000, inst[24:20]},
+                                                                3'b101, {27'h00000, inst[24:20]}
+                                                              }),
+                                                          .out(immI_2));
+
+  ysyx_24100005_MuxKeyWithDefault #(2, 3, 32) Iimm_SEXT(.key(funct3),
+                                                          .default_out(immI_1),
+                                                          .lut({
+                                                                3'b001, immI_2,
+                                                                3'b101, immI_2
+                                                              }),
                                                           .out(immI));
+
   // U type instruction imm extension
   assign immU = {inst[31:12], 12'h000};
 
   // j type instruction
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Jimm_SEXT (.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
+                                                          .default_out({32'h0}),
                                                           .lut({
                                                                 1'b0, {11'h000, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0},
                                                                 1'b1, {11'hfff, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0}
@@ -129,7 +148,7 @@ module ysyx_24100005_top(
 
   // S type imm extension
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Simm_SEXT(.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
+                                                          .default_out({32'h0}),
                                                           .lut({
                                                                 1'b0, {20'h00000, inst[31:25], inst[11:7]},
                                                                 1'b1, {20'hfffff, inst[31:25], inst[11:7]}
@@ -138,7 +157,7 @@ module ysyx_24100005_top(
 
   // B type imm extension
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Bimm_SEXT(.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
+                                                          .default_out({32'h0}),
                                                           .lut({
                                                                 1'b0, {19'h00000, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0},
                                                                 1'b1, {19'h7ffff, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0}
