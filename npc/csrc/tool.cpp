@@ -100,15 +100,23 @@ static inline void host_write(void *addr, int wdata, char wmask) {
   if( ((wmask >> 3) & 0x1u) == 1) {* ((uint8_t  *)addr + 3)= (unsigned int)(wdata & 0xff000000) >> 24;} 
 }
 
+static void check_addr(uint32_t addr) {
+ if(addr < 0x80000000 || addr > 0x87ffffff){
+    end_wave();
+    printf("addr not in [0x80000000, 0x87ffffff]");
+  }
+}
 static uint32_t pmem_read(uint32_t addr) {
   // printf("read addr %x\n", addr);
-  if(addr < 0x80000000 || addr > 0x8)
+  
+  check_addr(addr);
   uint32_t ret = host_read(guest_to_host(addr));
   return ret;
 }
 
 static void pmem_write(uint32_t addr, int wdata, char wmask) {
   // printf("write addr %x\n", addr);
+  check_addr(addr);
   host_write(guest_to_host(addr), wdata, wmask);
 
 }
