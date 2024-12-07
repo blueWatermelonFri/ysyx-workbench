@@ -310,11 +310,15 @@ module ysyx_24100005_top(
 
   // mux for whether jump
   // slt/slti的判断逻辑是一样的，所以共用一套条件，这也是为什么slt和slt的funct3是相同的，sltu/sltiu同理
-  ysyx_24100005_MuxKeyWithDefault #(21, 8, 1) Mux_jump (.out(is_jump), 
+  ysyx_24100005_MuxKeyWithDefault #(24, 8, 1) Mux_jump (.out(is_jump), 
                                                       .key({funct3, is_equal, is_lt, is_gt, is_ltu, is_gtu}), 
                                                       .default_out(1'b0), 
                                                       .lut({
-                                                            8'b000_00010, 1'b1, // beq zero = 0
+                                                            // 8'b000_00000, 1'b1, // beq zero = 0
+                                                            8'b000_00101, 1'b1, // beq zero = 0
+                                                            8'b000_00110, 1'b1, // beq zero = 0
+                                                            8'b000_01001, 1'b1, // beq zero = 0
+                                                            8'b000_01010, 1'b1, // beq zero = 0
                                                             8'b001_11001, 1'b1, // bne zero != 0
                                                             8'b001_11010, 1'b1, // bne zero != 0
                                                             8'b001_10101, 1'b1, // bne zero != 0
