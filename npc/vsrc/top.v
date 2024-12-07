@@ -293,13 +293,13 @@ module ysyx_24100005_top(
   assign overflow = (add_input1[31] == jump_t_no_Cin[31]) && (jump_data [31] != add_input1[31]);
 
   // 借位标志 borrow 由加法操作中的进位标志 cout 来确定：
-  // 借位发生时：cout = 0，borrow = 1，表示 A < B。
-  // 没有借位时：cout = 1，borrow = 0，表示 A >= B。
+  // 借位发生时：carry = 0，borrow = 1，表示 A < B。
+  // 没有借位时：carry = 1，borrow = 0，表示 A >= B。
   assign is_equal = (zero == 0);
   assign is_lt = (overflow == 0 && jump_data[31] == 1) || (overflow == 1 && add_input1[0] == 1);
   assign is_gt = (overflow == 0 && jump_data[31] == 0) || (overflow == 1 && add_input1[0] == 0); //严格大于，不包括等于
-  assign is_ltu = carry == 1 ;
-  assign is_gtu = carry == 0 ; //严格大于，不包括等于
+  assign is_ltu = carry == 0 ;
+  assign is_gtu = carry == 1 ; //严格大于，不包括等于
 
   // mux for whether jump
   // slt/slti的判断逻辑是一样的，所以共用一套条件，这也是为什么slt和slt的funct3是相同的，sltu/sltiu同理
