@@ -303,8 +303,8 @@ module ysyx_24100005_top(
   // 借位发生时：carry = 0，borrow = 1，表示 A < B。
   // 没有借位时：carry = 1，borrow = 0，表示 A >= B。
   assign is_equal = zero;
-  assign is_lt = (overflow == 0 && jump_data[31] == 1) || (overflow == 1 && add_input1[0] == 1);
-  assign is_gt = (overflow == 0 && jump_data[31] == 0) || (overflow == 1 && add_input1[0] == 0); //严格大于，不包括等于
+  assign is_lt = (overflow == 0 && jump_data[31] == 1) || (overflow == 1 && add_input1[31] == 1);
+  assign is_gt = (overflow == 0 && jump_data[31] == 0) || (overflow == 1 && add_input1[31] == 0); //严格大于，不包括等于
   assign is_ltu = carry == 0 ;
   assign is_gtu = carry == 1 ; //严格大于，不包括等于
 
