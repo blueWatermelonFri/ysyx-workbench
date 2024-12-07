@@ -210,7 +210,7 @@ module ysyx_24100005_top(
   assign sra_output = add_input1 >>> add_input2;
 
   reg signed [7:0] real_sra;
-  assign real_sra = 8'b1000_0000 >>> 3'b001;
+  assign real_sra = 8'b1000_0000 >>> 1;
 
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_logic_output (.out(logic_output), 
                                                         .key(funct3), 
