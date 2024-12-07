@@ -6,8 +6,8 @@
 #define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
 #define NR_CMD ARRLEN(cmd_table)
 
-
-static int is_batch_mode = true;
+extern int npc_state;
+static int is_batch_mode = false;
 
 void sdb_set_batch_mode() {
   is_batch_mode = true;
@@ -35,10 +35,10 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-// static int cmd_q(char *args) {
-//   nemu_state.state = NEMU_QUIT;
-//   return -1;
-// }
+static int cmd_q(char *args) {
+  npc_state = 0;
+  return -1;
+}
 
 static int cmd_x(char *args) {
   // str_len表示从当前地址开始，打印多少个地址的值
@@ -122,8 +122,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "si", "Single  step", cmd_si },
   { "x", "print memory info", cmd_x },
-  { "info", "print watchpoint/register info", cmd_info }
-//   { "q", "Exit npc_sdb", cmd_q },
+  { "info", "print watchpoint/register info", cmd_info },
+  { "q", "Exit npc_sdb", cmd_q }
   /* TODO: Add more commands */
 
 };
