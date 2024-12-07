@@ -214,6 +214,7 @@ void npc_execute_once(){
 
 void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
+      printf("begin pre_pc = %x\n", pre_pc);
       npc_execute_once();
 #if 1
     char logbuf[128];
@@ -268,6 +269,8 @@ void npc_execute(__uint64_t n){
 #if 1
   difftest_step();
 #endif
+
+      printf("end pre_pc = %x\n", pre_pc);
 
       if(npc_state == 0) {
         end_wave();
