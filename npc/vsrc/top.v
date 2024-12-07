@@ -172,7 +172,7 @@ module ysyx_24100005_top(
                                                           .key(opcode), 
                                                           .default_out(32'h0), 
                                                           .lut({
-                                                                7'b001_0011, immI,
+                                                                7'b001_0011, immI, // partial I 
                                                                 7'b001_0111, immU, // aipuc
                                                                 7'b011_0111, immU, // lui
                                                                 7'b110_1111, immJ,      // jal
@@ -195,7 +195,7 @@ module ysyx_24100005_top(
 
   // adder
   assign t_no_Cin = {32{ Cin }}^add_input2;
-  assign adder_output = add_input1 + t_no_Cin + {31'b0000, Cin};
+  assign adder_output = add_input1 + t_no_Cin + {31'b0, Cin};
 
   // logic
   assign xor_output = add_input1 ^ add_input2;
@@ -450,8 +450,8 @@ module ysyx_24100005_top(
                                                                 5'b000_10, {8'b0000_0100}, // sb
                                                                 5'b000_11, {8'b0000_1000}, // sb
 
-                                                                5'b001_00, {8'b0000_0011}, // sb
-                                                                5'b001_10, {8'b0000_1100}, // sb
+                                                                5'b001_00, {8'b0000_0011}, // sh
+                                                                5'b001_10, {8'b0000_1100}, // sh
 
                                                                 5'b010_00, {8'b0000_1111} // sw
                                                               }),
@@ -474,7 +474,7 @@ module ysyx_24100005_top(
 
   always @(read_mem, adder_output, write_mem, rs2data, wmask) begin
 
-    if (read_mem ) begin // 
+    if (read_mem) begin // 
       mem_rdata = npcmem_read(adder_output);
     end
     else begin 
