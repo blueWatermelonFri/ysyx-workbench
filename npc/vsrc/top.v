@@ -289,7 +289,7 @@ module ysyx_24100005_top(
 
   assign jump_t_no_Cin = {32{ 1'b1 }}^add_input2;
   assign {carry, jump_data} = add_input1 + jump_t_no_Cin + {32'b0000, 1'b1};
-  assign zero = |jump_data; //  
+  assign zero = |jump_data; // zero = 0表示a=b
   assign overflow = (add_input1[31] == jump_t_no_Cin[31]) && (jump_data [31] != add_input1[31]);
 
   // 借位标志 borrow 由加法操作中的进位标志 cout 来确定：

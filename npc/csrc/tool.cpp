@@ -16,7 +16,7 @@ VerilatedVcdC* tfp = new VerilatedVcdC;
 static TOP_NAME top;
 
 
-static int state = 1;
+int npc_state = 1;
 unsigned int pre_pc;
 unsigned int instruction;
 
@@ -114,7 +114,7 @@ static void pmem_write(uint32_t addr, int wdata, char wmask) {
 
 extern "C" void ebreak() {
   printf("hit at goog trap\n");
-  state = 0;
+  npc_state = 0;
 }
 
 extern "C" int npcmem_read(int raddr) {
@@ -226,7 +226,7 @@ void npc_execute(__uint64_t n){
   difftest_step();
 #endif
 
-      if(state == 0) break;
+      if(npc_state == 0) break;
   }
   
   end_wave();
