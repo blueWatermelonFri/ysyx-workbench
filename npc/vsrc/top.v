@@ -14,7 +14,7 @@ module ysyx_24100005_top(
 
   wire wen; // reg write
   wire read_en; // mem read
-  wire write_mem; // mem write
+  wire write_en; // mem write
   wire [31:0] wdata; // reg write
   wire [31:0] rs1data; // reg read rs1
   wire [31:0] rs2data; // reg read rs2
@@ -377,11 +377,10 @@ module ysyx_24100005_top(
 
 
   // mux for whether store
-  ysyx_24100005_MuxKeyWithDefault #(2, 7, 1) Mux_write_mem (.out(write_mem), 
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_write_en (.out(write_en), 
                                                               .key(opcode), 
                                                               .default_out(1'b0), 
                                                               .lut({
-                                                                    7'b000_0011,  1'b0,  // load
                                                                     7'b010_0011,  1'b1  // store                                                           
                                                                     }));
 
@@ -471,7 +470,7 @@ module ysyx_24100005_top(
   end
 
 
-  always @(read_en, adder_output, write_mem, rs2data, wmask) begin
+  always @(read_en, adder_output, write_en, rs2data, wmask) begin
 
     if (read_en) begin // 
       mem_read = npcmem_read(adder_output);
@@ -480,7 +479,7 @@ module ysyx_24100005_top(
       mem_read = 32'h0;
     end
     
-    if (write_mem) begin // 有写请求时
+    if (write_en) begin // 有写请求时
         npcmem_write(adder_output, rs2data, wmask);
       end
   end

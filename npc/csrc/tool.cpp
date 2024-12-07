@@ -117,6 +117,8 @@ static uint32_t pmem_read(uint32_t addr) {
 static void pmem_write(uint32_t addr, int wdata, char wmask) {
   // printf("write addr %x\n", addr);
   check_addr(addr);
+  // printf("write addr %x\n", addr);
+  addr = addr & (~0x3u);
   host_write(guest_to_host(addr), wdata, wmask);
 
 }
