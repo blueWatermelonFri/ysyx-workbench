@@ -400,13 +400,13 @@ module ysyx_24100005_top(
                                                                 // lw
                                                                 5'b010_00, mem_rdata[31:0],
                                                                 // lbu
-                                                                5'b011_00, {24'h000000, mem_rdata[7:0]},
-                                                                5'b011_01, {24'h000000, mem_rdata[15:8]},
-                                                                5'b011_10, {24'h000000, mem_rdata[23:16]},
-                                                                5'b011_11, {24'h000000, mem_rdata[31:24]},
+                                                                5'b101_00, {24'h000000, mem_rdata[7:0]},
+                                                                5'b101_01, {24'h000000, mem_rdata[15:8]},
+                                                                5'b101_10, {24'h000000, mem_rdata[23:16]},
+                                                                5'b101_11, {24'h000000, mem_rdata[31:24]},
                                                                 // lhu
-                                                                5'b100_00, {16'h000000, mem_rdata[15:0]},
-                                                                5'b100_10, {16'h000000, mem_rdata[31:16]}
+                                                                5'b101_00, {16'h000000, mem_rdata[15:0]},
+                                                                5'b101_10, {16'h000000, mem_rdata[31:16]}
                                                               }),
                                                           .out(mem_extract));
   // memory read LB sign extend  
