@@ -140,7 +140,7 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   // printf("write_addr = %x\n", waddr);
   uint32_t aligned_addr = waddr & (~0x3u);
-  printf("write addr = %x, data = %x\n", aligned_addr, wdata);
+  printf("write addr = %x, data = %x, wmask = %x\n", aligned_addr, wdata, wmask);
 
   return pmem_write(aligned_addr, wdata, wmask);
 }
