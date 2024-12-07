@@ -417,8 +417,8 @@ module ysyx_24100005_top(
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lb_sext(.key(mem_extract[7]),
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
-                                                                1'b0, {24'h000000, mem_read[7:0]},
-                                                                1'b1, {24'hffffff, mem_read[7:0]}
+                                                                1'b0, {24'h000000, mem_extract[7:0]},
+                                                                1'b1, {24'hffffff, mem_extract[7:0]}
                                                               }),
                                                           .out(mem_lb_sext));
 
@@ -426,8 +426,8 @@ module ysyx_24100005_top(
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Mux_lh_sext(.key(mem_extract[15]),
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
-                                                                1'b0, {16'h0000, mem_read[15:0]},
-                                                                1'b1, {16'hffff, mem_read[15:0]}
+                                                                1'b0, {16'h0000, mem_extract[15:0]},
+                                                                1'b1, {16'hffff, mem_extract[15:0]}
                                                               }),
                                                           .out(mem_lh_sext));
   // 把这个改回mem_rdata
