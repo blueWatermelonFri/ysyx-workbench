@@ -98,20 +98,28 @@ static inline void host_write(void *addr, int wdata, char wmask) {
   switch (wmask) {
     case 0x01:
       *(uint8_t  *)addr = (wdata & 0x000000ff);
+      break;
     case 0x02:              
       *((uint8_t  *)addr + 1) = (wdata & 0x000000ff);
+      break;
     case 0x04:              
       *((uint8_t  *)addr + 2) = (wdata & 0x000000ff);
+      break;
     case 0x08:              
       *((uint8_t  *)addr + 3) = (wdata & 0x000000ff);
+      break;
     case 0x03:              
       *(uint16_t *)addr = (wdata & 0x0000ffff);
+      break;
     case 0x0c:              
       *((uint16_t *)addr + 1) = (wdata & 0x0000ffff);
+      break;
     case 0x0f:              
       *(uint32_t *)addr = wdata;
+      break;
     default:
       printf("wmask error\n");
+      break;
   }
 }
 
