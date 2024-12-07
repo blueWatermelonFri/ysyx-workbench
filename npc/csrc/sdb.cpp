@@ -7,7 +7,7 @@
 #define NR_CMD ARRLEN(cmd_table)
 
 extern int npc_state;
-static int is_batch_mode = false;
+static int is_batch_mode = true;
 
 void sdb_set_batch_mode() {
   is_batch_mode = true;
