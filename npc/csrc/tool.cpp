@@ -120,7 +120,7 @@ static void pmem_write(uint32_t addr, int wdata, char wmask) {
   // printf("write addr %x\n", addr);
   host_write(guest_to_host(addr), wdata, wmask);
 
-  printf("after write = %x", pmem_read(addr));
+  printf("after write = %x\n", pmem_read(addr));
 }
 
 extern "C" void ebreak() {
