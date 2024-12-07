@@ -177,7 +177,7 @@ void npc_execute_once(){
     pre_pc = top.PC;
     instruction = pmem_read(top.PC);
     single_cycle();
-    printf("after cycle %x\n", pmem_read(0x80008fe5));
+    printf("after cycle %x\n", pmem_read(0x80008fe4));
 }
 
 void npc_execute(__uint64_t n){
