@@ -480,7 +480,7 @@ module ysyx_24100005_top(
       mem_rdata = npcmem_read(adder_output);
     end
     else begin 
-      mem_rdata = 0;
+      mem_rdata = 32'h0;
     end
     
     if (write_mem) begin // 有写请求时
