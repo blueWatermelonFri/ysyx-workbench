@@ -107,7 +107,7 @@ static void check_addr(uint32_t addr) {
   }
 }
 static uint32_t pmem_read(uint32_t addr) {
-  // printf("read addr %x\n", addr);
+  printf("read addr %x\n", addr);
   
   check_addr(addr);
   uint32_t ret = host_read(guest_to_host(addr));
