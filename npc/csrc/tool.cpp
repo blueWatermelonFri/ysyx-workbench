@@ -119,7 +119,7 @@ static void pmem_write(uint32_t addr, int wdata, char wmask) {
   check_addr(addr);
   // printf("write addr %x\n", addr);
   addr = addr & (~0x3u);
-  printf("write addr = %x\n", addr);
+  printf("write addr = %x, data = %x\n", addr, wdata);
   host_write(guest_to_host(addr), wdata, wmask);
 
 }
