@@ -36,15 +36,14 @@ module ysyx_24100005_top(
   wire [6:0] funct7;
   wire [4:0] rs1;
   wire [4:0] rs2;
-  wire [11:0] imm;
   wire [4:0] rd;
 
+  wire [31:0] immI_typ1;
   wire [31:0] immI;
   wire [31:0] immJ;
   wire [31:0] immU;
   wire [31:0] immS;
   wire [31:0] immB;
-  wire [31:0] shiftimmU;
 
   //logic/adder input
   wire [31:0] add_input1;
@@ -66,7 +65,6 @@ module ysyx_24100005_top(
   wire [31:0] logic_output ;
   wire [31:0] shift_output ;
   wire [31:0] RI_output ;
-
 
   //pc  adder input output
   wire [31:0] pc_input1;
@@ -107,7 +105,7 @@ module ysyx_24100005_top(
   // R type instruction
   assign funct7 = inst[31:25];
 
-  // I type instruction
+  // I type instruction 
   assign funct3 = inst[14:12];
   // imm extension
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Iimm_SEXT(.key(inst[31]),
@@ -117,17 +115,8 @@ module ysyx_24100005_top(
                                                                 1'b1, {20'hfffff, inst[31:20]}
                                                               }),
                                                           .out(immI));
-  // U type instruction
-  // imm extension
-  ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Uimm_SEXT(.key(inst[31]),
-                                                          .default_out({32'h0000_0000}),
-                                                          .lut({
-                                                                1'b0, {12'h000, inst[31:12]},
-                                                                1'b1, {12'hfff, inst[31:12]}
-                                                              }),
-                                                          .out(immU));
-  // U type imm shift
-  assign shiftimmU = {immU[19:0], 12'h000};
+  // U type instruction imm extension
+  assign immU = {inst[31:12], 12'h000};
 
   // j type instruction
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Jimm_SEXT (.key(inst[31]),
@@ -165,8 +154,8 @@ module ysyx_24100005_top(
                                                           .default_out(32'h0), 
                                                           .lut({
                                                                 7'b001_0011, immI,
-                                                                7'b001_0111, shiftimmU, // aipuc
-                                                                7'b011_0111, shiftimmU, // lui
+                                                                7'b001_0111, immU, // aipuc
+                                                                7'b011_0111, immU, // lui
                                                                 7'b110_1111, immJ,      // jal
                                                                 7'b110_0111, immI,      // jalr
                                                                 7'b000_0011, immI, // load
@@ -254,7 +243,7 @@ module ysyx_24100005_top(
                                                               7'b110_0011, immB, // B type
                                                               7'b110_1111, immJ,  // jal
                                                               7'b110_0111, immI,   // jalr
-                                                              7'b001_0111, shiftimmU   // auipc
+                                                              7'b001_0111, immU   // auipc
                                                               }));
 
   assign pc_adder_ouptut = pc_input1 + pc_input2;
@@ -345,7 +334,7 @@ module ysyx_24100005_top(
 
 
 
-  // mux for write back in [RI_output , SNPC, mem_read_res,  shiftimmU, pc_adder_ouptut]
+  // mux for write back in [RI_output , SNPC, mem_read_res,  immU, pc_adder_ouptut]
   ysyx_24100005_MuxKeyWithDefault #(7, 7, 32) Mux_writedata (.out(wdata), 
                                                               .key(opcode), 
                                                               .default_out(32'b0), 
@@ -355,7 +344,7 @@ module ysyx_24100005_top(
                                                                     7'b000_0011, mem_read_res,  // load
                                                                     7'b110_1111, SPC,  // jal
                                                                     7'b110_0111, SPC,  // jalr   
-                                                                    7'b011_0111, shiftimmU,  // lui
+                                                                    7'b011_0111, immU,  // lui
                                                                     7'b001_0111, pc_adder_ouptut  // auipc
                                                                     }));
 
@@ -494,41 +483,3 @@ module ysyx_24100005_top(
   // end
 
 endmodule
-
-// add
-// sub
-// xor
-// or
-// and
-// sll
-// srl
-// sra
-// slt
-// sltu
-// addi
-// xori
-// ori
-// andi   1
-// slli
-// srli
-// srai
-// slti
-// sltiu
-// lb
-// lh
-// lw
-// lbu
-// lhu
-// sb
-// sh
-// sw
-// beq
-// bne
-// blt
-// bge
-// bltu
-// bgeu
-// jal    1
-// jalr   1
-// lui
-// auipc  1
