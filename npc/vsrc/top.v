@@ -308,10 +308,9 @@ module ysyx_24100005_top(
   assign is_ltu = carry == 0 ;
   assign is_gtu = carry == 1 ; //严格大于，不包括等于
 
-
   // mux for whether jump
   // slt/slti的判断逻辑是一样的，所以共用一套条件，这也是为什么slt和slt的funct3是相同的，sltu/sltiu同理
-  ysyx_24100005_MuxKeyWithDefault #(19, 8, 1) Mux_jump (.out(is_jump), 
+  ysyx_24100005_MuxKeyWithDefault #(21, 8, 1) Mux_jump (.out(is_jump), 
                                                       .key({funct3, is_equal, is_lt, is_gt, is_ltu, is_gtu}), 
                                                       .default_out(1'b0), 
                                                       .lut({
@@ -322,14 +321,16 @@ module ysyx_24100005_top(
                                                             8'b001_10110, 1'b1, // bne zero != 0
                                                             8'b100_10110, 1'b1, // blt zero = 1, is_lt = 1, is_gt = 0
                                                             8'b100_10101, 1'b1, // blt 
-                                                            8'b101_01001, 1'b1, // bge is_lt = 0, is_gt = 1
-                                                            8'b101_01010, 1'b1, // bge 
-                                                            8'b101_11001, 1'b1, // bge 
-                                                            8'b101_11010, 1'b1, // bge 
+                                                            8'b101_00101, 1'b1, // bge is_lt = 0, is_gt = 1
+                                                            8'b101_00110, 1'b1, // bge 
+                                                            8'b101_10101, 1'b1, // bge 
+                                                            8'b101_10110, 1'b1, // bge 
                                                             8'b110_11010, 1'b1, // bltu zero = 1, is_ltu = 1, is_gt = 0
                                                             8'b110_10110, 1'b1, // bltu 
                                                             8'b111_00101, 1'b1, // bgeu is_ltu = 0, is_gtu = 1
-                                                            8'b111_01001, 1'b1, // bgeu is_ltu = 0, is_gtu = 1
+                                                            8'b111_01001, 1'b1, // 
+                                                            8'b111_10101, 1'b1, // 
+                                                            8'b111_11001, 1'b1, // 
                                                             8'b010_11010, 1'b1, // slt/slti  zero = 0, is_lt = 1, is_gt = 0
                                                             8'b010_11001, 1'b1, // 
                                                             8'b011_11010, 1'b1, // sltu/sltiu zero = 0, is_ltu = 1, is_gtu = 0
