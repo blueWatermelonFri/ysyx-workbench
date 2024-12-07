@@ -426,7 +426,7 @@ module ysyx_24100005_top(
                                                                 1'b1, {16'hffff, mem_rdata[15:0]}
                                                               }),
                                                           .out(mem_lh_sext));
-
+  // 把这个改回mem_rdata
   assign mem_no_sext = mem_extract;
   // memory read res 
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
@@ -435,8 +435,8 @@ module ysyx_24100005_top(
                                                                 3'b000, mem_lb_sext, // lb
                                                                 3'b001, mem_lh_sext, // lh
                                                                 3'b010, mem_no_sext, // lw
-                                                                3'b011, mem_no_sext, // lbu
-                                                                3'b100, mem_no_sext  // lhu
+                                                                3'b100, mem_no_sext, // lbu
+                                                                3'b101, mem_no_sext  // lhu
                                                               }),
                                                           .out(mem_read_res));
   // assign mem_read_res = 32'h0000_0001;
