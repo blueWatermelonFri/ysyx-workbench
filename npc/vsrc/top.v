@@ -400,10 +400,10 @@ module ysyx_24100005_top(
                                                                 // lw
                                                                 5'b010_00, mem_rdata[31:0],
                                                                 // lbu
-                                                                5'b100_00, {24'h000000, 8'b0},
-                                                                5'b100_01, {24'h000000, 8'b0},
-                                                                5'b100_10, {24'h000000, 8'b0},
-                                                                5'b100_11, {24'h000000, 8'b0},
+                                                                5'b100_00, {24'h000000, mem_rdata[7:0]},
+                                                                5'b100_01, {24'h000000, mem_rdata[15:8]},
+                                                                5'b100_10, {24'h000000, mem_rdata[23:16]},
+                                                                5'b100_11, {24'h000000, mem_rdata[31:24]},
                                                                 // lhu
                                                                 5'b101_00, {16'h000000, mem_rdata[15:0]},
                                                                 5'b101_10, {16'h000000, mem_rdata[31:16]}
@@ -427,7 +427,7 @@ module ysyx_24100005_top(
                                                               }),
                                                           .out(mem_lh_sext));
 
-  assign mem_no_sext = mem_rdata;
+  assign mem_no_sext = mem_extract;
   // memory read res 
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_mem_read(.key(funct3),
                                                           .default_out({32'h0000_0000}),
