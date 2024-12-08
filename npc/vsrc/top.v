@@ -479,14 +479,14 @@ module ysyx_24100005_top(
 
   always @(read_en, adder_output, write_en, rs2data, wmask) begin
 
-    if (read_en) begin // 
+    if (read_en) begin // 有读mem请求
       mem_read = npcmem_read(adder_output);
     end
     else begin 
       mem_read = 32'h0;
     end
     
-    if (write_en) begin // 有写请求时
+    if (write_en) begin // 有写mem请求
         npcmem_write(adder_output, rs2data, wmask, PC);
       end
   end
