@@ -149,14 +149,18 @@ extern "C" void ebreak() {
   npc_state = 0;
 }
 
-extern "C" int npcmem_read(int raddr) {
+extern "C" int npcmem_read(int raddr, int en) {
 
 #if 1
   printf("[Info] npcmem_read addr : 0x%08x\n", raddr);
 #endif
 
-  uint32_t aligned_addr = raddr & (~0x3u);
-  return pmem_read(aligned_addr);
+  if(en){
+    uint32_t aligned_addr = raddr & (~0x3u);
+    return pmem_read(aligned_addr);
+  }
+  else 
+    return 0;
 }
 
 extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
