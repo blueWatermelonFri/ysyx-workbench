@@ -15,7 +15,6 @@ VerilatedVcdC* tfp = new VerilatedVcdC;
 
 static TOP_NAME top;
 
-
 int npc_state = 1;
 unsigned int pre_pc;
 unsigned int instruction;
@@ -157,7 +156,11 @@ extern "C" void ebreak() {
 }
 
 extern "C" int npcmem_read(int raddr) {
-  // printf("npcmem_read = %x\n", raddr);
+
+#if 1
+  printf("[Info] npcmem_read = 0x%08x\n", raddr);
+#endif
+
   uint32_t aligned_addr = raddr & (~0x3u);
   return pmem_read(aligned_addr);
 }
@@ -167,9 +170,11 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask, int PC) {
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   // printf("write_addr = %x\n", waddr);
-  uint32_t aligned_addr = waddr & (~0x3u);
-  // printf("write addr = %x, data = %x, wmask = %x\n", aligned_addr, wdata, wmask);
+#if 1
+  printf("[Info] npcmem_write = 0x%08x\n", waddr);
+#endif
 
+  uint32_t aligned_addr = waddr & (~0x3u);
   return pmem_write(aligned_addr, wdata, wmask);
 }
 
