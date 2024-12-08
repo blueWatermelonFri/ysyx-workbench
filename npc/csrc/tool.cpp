@@ -158,7 +158,7 @@ extern "C" void ebreak() {
 extern "C" int npcmem_read(int raddr) {
 
 #if 1
-  printf("[Info] npcmem_read = 0x%08x\n", raddr);
+  printf("[Info] npcmem_read addr : 0x%08x\n", raddr);
 #endif
 
   uint32_t aligned_addr = raddr & (~0x3u);
@@ -171,7 +171,7 @@ extern "C" void npcmem_write(int waddr, int wdata, char wmask, int PC) {
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   // printf("write_addr = %x\n", waddr);
 #if 1
-  printf("[Info] npcmem_write = 0x%08x\n", waddr);
+  printf("[Info] npcmem_write addr : 0x%08x\n", waddr);
 #endif
 
   uint32_t aligned_addr = waddr & (~0x3u);
