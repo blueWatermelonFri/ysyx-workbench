@@ -206,15 +206,13 @@ void reset(int n) {
 void npc_execute_once(){
     // instruction = pmem_read(top.PC);
     // printf("top.pc %x\n", top.PC);
+    pre_pc = top.PC;
     instruction = pmem_read(top.PC);
     single_cycle();
 }
 
 void npc_execute(__uint64_t n){
     for (;n > 0; n --) {
-      pre_pc = top.PC;
-
-      printf("begin pre_pc = %x\n", pre_pc);
       npc_execute_once();
 #if 1
     char logbuf[128];
