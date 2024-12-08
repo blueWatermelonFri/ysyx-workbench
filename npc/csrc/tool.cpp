@@ -151,11 +151,11 @@ extern "C" void ebreak() {
 
 extern "C" int npcmem_read(int raddr, int en) {
 
-#if 1
-  printf("[Info] npcmem_read addr : 0x%08x\n", raddr);
-#endif
 
   if(en){
+#if 1
+    printf("[Info] npcmem_read addr : 0x%08x\n", raddr);
+#endif
     uint32_t aligned_addr = raddr & (~0x3u);
     return pmem_read(aligned_addr);
   }
