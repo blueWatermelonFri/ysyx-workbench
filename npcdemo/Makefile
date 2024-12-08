@@ -4,7 +4,7 @@ INC_PATH ?= /home/myuser/ysyx/ysyx-workbench/npc/include
 
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc  \
-                                 --x-assign fast --x-initial fast --noassert --trace --timing
+                                -O3 --x-assign fast --x-initial fast --noassert --trace --timing
 
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir

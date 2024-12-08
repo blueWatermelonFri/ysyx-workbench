@@ -1,7 +1,3 @@
-import "DPI-C" function void npcmem_write(
-  input int waddr, input int wdata, input byte wmask);
-import "DPI-C" function void ebreak();
-import "DPI-C" function int npcmem_read(input int raddr);
 
 module ysyx_24100005_top(
   input rst,
@@ -9,6 +5,8 @@ module ysyx_24100005_top(
 
   output reg [31:0] PC
 );
+
+
   wire [31:0] SPC;
   wire [31:0] DPC;
   reg [31:0] inst;
@@ -467,37 +465,6 @@ module ysyx_24100005_top(
   // memory access
   // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
   // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
-
-  always @(PC) begin
-    if( PC != 0) begin
-      inst = npcmem_read(PC);
-    end
-    else begin
-      inst = 0;
-    end
-  end
-
-
-  always @(*) begin
-
-    if (read_en) begin // 有读mem请求
-      mem_read = npcmem_read(adder_output);
-    end
-    else begin 
-      mem_read = 32'h0;
-    end
-    
-    if (write_en) begin // 有写mem请求
-        npcmem_write(adder_output, rs2data, wmask);
-      end
-  end
-
-  // // ebreak
-  always @(opcode) begin
-    if(opcode == 7'b1110011) begin
-      ebreak();
-    end
-  end
 
   // always @(posedge clk) begin
   //   $display("inst=%h, ", inst);
