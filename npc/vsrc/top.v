@@ -1,6 +1,7 @@
+import "DPI-C" function void npcmem_write(
+  input int waddr, input int wdata, input byte wmask);
 import "DPI-C" function void ebreak();
 import "DPI-C" function int npcmem_read(input int raddr);
-import "DPI-C" function void npcmem_write(input int waddr, input int wdata, input byte wmask, input int PC);
 
 module ysyx_24100005_top(
   input rst,
@@ -8,6 +9,8 @@ module ysyx_24100005_top(
 
   output reg [31:0] PC
 );
+
+
   wire [31:0] SPC;
   wire [31:0] DPC;
   reg [31:0] inst;
@@ -487,7 +490,7 @@ module ysyx_24100005_top(
     end
     
     if (write_en) begin // 有写mem请求
-        npcmem_write(adder_output, rs2data, wmask, PC);
+        npcmem_write(adder_output, rs2data, wmask);
       end
   end
 

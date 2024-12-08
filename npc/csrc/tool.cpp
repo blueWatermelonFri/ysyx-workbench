@@ -141,13 +141,7 @@ static uint32_t pmem_read(uint32_t addr) {
 static void pmem_write(uint32_t addr, int wdata, char wmask) {
   // printf("write addr %x\n", addr);
   check_addr(addr);
-  // printf("write addr %x\n", addr);
-  // printf("write addr = %x\n", addr);
-  // printf("before write = %x\n", pmem_read(addr));
-
   host_write(guest_to_host(addr), wdata, wmask);
-
-  // printf("after write = %x\n", pmem_read(addr));
 }
 
 extern "C" void ebreak() {
@@ -165,7 +159,7 @@ extern "C" int npcmem_read(int raddr) {
   return pmem_read(aligned_addr);
 }
 
-extern "C" void npcmem_write(int waddr, int wdata, char wmask, int PC) {
+extern "C" void npcmem_write(int waddr, int wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
@@ -272,8 +266,6 @@ void npc_execute(__uint64_t n){
 #if 1
   difftest_step();
 #endif
-
-      printf("end pre_pc = %x\n", pre_pc);
 
       if(npc_state == 0) {
         end_wave();
