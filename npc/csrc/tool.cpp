@@ -155,6 +155,7 @@ extern "C" int npcmem_read(int raddr, int en) {
   if(en){
 #if 1
     printf("[Info] npcmem_read addr : 0x%08x\n", raddr);
+    printf("[Info] en : 0x%08x\n", en);
 #endif
     uint32_t aligned_addr = raddr & (~0x3u);
     return pmem_read(aligned_addr);
