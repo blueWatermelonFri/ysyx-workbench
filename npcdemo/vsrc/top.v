@@ -1,3 +1,10 @@
+`ifdef SIMULATION
+  // DPI-C 相关代码
+  import "DPI-C" function void npcmem_write(
+    input int waddr, input int wdata, input byte wmask);
+  import "DPI-C" function void ebreak();
+  import "DPI-C" function int npcmem_read(input int raddr);
+`endif
 
 module ysyx_24100005_top(
   input rst,
@@ -5,8 +12,6 @@ module ysyx_24100005_top(
 
   output reg [31:0] PC
 );
-
-
   wire [31:0] SPC;
   wire [31:0] DPC;
   reg [31:0] inst;
@@ -112,8 +117,8 @@ module ysyx_24100005_top(
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Iimm_SEXT_1(.key(inst[31]),
                                                           .default_out({32'h0}),
                                                           .lut({
-                                                                1'b0, {20'h00000, inst[31:20]},
-                                                                1'b1, {20'hfffff, inst[31:20]}
+                                                                1'b0, 32'h0,
+                                                                1'b1, 32'h1
                                                               }),
                                                           .out(immI_1));
 
@@ -141,7 +146,7 @@ module ysyx_24100005_top(
                                                           .default_out({32'h0}),
                                                           .lut({
                                                                 1'b0, {11'h000, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0},
-                                                                1'b1, {11'hfff, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0}
+                                                                1'b1, {11'h7ff, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0}
                                                               }),
                                                           .out(immJ));
 
@@ -149,8 +154,8 @@ module ysyx_24100005_top(
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Simm_SEXT(.key(inst[31]),
                                                           .default_out({32'h0}),
                                                           .lut({
-                                                                1'b0, {20'h00000, inst[31:25], inst[11:7]},
-                                                                1'b1, {20'hfffff, inst[31:25], inst[11:7]}
+                                                                1'b0, 32'h0,
+                                                                1'b1, 32'h0
                                                               }),
                                                           .out(immS));
 
@@ -158,8 +163,10 @@ module ysyx_24100005_top(
   ysyx_24100005_MuxKeyWithDefault #(2, 1, 32) Bimm_SEXT(.key(inst[31]),
                                                           .default_out({32'h0}),
                                                           .lut({
-                                                                1'b0, {19'h00000, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0},
-                                                                1'b1, {19'h7ffff, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0}
+                                                                // 1'b0, {19'h00000, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0},
+                                                                // 1'b1, {19'h7ffff, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0}
+                                                                1'b0, 32'b0,
+                                                                1'b1, 32'b1  
                                                               }),
                                                           .out(immB));
 
@@ -185,11 +192,11 @@ module ysyx_24100005_top(
   wire Cin;
   wire [31:0] t_no_Cin;
   // mux for add or sub
-  ysyx_24100005_MuxKeyWithDefault #(1, 17, 1) Mux_add_sub (.out(Cin), 
-                                                          .key({opcode, funct3, funct7}), 
+  ysyx_24100005_MuxKeyWithDefault #(1, 7, 1) Mux_add_sub (.out(Cin), 
+                                                          .key({opcode}), 
                                                           .default_out(1'b0), 
                                                           .lut({
-                                                                17'b0110011_000_0100000, 1'b1 // sub
+                                                                7'b110_0011, 1'b1 // sub
                                                                 }));
 
   // adder
@@ -208,9 +215,6 @@ module ysyx_24100005_top(
   assign srl_output = add_input1 >> add_input2;
   assign sra_output = $signed(add_input1) >>> add_input2; // 逻辑右移用signed
 
-  reg signed [7:0] real_sra;
-  assign real_sra = 8'b1000_0000 >>> 3'b001;
-
   ysyx_24100005_MuxKeyWithDefault #(5, 3, 32) Mux_logic_output (.out(logic_output), 
                                                         .key(funct3), 
                                                         .default_out(32'b0), 
@@ -222,13 +226,13 @@ module ysyx_24100005_top(
                                                               3'b011, sltu_sltiu_output   // jalr
                                                               }));
 
-  ysyx_24100005_MuxKeyWithDefault #(3, 10, 32) Mux_shift_output (.out(shift_output), 
-                                                        .key({funct3, funct7}), 
+  ysyx_24100005_MuxKeyWithDefault #(3, 7, 32) Mux_shift_output (.out(shift_output), 
+                                                        .key({funct7}), 
                                                         .default_out(32'b0), 
                                                         .lut({
-                                                              10'b001_0000000, sll_output, // B type
-                                                              10'b101_0000000, srl_output, // B type
-                                                              10'b101_0100000, sra_output  // B type
+                                                              7'b0000000, sll_output, // B type
+                                                              7'b0000000, srl_output, // B type
+                                                              7'b0100000, sra_output  // B type
                                                               }));
 
   // write back 
@@ -395,23 +399,23 @@ module ysyx_24100005_top(
                                                           .default_out({32'h0000_0000}),
                                                           .lut({
                                                                 // lb
-                                                                5'b000_00, {24'h000000, mem_read[7:0]},
-                                                                5'b000_01, {24'h000000, mem_read[15:8]},
-                                                                5'b000_10, {24'h000000, mem_read[23:16]},
-                                                                5'b000_11, {24'h000000, mem_read[31:24]},
+                                                                5'b000_00, 32'h0,
+                                                                5'b000_01, 32'h0,
+                                                                5'b000_10, 32'h0,
+                                                                5'b000_11, 32'h0,
                                                                 // lh
-                                                                5'b001_00, {16'h000000, mem_read[15:0]},
-                                                                5'b001_10, {16'h000000, mem_read[31:16]},
+                                                                5'b001_00, 32'h0,
+                                                                5'b001_10, 32'h0,
                                                                 // lw
                                                                 5'b010_00, mem_read[31:0],
                                                                 // lbu
-                                                                5'b100_00, {24'h000000, mem_read[7:0]},
-                                                                5'b100_01, {24'h000000, mem_read[15:8]},
-                                                                5'b100_10, {24'h000000, mem_read[23:16]},
-                                                                5'b100_11, {24'h000000, mem_read[31:24]},
+                                                                5'b100_00, 32'h0,
+                                                                5'b100_01, 32'h0,
+                                                                5'b100_10, 32'h0,
+                                                                5'b100_11, 32'h0,
                                                                 // lhu
-                                                                5'b101_00, {16'h000000, mem_read[15:0]},
-                                                                5'b101_10, {16'h000000, mem_read[31:16]}
+                                                                5'b101_00, 32'h0,
+                                                                5'b101_10, 32'h0
                                                               }),
                                                           .out(mem_extract));
   // memory read LB sign extend  
@@ -466,6 +470,41 @@ module ysyx_24100005_top(
   // 为什么add_output变化会触发两次，因为第一次触发是下降沿rs1addr变了，
   // 第二次触发时上升沿rs1addr变了，所以add_output会变化两次
 
+`ifdef SIMULATION
+
+  always @(PC) begin
+    if( PC != 0) begin
+      inst = npcmem_read(PC);
+    end
+    else begin
+      inst = 0;
+    end
+  end
+
+
+
+  always @(read_en, adder_output, write_en, rs2data, wmask) begin
+
+    if (read_en) begin // 有读mem请求
+      mem_read = npcmem_read(adder_output);
+    end
+    else begin 
+      mem_read = 32'h0;
+    end
+    
+    if (write_en) begin // 有写mem请求
+        npcmem_write(adder_output, rs2data, wmask);
+      end
+  end
+
+  // // ebreak
+  always @(opcode) begin
+    if(opcode == 7'b1110011) begin
+      ebreak();
+    end
+  end
+  
+`endif
   // always @(posedge clk) begin
   //   $display("inst=%h, ", inst);
   //   $display("tmp=%h, ", tmp);
