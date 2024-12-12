@@ -29,6 +29,7 @@ int atoi(const char* nptr) {
   return x;
 }
 
+// integer to string
 char* itoa(int value, char*string ){
   
   int i = 0;
