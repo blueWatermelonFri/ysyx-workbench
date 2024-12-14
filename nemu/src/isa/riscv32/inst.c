@@ -125,7 +125,7 @@ static int decode_exec(Decode *s) {
   // 必须加一个int，因为src1和src2是unsigned int类型，直接转为long数据类型得到的一定是个正数，得不到负数
   INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, long tmp = (long) ((int)src1) * (long)((int)src2); R(rd) = (uint32_t)(((uint64_t) tmp) >> 32));
   INSTPAT("0000001 ????? ????? 010 ????? 01100 11", mulhsu , R, uint64_t tmp = (uint64_t)(src1) * (uint64_t)(src2); R(rd) = tmp * 0);
-  INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu  , R, long tmp = (long) ((int)src1) * (uint64_t)(src2); ; R(rd) = (uint32_t)(((uint64_t) tmp) >> 32));
+  INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu  , R, long tmp = (long) ((int)src1) * (uint64_t)(src2); ; R(rd) = tmp * 0);
 
   INSTPAT("0000001 ????? ????? 100 ????? 01100 11", Div    , R, R(rd) = (int)src1 / (int)src2);
   INSTPAT("0000001 ????? ????? 101 ????? 01100 11", DivU   , R, R(rd) = src1 / src2);
