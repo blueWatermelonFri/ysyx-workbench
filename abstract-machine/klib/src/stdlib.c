@@ -35,16 +35,25 @@ char* itoa(int value, char*string ){
   int i = 0;
   int remainder;
   char tmp;
+  
+  if(value == 0){
+    string[i++] = '0';
+    string[i] = '\0';
+    return string;
+  }
 
+  // 如果value小于0，则将value取反，并在string中添加负号
   if(value < 0){
     string[i++] = '-';
 	  value = abs(value);
   }
 
+  // 将数字转换为字符串，从个位数开始往前获取每一位数字的ASCII，再取反
   for(; value % 10 >= 0 && value > 0; ){
     remainder = value % 10;
     value = value / 10;
 	  
+    // 转为ASCII码
     string[i++] = remainder + 48;
   }
   
