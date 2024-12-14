@@ -25,7 +25,7 @@ int printf(const char *fmt, ...) {
              case 'd':              /* int */
                  d = va_arg(ap, int);
                  s = itoa(d, d_s);
-                 printf("%s", s);
+                 printf("%s\n", s);
                  for(size_t k=0; s[k]; k++){
                    putch(s[k]);
                    j++;
