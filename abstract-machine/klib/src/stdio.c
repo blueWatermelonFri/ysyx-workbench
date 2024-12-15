@@ -44,7 +44,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             return;
             break;
         case '0':              /* escape % */
-            panic_on((fmt[index]) == '0', "field width should not begin with 0");
+            panic_on((fmt[index]) == '0', "Error:field width should not begin with 0");
             while(fmt[index] != 'd'){
               width = width * 10 + (fmt[index] - '0');
               index ++;
