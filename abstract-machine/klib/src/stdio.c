@@ -17,43 +17,44 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   char ordinary[2] = {fmt[index], '\0'};
 
   if((fmt[index++]) == '%'){
-    while(fmt)
-    switch (fmt[index++]) {
-      case 's':              /* string */
-          temp = va_arg(*ap, char *);
-          strcpy(s, temp);
-          return;
-          break;
-      case 'd':              /* int */
-          d = va_arg(*ap, int);
-          itoa(d, d2s);
-          int str_len = strlen(d2s);
-          int offset = 0;
-          if(flag == '0' && width != 0){
-            if(str_len < width){
-              for(int i = 0; i < width - str_len; i++){
-                s[offset++] = '0';
+    while(fmt[index]){
+      switch (fmt[index++]) {
+        case 's':              /* string */
+            temp = va_arg(*ap, char *);
+            strcpy(s, temp);
+            return;
+            break;
+        case 'd':              /* int */
+            d = va_arg(*ap, int);
+            itoa(d, d2s);
+            int str_len = strlen(d2s);
+            int offset = 0;
+            if(flag == '0' && width != 0){
+              if(str_len < width){
+                for(int i = 0; i < width - str_len; i++){
+                  s[offset++] = '0';
+                }
               }
             }
-          }
-          strcpy(s + offset, d2s);
-          return;
-          break;
-      case '%':              /* escape % */
-          strcpy(s, escape);
-          return;
-          break;
-      case '0':              /* escape % */
-          panic_on((fmt[index++]) != '0', "field width should not begin with 0");
-          while(fmt[index] != 'd'){
-            width = width * 10 + (fmt[index] - '0');
-            index ++;
-          }
-          break;
-      default:              /* %后面没有构成格式化字符串的话，打印% */
-          panic_on(1, "format string error");
-          return;
-          break;
+            strcpy(s + offset, d2s);
+            return;
+            break;
+        case '%':              /* escape % */
+            strcpy(s, escape);
+            return;
+            break;
+        case '0':              /* escape % */
+            panic_on((fmt[index]) == '0', "field width should not begin with 0");
+            while(fmt[index] != 'd'){
+              width = width * 10 + (fmt[index] - '0');
+              index ++;
+            }
+            break;
+        default:              /* %后面没有构成格式化字符串的话，打印% */
+            panic_on(1, "format string error");
+            return;
+            break;
+      }
     }
   }
   else{
