@@ -46,53 +46,23 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
     return;
   }
 }
-// int printf(const char *fmt, ...) {
-//     index = 0;
-//      va_list ap;
-//      char *s;
-//      char d_s[64];
-//      int d;
-//      va_start(ap, fmt);
-//      int j = 0;
-//      char flag = '0';
-//      while (*fmt){
-//          if(*(fmt++) == '%'){
-//            switch (*fmt++) {
-//              case 's':              /* string */
-//                  s = va_arg(ap, char *);
-//                  for(size_t k=0; s[k]; k++){
-//                    putch(s[k]);
-//                    j++;
-//                  }
-//                  break;
-//              case 'd':              /* int */
-//                  d = va_arg(ap, int);
-//                  s = itoa(d, d_s);
-//                  for(size_t k=0; s[k]; k++){
-//                    putch(s[k]);
-//                    j++;
-//                  }
-//                  break;
-//               case '%':              /* escape % */
-//                  putch('%');
-//                  j++;
-//                  break;
-//               default:              /* %后面没有构成格式化字符串的话，打印% */
-//                  putch('%');
-//                  j++;
-//                  break;
-//            }
-//          }
-//          else{
-//            putch(*(fmt-1));
-//                  j++;
 
-//          }
-//      }
-
-//     va_end(ap);
-//     return j;
-// }
+int printf(const char *fmt, ...) {
+  index = 0;
+  char temp[64];  // 如何改进，因为64是固定的
+  int j = 0;
+  va_list ap;
+  va_start(ap, fmt);
+  while (fmt[index]){
+    get_stdarg_string(fmt, &ap, temp);
+    for(size_t k=0; temp[k] != '\0'; k++){
+      putch(temp[k]);
+      j++;
+    }
+  }
+  va_end(ap);
+  return j;
+}
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
   panic("Not implemented");
