@@ -17,6 +17,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   char ordinary[2] = {fmt[index], '\0'};
 
   if((fmt[index++]) == '%'){
+    while(fmt)
     switch (fmt[index++]) {
       case 's':              /* string */
           temp = va_arg(*ap, char *);
