@@ -36,11 +36,11 @@ void itoa(int value, char*string ){
   int remainder;
   char tmp;
   
-  if(value == 0){
-    string[i++] = '0';
-    string[i] = '\0';
-    return ;
-  }
+  // if(value == 0){
+  //   string[i++] = '0';
+  //   string[i] = '\0';
+  //   return ;
+  // }
 
   // 如果value小于0，则将value取反，并在string中添加负号
   if(value < 0){
