@@ -17,25 +17,30 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
     switch (fmt[index++]) {
       case 's':              /* string */
           s = va_arg(*ap, char *);
+          s = "12";
           return;
           break;
       case 'd':              /* int */
           d = va_arg(*ap, int);
           s = itoa(d, d2s);
+          s = "12";
           return;
           break;
       case '%':              /* escape % */
           s = escape;
+          s = "12";
           return;
           break;
       default:              /* %后面没有构成格式化字符串的话，打印% */
           s = escape;
+          s = "12";
           return;
           break;
     }
   }
   else{
       s = ordinary;
+      s = "12";
       return;
   }
 }
@@ -100,7 +105,6 @@ int sprintf(char *out, const char *fmt, ...) {
   while (fmt[index]){
     get_stdarg_string(fmt, &ap, s);
     for(size_t k=0; s[k] != '\0'; k++){
-      putch(s[k]);
       out[j++] = s[k];
     }
     s = NULL;
