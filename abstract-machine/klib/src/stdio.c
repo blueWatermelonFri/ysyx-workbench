@@ -10,38 +10,40 @@ static size_t index = 0;
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   int d;
   char d2s[64];
+  char *temp = NULL;
   char escape[2] = {'%', '\0'};
   char ordinary[2] = {fmt[index], '\0'};
 
   if((fmt[index++]) == '%'){
     switch (fmt[index++]) {
       case 's':              /* string */
-          s = va_arg(*ap, char *);
-          s = "12";
+          temp = va_arg(*ap, char *);
+          strcpy(s, temp);
           return;
           break;
       case 'd':              /* int */
           d = va_arg(*ap, int);
-          s = itoa(d, d2s);
-          s = "12";
+          itoa(d, d2s);
+          strcpy(s, d2s);
           return;
           break;
       case '%':              /* escape % */
-          s = escape;
-          s = "12";
+          strcpy(s, escape);
           return;
           break;
+      // case '0':              /* escape % */
+      //     strcpy(s, escape);
+      //     return;
+      //     break;
       default:              /* %后面没有构成格式化字符串的话，打印% */
-          s = escape;
-          s = "12";
+          panic_on(1, "format string error");
           return;
           break;
     }
   }
   else{
-      s = ordinary;
-      s = "12";
-      return;
+    strcpy(s, ordinary);
+    return;
   }
 }
 // int printf(const char *fmt, ...) {
@@ -98,16 +100,15 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
 int sprintf(char *out, const char *fmt, ...) {
   index = 0;
-  char *s = NULL;
+  char temp[64];  // 如何改进，因为64是固定的
   int j = 0;
   va_list ap;
   va_start(ap, fmt);
   while (fmt[index]){
-    get_stdarg_string(fmt, &ap, s);
-    for(size_t k=0; s[k] != '\0'; k++){
-      out[j++] = s[k];
+    get_stdarg_string(fmt, &ap, temp);
+    for(size_t k=0; temp[k] != '\0'; k++){
+      out[j++] = temp[k];
     }
-    s = NULL;
   }
   va_end(ap);
   out[j] = '\0';

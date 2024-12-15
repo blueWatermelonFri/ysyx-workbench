@@ -30,7 +30,7 @@ int atoi(const char* nptr) {
 }
 
 // integer to string
-char* itoa(int value, char*string ){
+void itoa(int value, char*string ){
   
   int i = 0;
   int remainder;
@@ -39,7 +39,7 @@ char* itoa(int value, char*string ){
   if(value == 0){
     string[i++] = '0';
     string[i] = '\0';
-    return string;
+    return ;
   }
 
   // 如果value小于0，则将value取反，并在string中添加负号
@@ -70,8 +70,6 @@ char* itoa(int value, char*string ){
 	  start += 1;
 	  end -=1;
   }
-
-  return string;
 
 }
 
