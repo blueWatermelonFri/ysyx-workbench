@@ -97,11 +97,13 @@ int sprintf(char *out, const char *fmt, ...) {
   int j = 0;
   va_list ap;
   va_start(ap, fmt);
-  while (*fmt){
+  while (fmt[index]){
     get_stdarg_string(fmt, &ap, s);
     for(size_t k=0; s[k] != '\0'; k++){
+      putch(s[k]);
       out[j++] = s[k];
     }
+    s = NULL;
   }
   va_end(ap);
   out[j] = '\0';
