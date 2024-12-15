@@ -9,6 +9,8 @@ static size_t index = 0;
 
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   int d;
+  char flag = '0';
+  int width = 0;
   char d2s[64];
   char *temp = NULL;
   char escape[2] = {'%', '\0'};
@@ -24,17 +26,29 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
       case 'd':              /* int */
           d = va_arg(*ap, int);
           itoa(d, d2s);
-          strcpy(s, d2s);
+          int str_len = strlen(d2s);
+          int offset = 0;
+          if(flag == '0' && width != 0){
+            if(str_len < width){
+              for(int i = 0; i < width - str_len; i++){
+                s[offset++] = '0';
+              }
+            }
+          }
+          strcpy(s + offset, d2s);
           return;
           break;
       case '%':              /* escape % */
           strcpy(s, escape);
           return;
           break;
-      // case '0':              /* escape % */
-      //     strcpy(s, escape);
-      //     return;
-      //     break;
+      case '0':              /* escape % */
+          panic_on((fmt[index++]) != '0', "field width should not begin with 0");
+          while(fmt[index] != 'd'){
+            width = width * 10 + (fmt[index] - '0');
+            index ++;
+          }
+          break;
       default:              /* %后面没有构成格式化字符串的话，打印% */
           panic_on(1, "format string error");
           return;
