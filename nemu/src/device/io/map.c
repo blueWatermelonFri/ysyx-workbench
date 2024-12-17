@@ -29,10 +29,7 @@ uint8_t* new_space(int size) {
   uint8_t *p = p_space;
   // page aligned;
   size = (size + (PAGE_SIZE - 1)) & ~PAGE_MASK;
-  printf("size: %x\n", size);
   p_space += size;
-  printf("p_space: %p\n", p_space);
-
   assert(p_space - io_space < IO_SPACE_MAX);
   return p;
 }

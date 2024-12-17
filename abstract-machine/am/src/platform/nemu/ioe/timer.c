@@ -1,13 +1,15 @@
 #include <am.h>
 #include <nemu.h>
 
+
 static uint64_t boot_time = 0;
 
+// paddr_read 和 paddr_write会判断地址是physical memory还是mmio的memory
 static uint64_t read_time() {
   uint32_t lo = *(volatile uint32_t *)(RTC_ADDR + 0);
   uint32_t hi = *(volatile uint32_t *)(RTC_ADDR + 4);
   uint64_t time = ((uint64_t)hi << 32) | lo;
-  return time / 10;
+  return time;
 }
 
 void __am_timer_init() {
