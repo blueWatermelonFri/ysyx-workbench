@@ -20,10 +20,12 @@
 
 #define IO_SPACE_MAX (2 * 1024 * 1024)
 
+// 在init_map中初始化，每init一个device，就会改变一次p_space
 static uint8_t *io_space = NULL;
 static uint8_t *p_space = NULL;
 
 uint8_t* new_space(int size) {
+  // 地址对齐到4K
   uint8_t *p = p_space;
   // page aligned;
   size = (size + (PAGE_SIZE - 1)) & ~PAGE_MASK;
