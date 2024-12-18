@@ -52,11 +52,10 @@ void init_mem() {
 
 word_t paddr_read(paddr_t addr, int len) {
 
-// #ifdef CONFIG_MTRACE
-// #endif
-  if(addr > 0x90000000) {
-    printf("read address = 0x%08x\n", addr);
-  }
+#ifdef CONFIG_MTRACE
+  printf("read address = 0x%08x\n", addr);
+#endif
+
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
   out_of_bound(addr);
