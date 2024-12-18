@@ -54,7 +54,7 @@ word_t paddr_read(paddr_t addr, int len) {
 
 // #ifdef CONFIG_MTRACE
 // #endif
-  if(addr > 0x80000000) {
+  if(addr > 0x90000000) {
     printf("read address = 0x%08x\n", addr);
   }
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
