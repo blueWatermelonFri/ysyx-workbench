@@ -58,11 +58,11 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
   paddr_t offset = addr - map->low;
-  printf("before invoke_callback invoke_callback invoke_callback, offset = %08x, len = %d\n", offset, len);
+  // printf("before invoke_callback invoke_callback invoke_callback, offset = %08x, len = %d\n", offset, len);
   invoke_callback(map->callback, offset, len, false); // prepare data to read
-  printf("after invoke_callback invoke_callback invoke_callback\n");
+  // printf("after invoke_callback invoke_callback invoke_callback\n");
   word_t ret = host_read(map->space + offset, len);
-  printf("map_read: ret = %u\n", (uint32_t)ret);
+  // printf("map_read: ret = %u\n", (uint32_t)ret);
   return ret;
 }
 
