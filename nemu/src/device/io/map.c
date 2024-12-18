@@ -59,8 +59,8 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   check_bound(map, addr);
   paddr_t offset = addr - map->low;
   invoke_callback(map->callback, offset, len, false); // prepare data to read
-  printf("map_read: addr = %08x, offset = %08x, len = %d\n", addr, offset, len);
   word_t ret = host_read(map->space + offset, len);
+  printf("map_read: ret = %u\n",  ret);
   return ret;
 }
 
