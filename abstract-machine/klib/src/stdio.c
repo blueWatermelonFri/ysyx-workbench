@@ -32,6 +32,10 @@ void format_padding(char *d2s, char *s, char flag, unsigned int width){
   return;
 }
 
+static inline int is_format_specifier(char c){
+  return c != 'd' && c != 'x' && c != 'X' && c != 'u' && c != 'f' && c != 'F' &&c != 'o';
+}
+
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   int d;
   unsigned int x = 0;
@@ -80,7 +84,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             break;
         case '0':              /* escape % */
             panic_on((fmt[index]) == '0', "Error:field width should not begin with 0");
-            while(fmt[index] != 'd' && fmt[index] != 'x' && fmt[index] != 'X' && fmt[index] != 'u'){
+            while(is_format_specifier(fmt[index])){
               width = width * 10 + (fmt[index] - '0');
               index ++;
             }
