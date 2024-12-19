@@ -46,6 +46,12 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             format_padding(d2s, s, flag, width);
             return;
             break;
+        case 'u':              /* int */
+            x = va_arg(*ap, unsigned int);
+            hex2str(x, d2s, 0);
+            format_padding(d2s, s, flag, width);
+            return;
+            break;            
         case 'x':              /* int */
             x = va_arg(*ap, unsigned int);
             hex2str(x, d2s, 0);

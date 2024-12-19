@@ -80,13 +80,39 @@ void itoa(int value, char*string ){
 
 }
 
+// unsigned integer to hex string
+void utostring(unsigned int value, char*string ){
+
+  int i = 0;
+  int remainder;
+  
+  if(value == 0){
+    string[i++] = '0';
+    string[i] = '\0';
+    return ;
+  }
+
+  // 将数字转换为字符串，从个位数开始往前获取每一位数字的ASCII，再取反
+  for(; value % 10 >= 0 && value > 0; ){
+    remainder = value % 10;
+    value = value / 10;
+	  
+    // 转为ASCII码
+    string[i++] = remainder + 48;
+  }
+  
+  string[i] = '\0';
+
+  string_reverse(string);
+
+}
+
 void hex2str(unsigned int value, char*string, unsigned int upper){
   if(value == 0){
     string[0] = '0';
     string[1] = '\0';
     return;
   }
-
   
   // %x or %X
   const char *hex_digits;  // 将数组声明移到外面
@@ -109,12 +135,6 @@ void hex2str(unsigned int value, char*string, unsigned int upper){
 
   return;
 }
-
-// unsigned integer to hex string
-void utostring(unsigned int value, char*string ){
-  
-}
-
 
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
