@@ -13,13 +13,13 @@ AM_SRCS := native/trm.c \
            native/ioe/disk.c \
 
 CFLAGS  += -fpie
-ASFLAGS += -fpie -pie -g
+ASFLAGS += -fpie -pie
 comma = ,
 LDFLAGS_CXX = $(addprefix -Wl$(comma), $(LDFLAGS))
 
 image:
 	@echo + LD "->" $(IMAGE_REL)
-	@g++ -g -pie -o $(IMAGE) -Wl,--whole-archive $(LINKAGE) -Wl,-no-whole-archive $(LDFLAGS_CXX) -lSDL2 -ldl
+	@g++  -pie -o $(IMAGE) -Wl,--whole-archive $(LINKAGE) -Wl,-no-whole-archive $(LDFLAGS_CXX) -lSDL2 -ldl
 
 run: image
 	$(IMAGE)
