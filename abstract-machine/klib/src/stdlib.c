@@ -19,6 +19,7 @@ int abs(int x) {
   return (x < 0 ? -x : x);
 }
 
+// stringinteger to 
 int atoi(const char* nptr) {
   int x = 0;
   while (*nptr == ' ') { nptr ++; }
@@ -72,6 +73,39 @@ void itoa(int value, char*string ){
   }
 
 }
+
+void hex2str(unsigned int value, char*string, unsigned int upper){
+  if(value == 0){
+    string[0] = '0';
+    string[1] = '\0';
+    return;
+  }
+
+  // %x or %X
+  const char *hex_digits;  // 将数组声明移到外面
+  if(upper == 0){
+    hex_digits = "0123456789abcdef";
+  }else{
+    hex_digits = "0123456789ABCDEF";
+  }
+
+  int i = 0;
+
+  while (value > 0) {
+      string[i++] = hex_digits[value & 0xf];  // 取最后4位
+      value >>= 4;  // 右移4位
+  }
+
+  string[i] = '\0';
+
+  return;
+}
+
+// unsigned integer to hex string
+void utostring(unsigned int value, char*string ){
+  
+}
+
 
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.

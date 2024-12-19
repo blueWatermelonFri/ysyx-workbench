@@ -7,10 +7,26 @@
 
 static size_t index = 0;
 
+// padding string by flag and width
+void format_padding(char *d2s, char *s, char flag, unsigned int width){
+  int str_len = strlen(d2s);
+  int offset = 0;
+  if(flag == '0' && width != 0){
+    if(str_len < width){
+      for(int i = 0; i < width - str_len; i++){
+        s[offset++] = '0';
+      }
+    }
+  }
+  strcpy(s + offset, d2s);
+  return;
+}
+
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   int d;
+  unsigned int x;
   char flag = '0';
-  int width = 0;
+  unsigned int width = 0;
   char d2s[64];
   char *temp = NULL;
   char escape[2] = {'%', '\0'};
@@ -27,30 +43,33 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
         case 'd':              /* int */
             d = va_arg(*ap, int);
             itoa(d, d2s);
-            int str_len = strlen(d2s);
-            int offset = 0;
-            if(flag == '0' && width != 0){
-              if(str_len < width){
-                for(int i = 0; i < width - str_len; i++){
-                  s[offset++] = '0';
-                }
-              }
-            }
-            strcpy(s + offset, d2s);
+            format_padding(d2s, s, flag, width);
             return;
             break;
+        case 'x':              /* int */
+            x = va_arg(*ap, unsigned int);
+            hex2str(x, d2s, 0);
+            format_padding(d2s, s, flag, width);
+            return;
+            break;
+        case 'X':              /* int */
+            x = va_arg(*ap, unsigned int);
+            hex2str(x, d2s, 1);
+            format_padding(d2s, s, flag, width);
+            return;
+            break;                       
         case '%':              /* escape % */
             strcpy(s, escape);
             return;
             break;
         case '0':              /* escape % */
             panic_on((fmt[index]) == '0', "Error:field width should not begin with 0");
-            while(fmt[index] != 'd'){
+            while(fmt[index] != 'd' || fmt[index] != 'x' || fmt[index] != 'X'){
               width = width * 10 + (fmt[index] - '0');
               index ++;
             }
             break;
-        default:              /* %后面没有构成格式化字符串的话，打印% */
+        default:              /* %后面没有构成格式化字符串的话，表明字符串有问题*/
             panic_on(1, "format string error");
             return;
             break;

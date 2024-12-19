@@ -54,6 +54,7 @@ void init_map() {
   p_space = io_space;
 }
 
+// 先通过回调函数，更新mmio，再读取mmio
 word_t map_read(paddr_t addr, int len, IOMap *map) {
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
