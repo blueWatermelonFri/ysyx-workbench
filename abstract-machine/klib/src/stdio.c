@@ -34,7 +34,7 @@ void format_padding(char *d2s, char *s, char flag, unsigned int width){
 
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   int d;
-  unsigned int x;
+  unsigned int x = 0;
   char flag = '0';
   unsigned int width = 0;
   char d2s[64];
