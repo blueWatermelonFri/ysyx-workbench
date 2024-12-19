@@ -48,7 +48,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             break;
         case 'u':              /* int */
             x = va_arg(*ap, unsigned int);
-            hex2str(x, d2s, 0);
+            utostring(x, d2s);
             format_padding(d2s, s, flag, width);
             return;
             break;            
