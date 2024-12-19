@@ -19,7 +19,24 @@ int abs(int x) {
   return (x < 0 ? -x : x);
 }
 
-// stringinteger to 
+void string_reverse(char* string) {
+  char tmp;
+
+  int end = strlen(string) - 1;
+  int start = string[0] == '-' ? 1 : 0;
+  int middle = string[0] == '-' ? (end - start) / 2 + 1 : (end - start) / 2;
+
+  while(start <= middle){
+    tmp = string[end];
+    string[end] = string[start];
+    string[start] = tmp;
+	  
+	  start += 1;
+	  end -=1;
+  }
+}
+
+// string  to integer
 int atoi(const char* nptr) {
   int x = 0;
   while (*nptr == ' ') { nptr ++; }
@@ -35,7 +52,6 @@ void itoa(int value, char*string ){
   
   int i = 0;
   int remainder;
-  char tmp;
   
   if(value == 0){
     string[i++] = '0';
@@ -59,18 +75,8 @@ void itoa(int value, char*string ){
   }
   
   string[i] = '\0';
-  int end = strlen(string) - 1;
-  int start = string[0] == '-' ? 1 : 0;
-  int middle = string[0] == '-' ? (end - start) / 2 + 1 : (end - start) / 2;
 
-  while(start <= middle){
-    tmp = string[end];
-    string[end] = string[start];
-    string[start] = tmp;
-	  
-	  start += 1;
-	  end -=1;
-  }
+  string_reverse(string);
 
 }
 
@@ -81,6 +87,7 @@ void hex2str(unsigned int value, char*string, unsigned int upper){
     return;
   }
 
+  
   // %x or %X
   const char *hex_digits;  // 将数组声明移到外面
   if(upper == 0){
@@ -97,6 +104,8 @@ void hex2str(unsigned int value, char*string, unsigned int upper){
   }
 
   string[i] = '\0';
+
+  string_reverse(string);
 
   return;
 }
