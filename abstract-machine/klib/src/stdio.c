@@ -8,9 +8,13 @@
 static size_t index = 0;
 
 // padding string by flag and width
+// negtive 表示为负数的时候，填充需要做一些特殊处理
 void format_padding(char *d2s, char *s, char flag, unsigned int width){
-  int str_len = strlen(d2s);
+  
   int offset = 0;
+  int negtive = d2s[0] == '-';
+  int str_len = strlen(d2s);
+
   if(flag == '0' && width != 0){
     if(str_len < width){
       for(int i = 0; i < width - str_len; i++){
@@ -19,6 +23,12 @@ void format_padding(char *d2s, char *s, char flag, unsigned int width){
     }
   }
   strcpy(s + offset, d2s);
+
+  // 如果为负数，则需要将负号和第一个0交换位置
+  if(negtive){
+    s[0] = '-';
+    s[offset] = '0';
+  }
   return;
 }
 
