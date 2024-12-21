@@ -33,8 +33,7 @@ void format_padding(char *d2s, char *s, char flag, unsigned int width){
 }
 
 static inline int is_format_specifier(char c){
-  return c != 'd' && c != 'x' && c != 'X' &&  c != 'f' && c != 'F' &&c != 'o';
-  // return c != 'd' && c != 'x' && c != 'X' && c != 'u' && c != 'f' && c != 'F' &&c != 'o';
+  return c != 'd' && c != 'x' && c != 'X' && c != 'u' && c != 'f' && c != 'F' &&c != 'o';
 }
 
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
