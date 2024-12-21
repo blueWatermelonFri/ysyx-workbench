@@ -151,7 +151,6 @@ extern "C" void ebreak() {
 
 extern "C" int npcmem_read(int raddr) {
 
-
 #if 1
     printf("[Info] npcmem_read addr : 0x%08x\n", raddr);
 #endif

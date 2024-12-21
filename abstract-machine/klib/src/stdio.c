@@ -10,7 +10,7 @@ static size_t index = 0;
 // padding string by flag and width
 // negtive 表示为负数的时候，填充需要做一些特殊处理
 void format_padding(char *d2s, char *s, char flag, unsigned int width){
-  
+
   int offset = 0;
   int negtive = d2s[0] == '-';
   int str_len = strlen(d2s);
@@ -33,7 +33,8 @@ void format_padding(char *d2s, char *s, char flag, unsigned int width){
 }
 
 static inline int is_format_specifier(char c){
-  return c != 'd' && c != 'x' && c != 'X' && c != 'u' && c != 'f' && c != 'F' &&c != 'o';
+  return c != 'd' && c != 'x' && c != 'X' &&  c != 'f' && c != 'F' &&c != 'o';
+  // return c != 'd' && c != 'x' && c != 'X' && c != 'u' && c != 'f' && c != 'F' &&c != 'o';
 }
 
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
