@@ -12,7 +12,7 @@ static size_t index = 0;
 void format_padding(char *d2s, char *s, char flag, unsigned int width){
 
   int offset = 0;
-  int negtive = d2s[0] == '-';
+  int negtive = d2s[0] == '-'; // 如果恰好是-开头的字符串呢
   int str_len = strlen(d2s);
 
   if(flag == '0' && width != 0){
@@ -33,7 +33,7 @@ void format_padding(char *d2s, char *s, char flag, unsigned int width){
 }
 
 static inline int is_format_specifier(char c){
-  return c != 'd' && c != 'x' && c != 'X' && c != 'u' && c != 'f' && c != 'F' &&c != 'o';
+  return c != 'c' && c != 's' && c != 'd' && c != 'x' && c != 'X' && c != 'u' && c != 'f' && c != 'F' &&c != 'o';
 }
 
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
@@ -87,7 +87,6 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             format_padding(d2s, s, flag, width);
             return;
             break;   
-                               
         case '%':              /* escape % */
             strcpy(s, escape);
             return;
