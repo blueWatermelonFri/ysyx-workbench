@@ -30,7 +30,9 @@ void  *malloc    (size_t size);
 void   free      (void *ptr);
 int    abs       (int x);
 int    atoi      (const char *nptr);
-char   *itoa     (int value, char *string );
+void   itoa      (int value, char *string );
+void   hex2str   (unsigned int value, char *string, unsigned int upper);
+void   utostring (unsigned int value, char *string);
 
 // stdio.h
 int    printf    (const char *format, ...);

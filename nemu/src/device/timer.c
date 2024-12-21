@@ -19,6 +19,7 @@
 
 static uint32_t *rtc_port_base = NULL;
 
+// 由vaddr_read->paddr_read->mmio_read->map_read->rtc_io_handler
 static void rtc_io_handler(uint32_t offset, int len, bool is_write) {
   assert(offset == 0 || offset == 4);
   if (!is_write && offset == 4) {

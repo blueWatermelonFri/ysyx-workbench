@@ -19,35 +19,9 @@ int abs(int x) {
   return (x < 0 ? -x : x);
 }
 
-int atoi(const char* nptr) {
-  int x = 0;
-  while (*nptr == ' ') { nptr ++; }
-  while (*nptr >= '0' && *nptr <= '9') {
-    x = x * 10 + *nptr - '0';
-    nptr ++;
-  }
-  return x;
-}
-
-char* itoa(int value, char*string ){
-  
-  int i = 0;
-  int remainder;
+void string_reverse(char* string) {
   char tmp;
 
-  if(value < 0){
-    string[i++] = '-';
-	  value = abs(value);
-  }
-
-  for(; value % 10 >= 0 && value > 0; ){
-    remainder = value % 10;
-    value = value / 10;
-	  
-    string[i++] = remainder + 48;
-  }
-  
-  string[i] = '\0';
   int end = strlen(string) - 1;
   int start = string[0] == '-' ? 1 : 0;
   int middle = string[0] == '-' ? (end - start) / 2 + 1 : (end - start) / 2;
@@ -60,9 +34,105 @@ char* itoa(int value, char*string ){
 	  start += 1;
 	  end -=1;
   }
+}
 
-  return string;
+// string  to integer
+int atoi(const char* nptr) {
+  int x = 0;
+  while (*nptr == ' ') { nptr ++; }
+  while (*nptr >= '0' && *nptr <= '9') {
+    x = x * 10 + *nptr - '0';
+    nptr ++;
+  }
+  return x;
+}
 
+// integer to string
+void itoa(int value, char*string ){
+  
+  int i = 0;
+  int remainder;
+  
+  if(value == 0){
+    string[i++] = '0';
+    string[i] = '\0';
+    return ;
+  }
+
+  // 如果value小于0，则将value取反，并在string中添加负号
+  if(value < 0){
+    string[i++] = '-';
+	  value = abs(value);
+  }
+
+  // 将数字转换为字符串，从个位数开始往前获取每一位数字的ASCII，再取反
+  for(; value % 10 >= 0 && value > 0; ){
+    remainder = value % 10;
+    value = value / 10;
+	  
+    // 转为ASCII码
+    string[i++] = remainder + 48;
+  }
+  
+  string[i] = '\0';
+
+  string_reverse(string);
+
+}
+
+// unsigned integer to hex string
+void utostring(unsigned int value, char*string ){
+
+  int i = 0;
+  int remainder;
+  
+  if(value == 0){
+    string[i++] = '0';
+    string[i] = '\0';
+    return ;
+  }
+
+  // 将数字转换为字符串，从个位数开始往前获取每一位数字的ASCII，再取反
+  for(; value % 10 >= 0 && value > 0; ){ // 这一行是不是可以优化
+    remainder = value % 10;
+    value = value / 10;
+	  
+    // 转为ASCII码
+    string[i++] = remainder + '0';
+  }
+  
+  string[i] = '\0';
+
+  string_reverse(string);
+}
+
+void hex2str(unsigned int value, char*string, unsigned int upper){
+  if(value == 0){
+    string[0] = '0';
+    string[1] = '\0';
+    return;
+  }
+  
+  // %x or %X
+  const char *hex_digits;  // 将数组声明移到外面
+  if(upper == 0){
+    hex_digits = "0123456789abcdef";
+  }else{
+    hex_digits = "0123456789ABCDEF";
+  }
+
+  int i = 0;
+
+  while (value > 0) {
+      string[i++] = hex_digits[value & 0xf];  // 取最后4位
+      value >>= 4;  // 右移4位
+  }
+
+  string[i] = '\0';
+
+  string_reverse(string);
+
+  return;
 }
 
 void *malloc(size_t size) {

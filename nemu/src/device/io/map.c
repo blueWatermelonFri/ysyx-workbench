@@ -20,10 +20,12 @@
 
 #define IO_SPACE_MAX (2 * 1024 * 1024)
 
+// 在init_map中初始化，每init一个device，就会改变一次p_space
 static uint8_t *io_space = NULL;
 static uint8_t *p_space = NULL;
 
 uint8_t* new_space(int size) {
+  // 地址对齐到4K
   uint8_t *p = p_space;
   // page aligned;
   size = (size + (PAGE_SIZE - 1)) & ~PAGE_MASK;
@@ -52,6 +54,7 @@ void init_map() {
   p_space = io_space;
 }
 
+// 先通过回调函数，更新mmio，再读取mmio
 word_t map_read(paddr_t addr, int len, IOMap *map) {
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
