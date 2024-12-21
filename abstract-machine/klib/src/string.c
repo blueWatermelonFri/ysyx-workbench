@@ -79,7 +79,23 @@ void *memset(void *s, int c, size_t n) {
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
-  panic("Not implemented");
+    unsigned char *d = (unsigned char *)dst;
+    const unsigned char *s = (const unsigned char *)src;
+
+    if (d < s) {
+        // Copy forwards if dst is before src
+        for (size_t i = 0; i < n; i++) {
+            d[i] = s[i];
+        }
+    } else if (d > s) {
+        // Copy backwards if dst is after src
+        for (size_t i = n; i > 0; i--) {
+            d[i-1] = s[i-1];
+        }
+    }
+    // If d == s, no need to copy
+
+    return dst;
 }
 
 // 在函数的返回值中, void 是没有任何返回值, 而 void * 是返回任意类型的值的指针.
