@@ -43,6 +43,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   unsigned int width = 0;
   char d2s[64];
   char *temp = NULL;
+  char c = '\0';
   char escape[2] = {'%', '\0'};
   char ordinary[2] = {fmt[index], '\0'};
 
@@ -51,9 +52,17 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
       switch (fmt[index++]) {
         case 's':              /* string */
             temp = va_arg(*ap, char *);
-            strcpy(s, temp);
+            // strcpy(s, temp);
+            format_padding(temp, s, flag, width);
             return;
             break;
+        case 'c':              /* char */
+            c = va_arg(*ap, int);
+            d2s[0] = (char)c;
+            d2s[1] = '\0';
+            format_padding(d2s, s, flag, width);
+            return;
+            break;               
         case 'd':              /* int */
             d = va_arg(*ap, int);
             itoa(d, d2s);
@@ -77,7 +86,8 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             hex2str(x, d2s, 1);
             format_padding(d2s, s, flag, width);
             return;
-            break;                       
+            break;   
+                               
         case '%':              /* escape % */
             strcpy(s, escape);
             return;
