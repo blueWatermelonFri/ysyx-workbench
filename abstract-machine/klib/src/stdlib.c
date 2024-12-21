@@ -5,6 +5,9 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 static unsigned long int next = 1;
 
+// 静态变量必须在编译时就能确定其值，但 heap.start 是运行时才能确定的。
+static char *hbrk = NULL;
+
 int rand(void) {
   // RAND_MAX assumed to be 32767
   next = next * 1103515245 + 12345;
@@ -142,7 +145,21 @@ void *malloc(size_t size) {
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
   panic("Not implemented");
 #endif
-  return NULL;
+  if (hbrk == NULL) {
+    hbrk = (void *)ROUNDUP(heap.start, 8);
+  }
+  
+  size  = (size_t)ROUNDUP(size, 8);
+  char *old = hbrk;
+  hbrk += size;
+  
+  panic_on(((uintptr_t)heap.start <= (uintptr_t)hbrk && (uintptr_t)hbrk < (uintptr_t)heap.end), "hbrk out of range");
+  for (uint64_t *p = (uint64_t *)old; p != (uint64_t *)hbrk; p ++) {
+    *p = 0;
+  }
+
+  // assert((uintptr_t)hbrk - (uintptr_t)heap.start <= setting->mlim);
+  return old;
 }
 
 void free(void *ptr) {
