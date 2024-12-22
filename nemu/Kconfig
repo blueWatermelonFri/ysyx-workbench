@@ -160,7 +160,11 @@ config MTRACE
   default n
 
 config FTRACE
-  bool "trace function"
+  bool "trace function callak"
+  default n
+
+config DTRACE
+  bool "trace device access"
   default n
 
 config DIFFTEST
