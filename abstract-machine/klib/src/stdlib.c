@@ -146,7 +146,7 @@ void *malloc(size_t size) {
 //   panic("Not implemented");
 // #endif
   if (hbrk == NULL) {
-    hbrk = (void *)ROUNDUP(heap.start, 8);
+    hbrk = (void *)ROUNDUP(heap.start, 8); // 一定要是8吗
   }
   
   size  = (size_t)ROUNDUP(size, 8);
@@ -158,7 +158,7 @@ void *malloc(size_t size) {
     *p = 0;
   }
 
-  // assert((uintptr_t)hbrk - (uintptr_t)heap.start <= setting->mlim);
+  // assert((uintptr_t)hbrk - (uintptr_t)heap.start <= setting->mlim); // 这个mlin是什么，这是bench_alloc的实现
   return old;
 }
 

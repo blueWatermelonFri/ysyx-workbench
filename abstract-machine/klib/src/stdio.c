@@ -37,6 +37,7 @@ static inline int is_format_specifier(char c){
 }
 
 void get_stdarg_string(const char *fmt, va_list *ap, char *s){
+  // 每添加一种specifier，都要更新is_format_specifier函数
   int d;
   unsigned int x = 0;
   char flag = '0';
@@ -62,7 +63,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             d2s[1] = '\0';
             format_padding(d2s, s, flag, width);
             return;
-            break;               
+            break;
         case 'd':              /* int */
             d = va_arg(*ap, int);
             itoa(d, d2s);
@@ -86,7 +87,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             hex2str(x, d2s, 1);
             format_padding(d2s, s, flag, width);
             return;
-            break;   
+            break;
         case '%':              /* escape % */
             strcpy(s, escape);
             return;
