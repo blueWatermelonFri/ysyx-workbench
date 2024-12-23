@@ -91,6 +91,8 @@ void init_elf(const char *filename) {
             if(sym.st_size != 0){
                 printf("i = %d, num_symbols = %d\n", i, num_symbols);
                 strcpy(ftrace_func_name[ftrace_func_count], &strtab[sym.st_name]);
+                printf("i = %d, num_symbols = %d\n", i, num_symbols);
+
                 ftrace_func_begin[ftrace_func_count] = sym.st_value;
                 ftrace_func_end[ftrace_func_count] = sym.st_value + sym.st_size - 4;
                 ftrace_func_count ++;
