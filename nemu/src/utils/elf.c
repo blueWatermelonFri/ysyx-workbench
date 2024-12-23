@@ -1,10 +1,10 @@
 #include <common.h>
 #include <elf.h>
 
-uint32_t ftrace_func_begin[1000];
-uint32_t ftrace_func_end[1000];
+uint32_t ftrace_func_begin[1500];
+uint32_t ftrace_func_end[1500];
 uint32_t ftrace_func_count = 0;
-char ftrace_func_name[1000][128];
+char ftrace_func_name[1500][128];
 
 void init_elf(const char *filename) {
     FILE *file = fopen(filename, "rb");
