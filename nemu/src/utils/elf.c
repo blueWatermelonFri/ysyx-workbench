@@ -36,7 +36,6 @@ void init_elf(const char *filename) {
     // 定位节头表
     fseek(file, elf_header.e_shoff, SEEK_SET);
 
-  printf("xxxxxxxxxxxxxxx = \n");
     // 读取节头表
     Elf32_Shdr *section_headers = malloc(sizeof(Elf32_Shdr) * elf_header.e_shnum);
     ret = fread(section_headers, sizeof(Elf32_Shdr), elf_header.e_shnum, file);
@@ -57,6 +56,7 @@ void init_elf(const char *filename) {
         }
     }
 
+  printf("xxxxxxxxxxxxxxx = \n");
     if (symtab_index == -1 || strtab_index == -1) {
         fprintf(stderr, "找不到符号表或字符串表\n");
         free(section_headers);
