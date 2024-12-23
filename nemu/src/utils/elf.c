@@ -1,10 +1,10 @@
 #include <common.h>
 #include <elf.h>
 
-uint32_t ftrace_func_begin[101];
-uint32_t ftrace_func_end[101];
+uint32_t ftrace_func_begin[1000];
+uint32_t ftrace_func_end[1000];
 uint32_t ftrace_func_count = 0;
-char ftrace_func_name[101][128];
+char ftrace_func_name[1000][128];
 
 void init_elf(const char *filename) {
     FILE *file = fopen(filename, "rb");
@@ -89,10 +89,7 @@ void init_elf(const char *filename) {
         Elf32_Sym sym = symbols[i];
         if(ELF32_ST_TYPE(sym.st_info) == STT_FUNC){
             if(sym.st_size != 0){
-                printf("i = %d, num_symbols = %d\n", i, num_symbols);
                 strcpy(ftrace_func_name[ftrace_func_count], &strtab[sym.st_name]);
-                printf("i = %d, num_symbols = %d\n", i, num_symbols);
-
                 ftrace_func_begin[ftrace_func_count] = sym.st_value;
                 ftrace_func_end[ftrace_func_count] = sym.st_value + sym.st_size - 4;
                 ftrace_func_count ++;
