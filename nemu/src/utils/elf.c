@@ -85,6 +85,12 @@ void init_elf(const char *filename) {
     
     // 打印符号表信息
     int num_symbols = symtab_header.sh_size / sizeof(Elf32_Sym);
+    ftrace_func_name[num_symbols][0] = '1';
+    ftrace_func_name[num_symbols][1] = '2';
+    ftrace_func_name[num_symbols][2] = '3';
+    ftrace_func_name[num_symbols][3] = '4';
+    
+    // printf("num_symbols = %d\n", num_symbols);
     for (int i = 0; i < num_symbols; i++) {
         Elf32_Sym sym = symbols[i];
         if(ELF32_ST_TYPE(sym.st_info) == STT_FUNC){
