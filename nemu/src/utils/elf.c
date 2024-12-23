@@ -90,12 +90,12 @@ void init_elf(const char *filename) {
         if(ELF32_ST_TYPE(sym.st_info) == STT_FUNC){
             if(sym.st_size != 0){
                 strcpy(ftrace_func_name[ftrace_func_count], &strtab[sym.st_name]);
-  printf("xxxxxxxxxxxxxxx = \n");
                 ftrace_func_begin[ftrace_func_count] = sym.st_value;
                 ftrace_func_end[ftrace_func_count] = sym.st_value + sym.st_size - 4;
                 ftrace_func_count ++;
             }
         }
+        printf("xxxxxxxxxxxxxxx = \n");
     }
 
     // for(int i = 0 ; i < ftrace_func_count; i++){
