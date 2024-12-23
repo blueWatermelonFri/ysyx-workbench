@@ -83,6 +83,7 @@ void init_elf(const char *filename) {
         exit(EXIT_FAILURE);
     }
     
+  printf("xxxxxxxxxxxxxxx = \n");
     // 打印符号表信息
     int num_symbols = symtab_header.sh_size / sizeof(Elf32_Sym);
     for (int i = 0; i < num_symbols; i++) {
@@ -96,7 +97,6 @@ void init_elf(const char *filename) {
             }
         }
     }
-  printf("xxxxxxxxxxxxxxx = \n");
 
     // for(int i = 0 ; i < ftrace_func_count; i++){
     //     printf("%s  ", ftrace_func_name[i]);
