@@ -89,13 +89,13 @@ void init_elf(const char *filename) {
         Elf32_Sym sym = symbols[i];
         if(ELF32_ST_TYPE(sym.st_info) == STT_FUNC){
             if(sym.st_size != 0){
+                printf("i = %d, num_symbols = %d\n", i, num_symbols);
                 strcpy(ftrace_func_name[ftrace_func_count], &strtab[sym.st_name]);
                 ftrace_func_begin[ftrace_func_count] = sym.st_value;
                 ftrace_func_end[ftrace_func_count] = sym.st_value + sym.st_size - 4;
                 ftrace_func_count ++;
             }
         }
-        printf("i = %d, num_symbols = %d\n", i, num_symbols);
     }
 
     // for(int i = 0 ; i < ftrace_func_count; i++){
