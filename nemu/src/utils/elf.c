@@ -8,18 +8,17 @@ char ftrace_func_name[100][128];
 
 void init_elf(const char *filename) {
     FILE *file = fopen(filename, "rb");
-
     // printf("%s\n", *filename)
     if (file == NULL) {
         perror("Can not open ELF file!");
         exit(EXIT_FAILURE);
     }
-  printf("xxxxxxxxxxxxxxx = \n");
     
     size_t         ret;
     Elf32_Ehdr elf_header;
 
     ret = fread(&elf_header, 1, sizeof(Elf32_Ehdr), file);
+  printf("xxxxxxxxxxxxxxx = \n");
     if (ret != sizeof(Elf32_Ehdr)) {
         fprintf(stderr, "fread() failed: %zu\n", ret);
         exit(EXIT_FAILURE);
