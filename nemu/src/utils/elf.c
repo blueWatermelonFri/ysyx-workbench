@@ -18,7 +18,6 @@ void init_elf(const char *filename) {
     Elf32_Ehdr elf_header;
 
     ret = fread(&elf_header, 1, sizeof(Elf32_Ehdr), file);
-  printf("xxxxxxxxxxxxxxx = \n");
     if (ret != sizeof(Elf32_Ehdr)) {
         fprintf(stderr, "fread() failed: %zu\n", ret);
         exit(EXIT_FAILURE);
@@ -37,6 +36,7 @@ void init_elf(const char *filename) {
     // 定位节头表
     fseek(file, elf_header.e_shoff, SEEK_SET);
 
+  printf("xxxxxxxxxxxxxxx = \n");
     // 读取节头表
     Elf32_Shdr *section_headers = malloc(sizeof(Elf32_Shdr) * elf_header.e_shnum);
     ret = fread(section_headers, sizeof(Elf32_Shdr), elf_header.e_shnum, file);
