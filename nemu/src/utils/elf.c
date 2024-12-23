@@ -95,7 +95,7 @@ void init_elf(const char *filename) {
                 ftrace_func_count ++;
             }
         }
-        printf("xxxxxxxxxxxxxxx = \n");
+        printf("i = %d, num_symbols = %d\n", i, num_symbols);
     }
 
     // for(int i = 0 ; i < ftrace_func_count; i++){
