@@ -56,7 +56,6 @@ void init_elf(const char *filename) {
         }
     }
 
-  printf("xxxxxxxxxxxxxxx = \n");
     if (symtab_index == -1 || strtab_index == -1) {
         fprintf(stderr, "找不到符号表或字符串表\n");
         free(section_headers);
@@ -97,6 +96,7 @@ void init_elf(const char *filename) {
             }
         }
     }
+  printf("xxxxxxxxxxxxxxx = \n");
 
     // for(int i = 0 ; i < ftrace_func_count; i++){
     //     printf("%s  ", ftrace_func_name[i]);
