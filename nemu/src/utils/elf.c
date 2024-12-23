@@ -7,7 +7,11 @@ uint32_t ftrace_func_count = 0;
 char ftrace_func_name[100][128];
 
 void init_elf(const char *filename) {
+  printf("xxxxxxxxxxxxxxx = \n");
+
     FILE *file = fopen(filename, "rb");
+  printf("xxxxxxxxxxxxxxx = \n");
+
     // printf("%s\n", *filename)
     if (file == NULL) {
         perror("Can not open ELF file!");

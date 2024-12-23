@@ -133,7 +133,6 @@ void init_monitor(int argc, char *argv[]) {
   /* Initialize parse elf file. */
   printf("xxxxxxxxxxxxxxx = \n");
   init_elf(elf_file);
-  printf("xxxxxxxxxxxxxxx = \n");
 
   /* Initialize the simple debugger. */
   init_sdb();
