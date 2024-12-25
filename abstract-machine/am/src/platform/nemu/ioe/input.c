@@ -8,8 +8,8 @@ static uint32_t read_key() {
   return key;
 }
 
-
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
-  kbd->keycode = read_key();
-  kbd->keydown = 0;
+  uint32_t tmp = read_key();
+  kbd->keycode = tmp & 0x00ff;
+  kbd->keydown = tmp >> 31;
 }
