@@ -11,5 +11,5 @@ static uint32_t read_key() {
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
   uint32_t tmp = read_key();
   kbd->keycode = tmp & 0x00ff;
-  kbd->keydown = tmp >> 31;
+  kbd->keydown = (tmp & KEYDOWN_MASK) ? 1 : 0;
 }
