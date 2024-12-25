@@ -1,10 +1,10 @@
 #include <common.h>
 #include <elf.h>
 
-uint32_t ftrace_func_begin[5];
-uint32_t ftrace_func_end[5];
+uint32_t ftrace_func_begin[2048];
+uint32_t ftrace_func_end[2048];
 uint32_t ftrace_func_count = 0;
-char ftrace_func_name[5][128];
+char ftrace_func_name[2048][128];
 
 void init_elf(const char *filename) {
     FILE *file = fopen(filename, "rb");
@@ -85,16 +85,6 @@ void init_elf(const char *filename) {
     
     // 打印符号表信息
     int num_symbols = symtab_header.sh_size / sizeof(Elf32_Sym);
-    printf("num_symbols = %d\n", num_symbols);
-
-    ftrace_func_name[num_symbols][0] = '1';
-    ftrace_func_name[num_symbols][1] = '2';
-    ftrace_func_name[num_symbols][2] = '3';
-    ftrace_func_name[num_symbols][3] = '4';
-
-    printf("num_symbols = %d\n", num_symbols);
-    printf("num_symbols = %d\n", num_symbols);
-    printf("num_symbols = %d\n", num_symbols);
     for (int i = 0; i < num_symbols; i++) {
         Elf32_Sym sym = symbols[i];
         if(ELF32_ST_TYPE(sym.st_info) == STT_FUNC){
