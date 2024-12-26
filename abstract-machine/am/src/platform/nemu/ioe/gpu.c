@@ -26,6 +26,17 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   if (ctl->sync) {
+    int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
+    uint32_t *tmp = (uint32_t *)ctl->pixels;
+    
+    int offset = y * 400 + x;
+    
+    for(int j = 0; j < h; j++){
+      for(int i = 0; i < w; i++) {
+        *(volatile uint32_t *)(FB_ADDR + offset + j * 400 + i) = tmp[j * w + i];
+      }
+    }
+
     outl(SYNC_ADDR, 1);
   }
 }
