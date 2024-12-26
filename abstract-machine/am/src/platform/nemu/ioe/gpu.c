@@ -6,13 +6,13 @@
   // VGACTL_ADDR = vgactl_port_base[0]表示屏幕的宽度和高度
   // vgactl_port_base[0] = (screen_width() << 16) | screen_height();
 void __am_gpu_init() {
-  int i;
-  int h = *(volatile uint32_t *)(VGACTL_ADDR) & 0x0000ffff;  // 
-  int w = (*(volatile uint32_t *)(VGACTL_ADDR) >> 16) & 0x0000ffff;  // 
+  // int i;
+  // int h = *(volatile uint32_t *)(VGACTL_ADDR) & 0x0000ffff;  // 
+  // int w = (*(volatile uint32_t *)(VGACTL_ADDR) >> 16) & 0x0000ffff;  // 
 
-  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i ++) fb[i] = i;
-  outl(SYNC_ADDR, 1);
+  // uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+  // for (i = 0; i < w * h; i ++) fb[i] = i;
+  // outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
