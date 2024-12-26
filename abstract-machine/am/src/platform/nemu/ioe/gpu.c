@@ -11,7 +11,7 @@ void __am_gpu_init() {
   int w = (*(volatile uint32_t *)(VGACTL_ADDR) >> 16) & 0x0000ffff;  // 
 
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i ++) fb[i] = i+10;
+  for (i = 0; i < w * h; i ++) fb[i] = 1;
   outl(SYNC_ADDR, 1);
 }
 
