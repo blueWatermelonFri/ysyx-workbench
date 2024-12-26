@@ -11,14 +11,15 @@ void __am_gpu_init() {
   int w = (*(volatile uint32_t *)(VGACTL_ADDR) >> 16) & 0x0000ffff;  // 
 
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i ++) fb[i] = i;
+  for (i = 0; i < w * h; i ++) fb[i] = i+1;
   outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
-    .width = 0, .height = 0,
+    .width = (*(volatile uint32_t *)(VGACTL_ADDR) >> 16) & 0x0000ffff,
+    .height = (*(volatile uint32_t *)(VGACTL_ADDR)) & 0x0000ffff ,
     .vmemsz = 0
   };
 }
