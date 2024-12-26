@@ -31,7 +31,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     int offset = y * 400 + x;
     for(int j = 0; j < h; j++){
       for(int i = 0; i < w; i++) {
-        *(volatile uint32_t *)(FB_ADDR + offset + j * 400 + i) = tmp[j * w + i];
+        *(volatile uint32_t *)(FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t)) = tmp[j * w + i];
       }
     }
 
