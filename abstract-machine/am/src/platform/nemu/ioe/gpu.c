@@ -3,10 +3,13 @@
 
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
+  // VGACTL_ADDR = vgactl_port_base[0]表示屏幕的宽度和高度
+  // vgactl_port_base[0] = (screen_width() << 16) | screen_height();
 void __am_gpu_init() {
   int i;
-  int w = 100;  // TODO: get the correct width
-  int h = 100;  // TODO: get the correct height
+  int h = *(volatile uint32_t *)(VGACTL_ADDR) & 0x0000ffff;  // 
+  int w = (*(volatile uint32_t *)(VGACTL_ADDR) >> 16) & 0x0000ffff;  // 
+
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   for (i = 0; i < w * h; i ++) fb[i] = i;
   outl(SYNC_ADDR, 1);

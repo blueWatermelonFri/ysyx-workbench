@@ -47,6 +47,7 @@ void device_update() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
+      // 这个是用来检测是否鼠标点击了X？
       case SDL_QUIT:
         nemu_state.state = NEMU_QUIT;
         break;
