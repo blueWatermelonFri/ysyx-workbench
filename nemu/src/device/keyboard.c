@@ -97,6 +97,6 @@ void init_i8042() {
 #else
   add_mmio_map("keyboard", CONFIG_I8042_DATA_MMIO, i8042_data_port_base, 4, i8042_data_io_handler);
 #endif
-  // 这是if no def 不是if def
+  // 这是if not def 不是if def
   IFNDEF(CONFIG_TARGET_AM, init_keymap());
 }
