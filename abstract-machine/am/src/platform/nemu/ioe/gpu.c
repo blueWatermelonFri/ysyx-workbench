@@ -24,14 +24,12 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
   };
 }
 
+// 框架里很多io_write 都默认把sync设置为false
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   if (ctl->sync) {
     int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
     uint32_t *tmp = (uint32_t *)ctl->pixels;
     int offset = y * 400 + x;
-      
-    // printf("%x\n", FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t));
-    printf("%d %d %d %d\n", h, w, x, y);
 
     for(int j = 0; j < h; j++){
       for(int i = 0; i < w; i++) {
