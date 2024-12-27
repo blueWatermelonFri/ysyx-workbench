@@ -31,7 +31,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     int offset = y * 400 + x;
       
     // printf("%x\n", FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t));
-    printf("%d %d\n", h, w);
+    printf("%d %d %d %d\n", h, w, x, y);
 
     for(int j = 0; j < h; j++){
       for(int i = 0; i < w; i++) {
