@@ -29,10 +29,13 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
     uint32_t *tmp = (uint32_t *)ctl->pixels;
     int offset = y * 400 + x;
+      
+    // printf("%x\n", FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t));
+    printf("%d %d\n", h, w);
+
     for(int j = 0; j < h; j++){
       for(int i = 0; i < w; i++) {
         *(volatile uint32_t *)(FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t)) = tmp[j * w + i];
-        printf("%x\n", FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t));
       }
     }
     outl(SYNC_ADDR, 1);
