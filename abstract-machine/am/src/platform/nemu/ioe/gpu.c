@@ -1,6 +1,6 @@
 #include <am.h>
 #include <nemu.h>
-
+#include <stdio.h>
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
   // VGACTL_ADDR = vgactl_port_base[0]表示屏幕的宽度和高度
@@ -32,6 +32,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     for(int j = 0; j < h; j++){
       for(int i = 0; i < w; i++) {
         *(volatile uint32_t *)(FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t)) = tmp[j * w + i];
+        printf("%x\n", FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t));
       }
     }
     outl(SYNC_ADDR, 1);
