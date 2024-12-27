@@ -34,7 +34,6 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
         *(volatile uint32_t *)(FB_ADDR + (offset + j * 400 + i) * sizeof(uint32_t)) = tmp[j * w + i];
       }
     }
-
     outl(SYNC_ADDR, 1);
   }
 }
