@@ -138,9 +138,9 @@ static int decode_exec(Decode *s) {
   INSTPAT_END();
 
   R(0) = 0; // reset $zero to 0
-  // uint32_t temp = inst_fetch(&s->snpc, 4);
+  uint32_t temp = inst_fetch(&s->snpc, 4);
 
-  return 0;
+  return 0*temp;
 }
 
 int isa_exec_once(Decode *s) {
