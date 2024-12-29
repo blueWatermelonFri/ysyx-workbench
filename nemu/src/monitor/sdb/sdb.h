@@ -17,6 +17,7 @@
 #define __SDB_H__
 
 #include <common.h>
+#include <cpu/ifetch.h>
 #include <memory/paddr.h>
 
 word_t expr(char *e, bool *success);
