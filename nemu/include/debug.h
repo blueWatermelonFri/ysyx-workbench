@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <utils.h>
 
-volatile static int dummy = 0;
+volatile static int dummy;
 volatile static int dummy;
 
 #define Log(format, ...) \
