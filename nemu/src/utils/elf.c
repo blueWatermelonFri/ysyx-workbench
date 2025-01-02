@@ -1,10 +1,11 @@
 #include <common.h>
 #include <elf.h>
 
-uint32_t ftrace_func_begin[100];
-uint32_t ftrace_func_end[100];
+//bug 这个大小定得太死了
+uint32_t ftrace_func_begin[2048];
+uint32_t ftrace_func_end[2048];
 uint32_t ftrace_func_count = 0;
-char ftrace_func_name[100][128];
+char ftrace_func_name[2048][128];
 
 void init_elf(const char *filename) {
     FILE *file = fopen(filename, "rb");

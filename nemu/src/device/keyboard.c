@@ -49,6 +49,7 @@ static void init_keymap() {
 static int key_queue[KEY_QUEUE_LEN] = {};
 static int key_f = 0, key_r = 0;
 
+// 环形队列
 static void key_enqueue(uint32_t am_scancode) {
   key_queue[key_r] = am_scancode;
   key_r = (key_r + 1) % KEY_QUEUE_LEN;
@@ -96,5 +97,6 @@ void init_i8042() {
 #else
   add_mmio_map("keyboard", CONFIG_I8042_DATA_MMIO, i8042_data_port_base, 4, i8042_data_io_handler);
 #endif
+  // 这是if not def 不是if def
   IFNDEF(CONFIG_TARGET_AM, init_keymap());
 }

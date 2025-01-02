@@ -47,12 +47,17 @@ void device_update() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
+      // 这个是用来检测是否鼠标点击了X？
       case SDL_QUIT:
         nemu_state.state = NEMU_QUIT;
         break;
 #ifdef CONFIG_HAS_KEYBOARD
       // If a key was pressed
       case SDL_KEYDOWN:
+        uint8_t k = event.key.keysym.scancode;
+        bool is_keydown = (event.key.type == SDL_KEYDOWN);
+        send_key(k, is_keydown);
+        break;
       case SDL_KEYUP: {
         uint8_t k = event.key.keysym.scancode;
         bool is_keydown = (event.key.type == SDL_KEYDOWN);
