@@ -1,6 +1,7 @@
 #include <common.h>
 #include <elf.h>
 
+//bug 这个大小定得太死了
 uint32_t ftrace_func_begin[2048];
 uint32_t ftrace_func_end[2048];
 uint32_t ftrace_func_count = 0;
