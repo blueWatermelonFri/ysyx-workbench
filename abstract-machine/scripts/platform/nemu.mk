@@ -17,8 +17,9 @@ CFLAGS += -DMAINARGS=\"$(mainargs)\"
 CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include
 .PHONY: $(AM_HOME)/am/src/platform/nemu/trm.c
 
+# -M no-aliases表示不生成伪指令
 image: $(IMAGE).elf
-	@$(OBJDUMP) -d $(IMAGE).elf > $(IMAGE).txt
+	@$(OBJDUMP) -M no-aliases -d $(IMAGE).elf > $(IMAGE).txt
 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
