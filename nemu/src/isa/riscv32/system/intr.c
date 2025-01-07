@@ -24,10 +24,10 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   // 1 : mtvec
   // 2 : mepc
   // 3 : mcause
-  cpu.csr[2] = cpu.pc;
+  cpu.csr[2] = epc;
   cpu.csr[3] = NO;
 
-  return cpu.csr[0];
+  return cpu.csr[1];
 }
 
 word_t isa_query_intr() {
