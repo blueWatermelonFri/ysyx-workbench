@@ -109,7 +109,7 @@ void utostring(unsigned int value, char*string ){
   string_reverse(string);
 }
 
-void hex2str(unsigned int value, char*string, unsigned int upper){
+void hex2str(unsigned int value, char*string, unsigned int uppercase){
   if(value == 0){
     string[0] = '0';
     string[1] = '\0';
@@ -118,7 +118,7 @@ void hex2str(unsigned int value, char*string, unsigned int upper){
   
   // %x or %X
   const char *hex_digits;  // 将数组声明移到外面
-  if(upper == 0){
+  if(uppercase == 0){
     hex_digits = "0123456789abcdef";
   }else{
     hex_digits = "0123456789ABCDEF";

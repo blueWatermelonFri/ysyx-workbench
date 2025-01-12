@@ -47,6 +47,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   char c = '\0';
   char escape[2] = {'%', '\0'};
   char ordinary[2] = {fmt[index], '\0'};
+  uintptr_t p = 0;
 
   if((fmt[index++]) == '%'){
     while(fmt[index]){
@@ -88,6 +89,12 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             format_padding(d2s, s, flag, width);
             return;
             break;
+        case 'p':              /* int */
+            p = (uintptr_t) va_arg(*ap, void *);
+            hex2str(p, d2s, 1);
+            format_padding(d2s, s, flag, width);
+            return;
+            break;            
         case '%':              /* escape % */
             strcpy(s, escape);
             return;
@@ -118,7 +125,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
 
 int printf(const char *fmt, ...) {
   index = 0;
-  char temp[10];  // bug 如何改进，因为64是固定的
+  char temp[4096];  // bug 如何改进，因为64是固定的
   int j = 0;
   va_list ap;
   va_start(ap, fmt);

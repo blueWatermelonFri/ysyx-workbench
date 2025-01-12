@@ -26,4 +26,4 @@ run: image
 
 # "handle SIGUSR1 SIGUSR2 SIGSEGV noprint nostop"会导致段错误无法输出所在的行
 gdb: image
-	gdb -ex "handle SIGUSR1 SIGUSR2 SIGSEGV noprint nostop" $(IMAGE)
+	gdb  $(IMAGE)
