@@ -10,7 +10,8 @@ void init_proc(void);
 int main() {
   extern const char logo[];
   printf("%s", logo);
-  Log("'Hello World!' from Nanos-lite");
+  // Log("'Hello World!' from Nanos-lite");
+  printf("\33[1;35m[%s,%d,%s] " "'Hello World!' from Nanos-lite" "\33[0m\n", "/home/myuser/ysyx/ysyx-workbench/nanos-lite/src/main.c", 13, __func__);
   Log("Build time: %s, %s", __TIME__, __DATE__);
 
   init_mm();
