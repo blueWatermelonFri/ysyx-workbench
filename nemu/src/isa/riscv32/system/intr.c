@@ -30,6 +30,10 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   return cpu.csr[1];
 }
 
+word_t isa_trap_return() {
+  return cpu.csr[2] + 4;
+}
+
 word_t isa_query_intr() {
   return INTR_EMPTY;
 }
