@@ -118,7 +118,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
 
 int printf(const char *fmt, ...) {
   index = 0;
-  char temp[64];  // 如何改进，因为64是固定的
+  char temp[1024];  // 如何改进，因为64是固定的
   int j = 0;
   va_list ap;
   va_start(ap, fmt);
