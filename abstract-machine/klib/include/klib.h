@@ -31,7 +31,7 @@ void   free      (void *ptr);
 int    abs       (int x);
 int    atoi      (const char *nptr);
 void   itoa      (int value, char *string );
-void   hex2str   (unsigned int value, char *string, unsigned int upper);
+void   hex2str   (unsigned long int value, char *string, unsigned int upper);
 void   utostring (unsigned int value, char *string);
 
 // stdio.h

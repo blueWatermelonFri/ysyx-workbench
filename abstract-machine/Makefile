@@ -107,6 +107,8 @@ endif
 ## 5. Compilation Rules
 
 ### Rule (compile): a single `.c` -> `.o` (gcc)
+# 生成.S文件的命令
+# @$(CC) -std=gnu11 $(CFLAGS) -S -o $(patsubst %.o, %.S, $@) $(realpath $<)
 # 为什么每次会重新触发trm.o的编译
 $(DST_DIR)/%.o: %.c
 	@mkdir -p $(dir $@) && echo + CC $<
