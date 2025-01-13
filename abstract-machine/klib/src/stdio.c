@@ -42,7 +42,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
   unsigned int x = 0;
   char flag = ' ';
   unsigned int width = 0;
-  char d2s[64];
+  char d2s[128];
   char *temp = NULL;
   char c = '\0';
   char escape[2] = {'%', '\0'};
@@ -90,7 +90,7 @@ void get_stdarg_string(const char *fmt, va_list *ap, char *s){
             return;
             break;
         case 'p':              /* int */
-            p = (uintptr_t) va_arg(*ap, void *);
+            p = (unsigned long int) va_arg(*ap, void *);
             hex2str(p, d2s, 1);
             format_padding(d2s, s, flag, width);
             return;

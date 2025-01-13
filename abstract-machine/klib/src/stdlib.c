@@ -109,7 +109,7 @@ void utostring(unsigned int value, char*string ){
   string_reverse(string);
 }
 
-void hex2str(unsigned int value, char*string, unsigned int uppercase){
+void hex2str(unsigned long int value, char*string, unsigned int uppercase){
   if(value == 0){
     string[0] = '0';
     string[1] = '\0';
