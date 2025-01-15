@@ -9,6 +9,9 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 
+size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   extern const char ramdisk_start[];
   Elf32_Ehdr elf_header;
@@ -16,7 +19,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   uint32_t segOffset, segVirtAddr, segFileSize, segMemSize;
 
   uint8_t * ph_addr;
-  memcpy(&elf_header, ramdisk_start, sizeof(Elf32_Ehdr));
+  ramdisk_read(&elf_header, 0, sizeof(Elf32_Ehdr));
   // sizeof是个编译器的运算符？不是stdlib这些库的实现？
   printf("%d\n", sizeof(Elf32_Ehdr));
 
