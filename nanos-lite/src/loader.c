@@ -21,7 +21,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   uint8_t * ph_addr;
   ramdisk_read(&elf_header, 0, sizeof(Elf32_Ehdr));
   // sizeof是个编译器的运算符？不是stdlib这些库的实现？
-  printf("%d\n", sizeof(Elf32_Ehdr));
 
   // assert(*(uint32_t *)elf->e_ident == 0x7F454C46);
   if (elf_header.e_ident[EI_MAG0] != ELFMAG0 ||
@@ -46,8 +45,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       segMemSize =  program_header.p_memsz;
       segVirtAddr =  program_header.p_vaddr;
       // MemSize >= FileSize 通常是因为bss段，https://stackoverflow.com/questions/27958743/difference-between-p-filesz-and-p-memsz-of-elf32-phdr
-      memcpy((uint8_t *) segVirtAddr, (uint8_t *) (segOffset + ramdisk_start), segFileSize);
+      // memcpy((uint8_t *) segVirtAddr, (uint8_t *) (segOffset + ramdisk_start), segFileSize);
+      ramdisk_read((void *) segVirtAddr, segOffset, segFileSize);
       memset((uint8_t *) (segVirtAddr + segFileSize), segMemSize-segFileSize, 0);
+
     }
   }
 
