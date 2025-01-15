@@ -18,9 +18,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       elf_header.e_ident[EI_MAG1] != ELFMAG1 ||
       elf_header.e_ident[EI_MAG2] != ELFMAG2 ||
       elf_header.e_ident[EI_MAG3] != ELFMAG3) {
-      printf("不是有效的 ELF 文件\n");
+
       assert(0);
   }
+        printf("%x\n", elf_header.e_ident[EI_MAG0]);
+      printf("%x\n", elf_header.e_ident[EI_MAG1]);
+      printf("%x\n", elf_header.e_ident[EI_MAG2]);
+      printf("%x\n", elf_header.e_ident[EI_MAG3]);
   return elf_header.e_ehsize;
 }
 
