@@ -18,13 +18,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       elf_header.e_ident[EI_MAG1] != ELFMAG1 ||
       elf_header.e_ident[EI_MAG2] != ELFMAG2 ||
       elf_header.e_ident[EI_MAG3] != ELFMAG3) {
-
+      printf("Error: Not a ELF format file!\n");
       assert(0);
   }
-        printf("%x\n", elf_header.e_ident[EI_MAG0]);
-      printf("%x\n", elf_header.e_ident[EI_MAG1]);
-      printf("%x\n", elf_header.e_ident[EI_MAG2]);
-      printf("%x\n", elf_header.e_ident[EI_MAG3]);
+  // (uint8_t *) ph_addr = elf_header.e_phoff + ramdisk_start;
+  printf("%d\n", elf_header.e_phnum);
+  printf("%d\n", elf_header.e_phentsize);
+
+
   return elf_header.e_ehsize;
 }
 
