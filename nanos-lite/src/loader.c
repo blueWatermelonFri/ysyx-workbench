@@ -28,7 +28,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   for(int i = 0; i<elf_header.e_phnum; i++){
     memcpy(&program_header, ph_addr + elf_header.e_phentsize * i, sizeof(Elf32_Phdr));
-    printf("%d\n", program_header.p_type);
+    printf("%x\n", program_header.p_type);
   }
   printf("%d\n", elf_header.e_phnum);
   printf("%d\n", elf_header.e_phentsize);
