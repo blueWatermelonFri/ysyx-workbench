@@ -18,7 +18,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   uint8_t * ph_addr;
   memcpy(&elf_header, ramdisk_start, sizeof(Elf32_Ehdr));
   // sizeof是个编译器的运算符？不是stdlib这些库的实现？
-  printf("%x\n", sizeof(Elf32_Ehdr));
+  printf("%d\n", sizeof(Elf32_Ehdr));
 
   // assert(*(uint32_t *)elf->e_ident == 0x7F454C46);
   if (elf_header.e_ident[EI_MAG0] != ELFMAG0 ||
