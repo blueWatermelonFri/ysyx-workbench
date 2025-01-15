@@ -14,6 +14,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf32_Ehdr elf_header;
   memcpy(&elf_header, ramdisk_start, sizeof(Elf32_Ehdr));
   // assert(*(uint32_t *)elf->e_ident == 0x7F454C46);
+  if (elf_header.e_ident[EI_MAG0] != ELFMAG0 ||
+      elf_header.e_ident[EI_MAG1] != ELFMAG1 ||
+      elf_header.e_ident[EI_MAG2] != ELFMAG2 ||
+      elf_header.e_ident[EI_MAG3] != ELFMAG3) {
+      printf("不是有效的 ELF 文件\n");
+      assert(0);
+  }
   return elf_header.e_ehsize;
 }
 
