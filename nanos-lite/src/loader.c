@@ -10,8 +10,11 @@
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  TODO();
-  return 0;
+  extern const char ramdisk_start[];
+  Elf32_Ehdr elf_header;
+  memcpy(&elf_header, ramdisk_start, sizeof(Elf32_Ehdr));
+  // assert(*(uint32_t *)elf->e_ident == 0x7F454C46);
+  return elf_header.e_ehsize;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
