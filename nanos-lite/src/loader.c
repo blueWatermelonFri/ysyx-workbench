@@ -12,6 +12,9 @@
 static uintptr_t loader(PCB *pcb, const char *filename) {
   extern const char ramdisk_start[];
   Elf32_Ehdr elf_header;
+  Elf32_Phdr program_header;
+
+  uint8_t * ph_addr;
   memcpy(&elf_header, ramdisk_start, sizeof(Elf32_Ehdr));
   // assert(*(uint32_t *)elf->e_ident == 0x7F454C46);
   if (elf_header.e_ident[EI_MAG0] != ELFMAG0 ||
@@ -21,7 +24,12 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       printf("Error: Not a ELF format file!\n");
       assert(0);
   }
-  // (uint8_t *) ph_addr = elf_header.e_phoff + ramdisk_start;
+  ph_addr = (uint8_t *) (elf_header.e_phoff + ramdisk_start);
+
+  for(int i = 0; i<elf_header.e_phnum; i++){
+    memcpy(&program_header, ph_addr + elf_header.e_phentsize * i, sizeof(Elf32_Phdr));
+    printf("%d\n", program_header.p_type);
+  }
   printf("%d\n", elf_header.e_phnum);
   printf("%d\n", elf_header.e_phentsize);
 
