@@ -14,7 +14,7 @@ Context* __am_irq_handle(Context *c) {
     }
 
     c = user_handler(ev, c);
-    // assert(c != NULL);
+    assert(c != NULL);
   }
 
   return c;
@@ -40,7 +40,7 @@ void yield() {
 #ifdef __riscv_e
   asm volatile("li a5, -1; ecall");
 #else
-  asm volatile("li a7, -1; ecall");
+  asm volatile("li a7, 11; ecall");
 #endif
 }
 
