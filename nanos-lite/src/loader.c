@@ -22,17 +22,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read(&elf_header, 0, sizeof(Elf32_Ehdr));
   // sizeof是个编译器的运算符？不是stdlib这些库的实现？
 
-#if defined(__ISA_AM_NATIVE__)
-# define EXPECT_TYPE EM_X86_64
-#elif defined(__ISA_X86__)
-# define EXPECT_TYPE EM_
-#elif defined(__ISA_X86__)
-# define EXPECT_TYPE EM_RISCV
-#else
-# error Unsupported ISA
-#endif
-
-
   // assert(*(uint32_t *)elf->e_ident == 0x7F454C46);
   if (elf_header.e_ident[EI_MAG0] != ELFMAG0 ||
       elf_header.e_ident[EI_MAG1] != ELFMAG1 ||
