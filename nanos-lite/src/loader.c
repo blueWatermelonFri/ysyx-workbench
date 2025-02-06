@@ -34,7 +34,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   // 
   assert(EXPECT_TYPE == elf_header.e_machine);
-
+  printf("%x\n", EXPECT_TYPE);
   if (elf_header.e_ident[EI_MAG0] != ELFMAG0 ||
       elf_header.e_ident[EI_MAG1] != ELFMAG1 ||
       elf_header.e_ident[EI_MAG2] != ELFMAG2 ||
