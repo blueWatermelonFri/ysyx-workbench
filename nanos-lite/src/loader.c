@@ -14,12 +14,12 @@ size_t ramdisk_read(void *buf, size_t offset, size_t len);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   extern const char ramdisk_start[];
-  Elf32_Ehdr elf_header;
-  Elf32_Phdr program_header;
+  Elf_Ehdr elf_header;
+  Elf_Phdr program_header;
   uint32_t segOffset, segVirtAddr, segFileSize, segMemSize;
 
   uint8_t * ph_addr;
-  ramdisk_read(&elf_header, 0, sizeof(Elf32_Ehdr));
+  ramdisk_read(&elf_header, 0, sizeof(Elf_Ehdr));
   // sizeof是个编译器的运算符？不是stdlib这些库的实现？
 
   // assert(*(uint32_t *)elf->e_ident == 0x7F454C46);
@@ -38,7 +38,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   // p_type表示这个entry对应的section的类型
 
   for(int i = 0; i<elf_header.e_phnum; i++){
-    memcpy(&program_header, ph_addr + elf_header.e_phentsize * i, sizeof(Elf32_Phdr));
+    memcpy(&program_header, ph_addr + elf_header.e_phentsize * i, sizeof(Elf_Phdr));
     if(program_header.p_type == PT_LOAD){
       segOffset = program_header.p_offset;
       segFileSize = program_header.p_filesz;
