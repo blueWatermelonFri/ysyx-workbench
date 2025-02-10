@@ -26,15 +26,15 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   extern const char ramdisk_start[];
   Elf_Ehdr elf_header;
   Elf_Phdr program_header;
-  uint32_t segOffset, segVirtAddr, segFileSize, segMemSize;
+  uintptr_t segOffset, segVirtAddr, segFileSize, segMemSize;
 
   uint8_t * ph_addr;
-  ramdisk_read(&elf_header, 0, sizeof(Elf_Ehdr));
   // sizeof是个编译器的运算符？不是stdlib这些库的实现？
+  ramdisk_read(&elf_header, 0, sizeof(Elf_Ehdr));
 
-  // 
+  // 判断nanos lite和elf文件编译到相同的架构上 
   assert(EXPECT_TYPE == elf_header.e_machine);
-  printf("%x\n", EXPECT_TYPE);
+
   if (elf_header.e_ident[EI_MAG0] != ELFMAG0 ||
       elf_header.e_ident[EI_MAG1] != ELFMAG1 ||
       elf_header.e_ident[EI_MAG2] != ELFMAG2 ||
@@ -56,6 +56,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       segFileSize = program_header.p_filesz;
       segMemSize =  program_header.p_memsz;
       segVirtAddr =  program_header.p_vaddr;
+       
       // MemSize >= FileSize 通常是因为bss段，https://stackoverflow.com/questions/27958743/difference-between-p-filesz-and-p-memsz-of-elf32-phdr
       // memcpy((uint8_t *) segVirtAddr, (uint8_t *) (segOffset + ramdisk_start), segFileSize);
       ramdisk_read((void *) segVirtAddr, segOffset, segFileSize);
