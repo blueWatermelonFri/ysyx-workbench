@@ -167,6 +167,11 @@ config DTRACE
   bool "trace device access"
   default n
 
+  
+config STRACE
+bool "trace syscall"
+default n
+
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
   bool "Enable differential testing"
