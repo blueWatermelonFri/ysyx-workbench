@@ -45,6 +45,7 @@ int write_to_serial(int fd, void *buf, size_t count){
 
 intptr_t SYS_brk_call(int increment){
 
+  putch('x');
   extern char _end; /* The symbols must have some type,
                                           or "gcc -Wall" complains */
   static intptr_t program_break = (intptr_t)&_end;
