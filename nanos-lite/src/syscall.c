@@ -43,19 +43,24 @@ int write_to_serial(int fd, void *buf, size_t count){
   return -1;
 }
 
-// int SYS_brk_call(int increment){
+intptr_t SYS_brk_call(int increment){
 
-//   const unsigned char *p1 = (const unsigned char *) buf;
+  extern char end; /* The symbols must have some type,
+                                          or "gcc -Wall" complains */
+  static intptr_t program_break = (intptr_t)&end;
 
-//   if(fd == 1 || fd == 2){
-//     for(int i = 0; i < count; i++){
-//       putch(p1[i]);
-//     }
-//     return count;
-//   }
+  intptr_t  old_pb = program_break;
 
-//   return -1;
-// }
+  if(increment == 0){
+    return old_pb;
+  }
+  else{
+    program_break += increment;
+    return old_pb;
+  }
+
+  return -1;
+}
 
 
 void do_syscall(Context *c) {
@@ -65,13 +70,13 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3; // a1
   a[3] = c->GPR4; // a2
 
-  int return_value = 0;
+  intptr_t return_value = 0;
 
   switch (a[0]) {
     case 0:  halt(a[1]);  break;
     case 1:  yield(); break;
     case 4:  return_value = write_to_serial(a[1], (void *)a[2], a[3]);  break;
-    // case 9:  return_value = write_to_serial(a[1]);  break;
+    case 9:  return_value = SYS_brk_call(a[1]);  break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
