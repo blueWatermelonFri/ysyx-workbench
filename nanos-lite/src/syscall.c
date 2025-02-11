@@ -45,9 +45,9 @@ int write_to_serial(int fd, void *buf, size_t count){
 
 intptr_t SYS_brk_call(int increment){
 
-  extern char end; /* The symbols must have some type,
+  extern char _end; /* The symbols must have some type,
                                           or "gcc -Wall" complains */
-  static intptr_t program_break = (intptr_t)&end;
+  static intptr_t program_break = (intptr_t)&_end;
 
   intptr_t  old_pb = program_break;
 
