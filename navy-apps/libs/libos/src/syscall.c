@@ -69,10 +69,6 @@ int _write(int fd, void *buf, size_t count) {
   return _syscall_(SYS_write, fd, buf, count);
 }
 
-
-
-
-
 void *_sbrk(intptr_t increment) {
   return _syscall_(SYS_brk, increment, 0, 0);
 }
