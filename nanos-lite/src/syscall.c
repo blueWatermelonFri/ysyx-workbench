@@ -76,8 +76,8 @@ void do_syscall(Context *c) {
   switch (a[0]) {
     case 0:  halt(a[1]);  break;
     case 1:  yield(); break;
-    // case 4:  return_value = write_to_serial(a[1], (void *)a[2], a[3]);  break;
-    // case 9:  return_value = SYS_brk_call(a[1]);  break;
+    case 4:  return_value = write_to_serial(a[1], (void *)a[2], a[3]);  break;
+    case 9:  return_value = SYS_brk_call(a[1]);  break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
