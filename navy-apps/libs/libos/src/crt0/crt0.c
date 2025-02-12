@@ -8,7 +8,6 @@ void call_main(uintptr_t *args) {
   char *empty[] =  {NULL };
   environ = empty;
   int ret_code = main(0, empty, empty);
-  printf("ret code  = %d\n");
   exit(ret_code);
   assert(0);
 }
