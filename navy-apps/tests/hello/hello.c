@@ -13,7 +13,6 @@ int main() {
   //     j = 0;
   //   }
   // }
-  _syscall_(SYS_yield, 0, 0, 0);
   write(1, "xxxxx!\n", 10);
 
 
