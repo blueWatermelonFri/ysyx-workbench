@@ -50,11 +50,11 @@ intptr_t SYS_brk_call(int increment){
 
 
   if(increment == 0){
-    return 0;
+    return program_break;
   }
   else{
     program_break += increment;
-    return 0;
+    return program_break;
   }
 
   return -1;

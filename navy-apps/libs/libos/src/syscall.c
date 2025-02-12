@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <assert.h>
+#include <stdio.h>
 #include <time.h>
 #include "syscall.h"
 
@@ -70,7 +71,6 @@ int _write(int fd, void *buf, size_t count) {
 }
 
 
-extern intptr_t program_break;
 void *_sbrk(intptr_t increment) {
   
   char temp[100];
@@ -79,7 +79,7 @@ void *_sbrk(intptr_t increment) {
 
   void *(return_value) =   (void *) _syscall_(SYS_brk, increment, 0, 0);
 
-    return (void *)program_break;
+  return return_value;
 }
 
 int _read(int fd, void *buf, size_t count) {
