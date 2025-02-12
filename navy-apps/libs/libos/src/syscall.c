@@ -74,9 +74,7 @@ extern intptr_t program_break;
 void *_sbrk(intptr_t increment) {
   
   void *(return_value) =   (void *) _syscall_(SYS_brk, increment, 0, 0);
-  if(return_value = (void *)-1)
-    return (void *)return_value;
-  else
+
     return (void *)program_break;
 }
 
