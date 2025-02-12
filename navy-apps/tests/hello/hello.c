@@ -3,7 +3,7 @@
 
 int main() {
   // write(1, "Hello World!\n", 13);
-  // printf("Hello World from Navy-apps for the %dth time!\n", 1);
+  printf("Hello World from Navy-apps for the %dth time!\n", 1);
   // int i = 2;
   // volatile int j = 0;
   // while (1) {
@@ -12,7 +12,5 @@ int main() {
   //     j = 0;
   //   }
   // }
-
-  
   return 0;
 }
