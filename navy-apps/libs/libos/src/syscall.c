@@ -73,9 +73,9 @@ int _write(int fd, void *buf, size_t count) {
 
 void *_sbrk(intptr_t increment) {
   
-  char temp[100];
-  sprintf(temp, "%x\n", increment);
-  write(1, temp, 20);
+  // char temp[100];
+  // sprintf(temp, "%x\n", increment);
+  // write(1, temp, 20);
 
   void *(return_value) =   (void *) _syscall_(SYS_brk, increment, 0, 0);
 
