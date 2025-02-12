@@ -13,5 +13,8 @@ int main() {
   //     j = 0;
   //   }
   // }
+  write(1, "xxxxx!\n", 10);
+
+
   return 0;
 }
