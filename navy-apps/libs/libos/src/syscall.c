@@ -82,17 +82,37 @@ int _write(int fd, void *buf, size_t count) {
 //   return return_value;
 // }
 
-extern char * _end;
-static intptr_t cur_brk = (intptr_t)&_end;
+// extern char * _end;
+// static intptr_t cur_brk = (intptr_t)&_end;
+// void *_sbrk(intptr_t increment) {
+//   intptr_t old_brk = cur_brk;
+//   intptr_t new_brk = old_brk + increment;
+//   if (_syscall_(SYS_brk, new_brk, old_brk, 0) != 0) {
+//     return (void*)-1; 
+//   }
+//   cur_brk = new_brk;
+//   return (void*)old_brk;
+// }
+
+
+void *program_break = NULL;
+extern char end;
 void *_sbrk(intptr_t increment) {
-  intptr_t old_brk = cur_brk;
-  intptr_t new_brk = old_brk + increment;
-  if (_syscall_(SYS_brk, new_brk, old_brk, 0) != 0) {
-    return (void*)-1; 
+  if (program_break == NULL) {
+    // 注意end的用法
+    program_break = (void*)(&end);
   }
-  cur_brk = new_brk;
-  return (void*)old_brk;
+  void *old_program_break = program_break;
+  void *new_program_break = increment + program_break;
+  int ans = _syscall_(SYS_brk, new_program_break, 0, 0);
+
+  if (ans == 0) {
+    program_break = new_program_break;
+    return old_program_break;
+  } 
+  return (void *)-1;
 }
+
 
 int _read(int fd, void *buf, size_t count) {
   _exit(SYS_read);
