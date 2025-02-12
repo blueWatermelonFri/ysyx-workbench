@@ -43,22 +43,22 @@ int write_to_serial(int fd, void *buf, size_t count){
   return -1;
 }
 
-extern char _end; 
-intptr_t program_break = (intptr_t)&_end;
+// extern char _end; 
+// intptr_t program_break = (intptr_t)&_end;
 
-intptr_t SYS_brk_call(int increment){
+// intptr_t SYS_brk_call(int increment){
 
-  intptr_t old = program_break;
-  if(increment == 0){
-    return program_break;
-  }
-  else{
-    program_break += increment;
-    return old;
-  }
+//   intptr_t old = program_break;
+//   if(increment == 0){
+//     return program_break;
+//   }
+//   else{
+//     program_break += increment;
+//     return old;
+//   }
 
-  return -1;
-}
+//   return -1;
+// }
 
 
 void do_syscall(Context *c) {
@@ -74,7 +74,7 @@ void do_syscall(Context *c) {
     case 0:  halt(a[1]);  break;
     case 1:  yield(); break;
     case 4:  return_value = write_to_serial(a[1], (void *)a[2], a[3]);  break;
-    case 9:  return_value = SYS_brk_call(a[1]);  break;
+    case 9:  return_value = 0;  break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
