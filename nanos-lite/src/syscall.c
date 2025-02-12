@@ -48,13 +48,13 @@ intptr_t program_break = (intptr_t)&_end;
 
 intptr_t SYS_brk_call(int increment){
 
-
+  intptr_t old = program_break;
   if(increment == 0){
     return program_break;
   }
   else{
     program_break += increment;
-    return program_break;
+    return old;
   }
 
   return -1;
