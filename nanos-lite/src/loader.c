@@ -9,32 +9,20 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 
-#if defined(__ISA_AM_NATIVE__)
-# define EXPECT_TYPE EM_X86_64
-#elif defined(__ISA_X86__)
-# define EXPECT_TYPE EM_X86_64
-#elif defined(__ISA_RISCV32__)
-# define EXPECT_TYPE EM_RISCV 
-#else
-# error Unsupported ISA
-#endif
-
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   extern const char ramdisk_start[];
-  Elf_Ehdr elf_header;
-  Elf_Phdr program_header;
-  uintptr_t segOffset, segVirtAddr, segFileSize, segMemSize;
+  Elf32_Ehdr elf_header;
+  Elf32_Phdr program_header;
+  uint32_t segOffset, segVirtAddr, segFileSize, segMemSize;
 
   uint8_t * ph_addr;
+  ramdisk_read(&elf_header, 0, sizeof(Elf32_Ehdr));
   // sizeof是个编译器的运算符？不是stdlib这些库的实现？
-  ramdisk_read(&elf_header, 0, sizeof(Elf_Ehdr));
 
-  // 判断nanos lite和elf文件编译到相同的架构上 
-  assert(EXPECT_TYPE == elf_header.e_machine);
-
+  // assert(*(uint32_t *)elf->e_ident == 0x7F454C46);
   if (elf_header.e_ident[EI_MAG0] != ELFMAG0 ||
       elf_header.e_ident[EI_MAG1] != ELFMAG1 ||
       elf_header.e_ident[EI_MAG2] != ELFMAG2 ||
@@ -50,13 +38,12 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   // p_type表示这个entry对应的section的类型
 
   for(int i = 0; i<elf_header.e_phnum; i++){
-    memcpy(&program_header, ph_addr + elf_header.e_phentsize * i, sizeof(Elf_Phdr));
+    memcpy(&program_header, ph_addr + elf_header.e_phentsize * i, sizeof(Elf32_Phdr));
     if(program_header.p_type == PT_LOAD){
       segOffset = program_header.p_offset;
       segFileSize = program_header.p_filesz;
       segMemSize =  program_header.p_memsz;
       segVirtAddr =  program_header.p_vaddr;
-       
       // MemSize >= FileSize 通常是因为bss段，https://stackoverflow.com/questions/27958743/difference-between-p-filesz-and-p-memsz-of-elf32-phdr
       // memcpy((uint8_t *) segVirtAddr, (uint8_t *) (segOffset + ramdisk_start), segFileSize);
       ramdisk_read((void *) segVirtAddr, segOffset, segFileSize);

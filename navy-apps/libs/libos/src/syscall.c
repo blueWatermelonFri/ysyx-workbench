@@ -2,7 +2,6 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <assert.h>
-#include <stdio.h>
 #include <time.h>
 #include "syscall.h"
 
@@ -47,7 +46,7 @@
 #endif
 
 intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2) {
-  register intptr_t _gpr1 asm (GPR1) = type; // 将变量 _gpr2 绑定到 RISC-V 架构中的 GPR1 寄存器
+  register intptr_t _gpr1 asm (GPR1) = type;
   register intptr_t _gpr2 asm (GPR2) = a0;
   register intptr_t _gpr3 asm (GPR3) = a1;
   register intptr_t _gpr4 asm (GPR4) = a2;
@@ -67,54 +66,13 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count) {
-  return _syscall_(SYS_write, fd, (intptr_t) buf, count);
+  _exit(SYS_write);
+  return 0;
 }
 
-
-// void *_sbrk(intptr_t increment) {
-  
-//   // char temp[100];
-//   // sprintf(temp, "%x\n", increment);
-//   // write(1, temp, 20);
-
-//   void *(return_value) =   (void *) _syscall_(SYS_brk, increment, 0, 0);
-
-//   return return_value;
-// }
-
-// extern char * _end;
-// static intptr_t cur_brk = (intptr_t)&_end;
-// void *_sbrk(intptr_t increment) {
-//   intptr_t old_brk = cur_brk;
-//   intptr_t new_brk = old_brk + increment;
-//   if (_syscall_(SYS_brk, new_brk, old_brk, 0) != 0) {
-//     return (void*)-1; 
-//   }
-//   cur_brk = new_brk;
-//   return (void*)old_brk;
-// }
-
-
-extern char end;
-void *program_break = (void*)(&end);
 void *_sbrk(intptr_t increment) {
-
-  void *old_program_break = program_break;
-  void *new_program_break = increment +  (intptr_t) program_break;
-  
-  char A[100];
-  sprintf(A, "old:%x , incre : %x\n", (old_program_break ), (increment )); 
-  write(1, A, 30);
-
-  int ans = _syscall_(SYS_brk, new_program_break, 0, 0);
-
-  if (ans == 0) {
-    program_break = new_program_break;
-    return old_program_break;
-  } 
   return (void *)-1;
 }
-
 
 int _read(int fd, void *buf, size_t count) {
   _exit(SYS_read);
