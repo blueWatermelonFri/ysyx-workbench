@@ -98,20 +98,9 @@ int _write(int fd, void *buf, size_t count) {
 extern char end;
 void *program_break = (void*)(&end);
 void *_sbrk(intptr_t increment) {
-  if (program_break == NULL) {
-    // 注意end的用法
-    program_break = (void*)(&end);
-    write(1, "nonononon\n", 15);
 
-  }
-  else{
-    char D[100];
-    sprintf(D, "pro is not none %x\n", program_break); 
-    write(1, D, 26);
-
-  }
   void *old_program_break = program_break;
-  void *new_program_break = increment + program_break;
+  void *new_program_break = increment +  (intptr_t) program_break;
   
   char A[100];
   sprintf(A, "old:%x , incre : %x\n", (old_program_break ), (increment )); 
