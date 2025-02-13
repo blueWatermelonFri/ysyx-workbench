@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int main() {
-  write(1, "first!\n", 6);
+  write(1, "first!\n", 7);
   printf("xxxxxxxHello World from Navy-apps for the th time!\n");
   // write(1, "Hello World!\n", 13);
   // int i = 2;
@@ -13,7 +13,7 @@ int main() {
   //     j = 0;
   //   }
   // }
-  write(1, "xxxxx!\n", 10);
+  write(1, "xxxxx!\n", 7);
 
 
   return 0;
