@@ -106,7 +106,7 @@ void *_sbrk(intptr_t increment) {
   void *new_program_break = increment + program_break;
   
   char A[100];
-  sprintf(A, "old:%x\n", old_program_break); 
+  sprintf(A, "end:%x\n", (&end)); 
   write(1, A, 15);
 
   int ans = _syscall_(SYS_brk, new_program_break, 0, 0);
