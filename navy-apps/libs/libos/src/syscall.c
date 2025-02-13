@@ -101,13 +101,14 @@ void *_sbrk(intptr_t increment) {
   if (program_break == NULL) {
     // 注意end的用法
     program_break = (void*)(&end);
+    char A[100];
+  sprintf(A, "end:%p\n", (program_break )); 
+  write(1, A, 15);
   }
   void *old_program_break = program_break;
   void *new_program_break = increment + program_break;
   
-  char A[100];
-  sprintf(A, "end:%p\n", (old_program_break)); 
-  write(1, A, 15);
+  
 
   int ans = _syscall_(SYS_brk, new_program_break, 0, 0);
 
