@@ -6,7 +6,7 @@ void strace(int a0, int a1, int a2, int a3, int return_value ){
     case 0:  Log("SYSCALL name : SYS_exit, ARG0 is %d,  ARG1 is %d, ARG2 is %d, no return", a1, a2, a3);  break;
     case 1:  Log("SYSCALL name : SYS_yield, ARG0 is %d,  ARG1 is %d, ARG2 is %d, Return is %d", a1, a2, a3, return_value);  break;
     case 4:  Log("SYSCALL name : SYS_write, fd is %d,  buf addr is %x, count is %d, Return is %d", a1, a2, a3, return_value);  break;
-    case 9:  Log("SYSCALL name : SYS_brk, increment is %x,  ARG1 is %x, ARG2 is %d, Return is %x", a1, a2, a3, return_value);  break;
+    case 9:  Log("SYSCALL name : SYS_brk, new pb is %x,  ARG1 is %x, ARG2 is %d, Return is %x", a1, a2, a3, return_value);  break;
     default: panic("Unhandled syscall ID = %d", a0);
   }
 }
