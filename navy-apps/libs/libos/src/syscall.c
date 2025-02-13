@@ -104,6 +104,12 @@ void *_sbrk(intptr_t increment) {
     write(1, "nonononon\n", 15);
 
   }
+  else{
+    char D[100];
+    sprintf(D, "pro is not none %x\n", program_break); 
+    write(1, D, 26);
+
+  }
   void *old_program_break = program_break;
   void *new_program_break = increment + program_break;
   
