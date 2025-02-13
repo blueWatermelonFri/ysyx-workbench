@@ -108,8 +108,8 @@ void *_sbrk(intptr_t increment) {
   void *new_program_break = increment + program_break;
   
   char A[100];
-  sprintf(A, "end:%x\n", (old_program_break )); 
-  write(1, A, 15);
+  sprintf(A, "old:%x , incre : %x\n", (old_program_break ), (increment )); 
+  write(1, A, 30);
 
   int ans = _syscall_(SYS_brk, new_program_break, 0, 0);
 
