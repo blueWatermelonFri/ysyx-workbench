@@ -95,8 +95,8 @@ int _write(int fd, void *buf, size_t count) {
 // }
 
 
-void *program_break = NULL;
 extern char end;
+void *program_break = (void*)(&end);
 void *_sbrk(intptr_t increment) {
   if (program_break == NULL) {
     // 注意end的用法
