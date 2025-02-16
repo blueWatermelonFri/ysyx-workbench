@@ -11,6 +11,19 @@ void strace(int a0, int a1, int a2, int a3, int return_value ){
 }
 }
 
+int write_to_serial(int fd, void *buf, size_t count){
+
+  const unsigned char *p1 = (const unsigned char *) buf;
+
+  if(fd == 1 || fd == 2){
+    for(int i = 0; i < count; i++){
+      putch(p1[i]);
+    }
+    return count;
+  }
+
+  return -1;
+}
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -28,6 +41,7 @@ void do_syscall(Context *c) {
   switch (a[0]) {
     case 0:  halt(a[1]);  break;
     case 1:  yield(); break;    
+    case 4:  write_to_serial(a[1], (void *) a[2], a[3]); break;    
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
