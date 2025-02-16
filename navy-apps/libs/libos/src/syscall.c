@@ -75,7 +75,7 @@ void *program_break = (void*)(&end);
 void *_sbrk(intptr_t increment) {
 
   void *old_program_break = program_break;
-  void *new_program_break = increment +  (intptr_t)old_program_break ;
+  intptr_t new_program_break = increment +  (intptr_t)old_program_break ;
 
   int ans = _syscall_(SYS_brk, new_program_break, 0, 0);
 
