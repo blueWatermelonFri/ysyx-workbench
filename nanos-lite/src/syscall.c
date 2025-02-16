@@ -42,6 +42,7 @@ void do_syscall(Context *c) {
     case 0:  halt(a[1]);  break;
     case 1:  yield(); break;    
     case 4:  write_to_serial(a[1], (void *) a[2], a[3]); break;    
+    case 9:  c->GPRx = 0; break;    
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
