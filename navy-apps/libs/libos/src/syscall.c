@@ -79,6 +79,11 @@ void *_sbrk(intptr_t increment) {
 
   int ans = _syscall_(SYS_brk, new_program_break, 0, 0);
 
+
+  char A[100];
+  sprintf(A, "old=%x\n", old_program_break); 
+  write(1, A, 14);
+
   if (ans == 0) {
     program_break = new_program_break;
     return (void *) old_program_break;
