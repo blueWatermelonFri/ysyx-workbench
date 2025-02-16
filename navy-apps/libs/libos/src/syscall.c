@@ -70,18 +70,18 @@ int _write(int fd, void *buf, size_t count) {
 }
 
 extern char end;
-void *program_break = (void*)(&end);
+intptr_t program_break = (&end);
 
 void *_sbrk(intptr_t increment) {
 
-  void *old_program_break = program_break;
-  intptr_t new_program_break = increment +  (intptr_t)old_program_break ;
+  intptr_t old_program_break = program_break;
+  intptr_t new_program_break = increment +  old_program_break ;
 
   int ans = _syscall_(SYS_brk, new_program_break, 0, 0);
 
   if (ans == 0) {
     program_break = new_program_break;
-    return old_program_break;
+    return (void *) old_program_break;
   } 
 
   return (void *)-1;
