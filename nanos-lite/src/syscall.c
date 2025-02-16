@@ -25,6 +25,14 @@ int write_to_serial(int fd, void *buf, size_t count){
   return -1;
 }
 
+int heap_addr_bound(uintptr_t heap_addr){
+
+  if(heap_addr > 0x87ffffff || heap_addr < 0x83000000)
+    return -1;
+  else
+    return 0;
+}
+
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1; // a7
@@ -42,7 +50,7 @@ void do_syscall(Context *c) {
     case 0:  halt(a[1]);  break;
     case 1:  yield(); break;    
     case 4:  return_value = write_to_serial(a[1], (void *) a[2], a[3]); break;    
-    case 9:  return_value = 0; break;    
+    case 9:  return_value = heap_addr_bound(a[1]); break;    
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
