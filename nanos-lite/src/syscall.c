@@ -21,6 +21,9 @@ void do_syscall(Context *c) {
 
   intptr_t return_value = 0;
 
+  // #ifdef CONFIG_STRACE
+  strace(a[0], a[1], a[2], a[3], return_value);
+  // #endif
 
   switch (a[0]) {
     case 0:  halt(a[1]);  break;
@@ -28,9 +31,6 @@ void do_syscall(Context *c) {
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
-// #ifdef CONFIG_STRACE
-strace(a[0], a[1], a[2], a[3], return_value);
-// #endif
 
 
 }
