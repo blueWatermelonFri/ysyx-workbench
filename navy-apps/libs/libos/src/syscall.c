@@ -72,7 +72,6 @@ int _write(int fd, void *buf, size_t count) {
 extern char _end;
 static intptr_t program_break = (intptr_t)&_end;
 
-unsigned long xxxx = (0);
 
 void *_sbrk(intptr_t increment) {
 
@@ -85,10 +84,6 @@ void *_sbrk(intptr_t increment) {
   char A[100];
   sprintf(A, "old=%x\n", old_program_break); 
   write(1, A, 14);
-
-  char B[100];
-  sprintf(B, "xxx=%x\n", xxxx); 
-  write(1, B, 14);
 
   if (ans == 0) {
     program_break = new_program_break;
