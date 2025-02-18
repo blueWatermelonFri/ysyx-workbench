@@ -53,7 +53,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       ramdisk_read((void *) segVirtAddr, segOffset, segFileSize);
       printf("addr1 = %x\n", segVirtAddr + segFileSize);
       printf("addr2 = %x\n", segMemSize-segFileSize);
-      memset((void *) (segVirtAddr + segFileSize), segMemSize-segFileSize, 0);
+      memset((void *) (segVirtAddr + segFileSize), 0, segMemSize-segFileSize);
+
     }
   }
 
