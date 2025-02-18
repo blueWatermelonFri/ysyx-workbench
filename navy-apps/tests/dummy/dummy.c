@@ -10,5 +10,8 @@
 int xxxx = (0);
 
 int main() {
+  char A[100];
+  sprintf(A, "old=%x\n", xxxx); 
+  write(1, A, 14);
   return xxxx;
 }
