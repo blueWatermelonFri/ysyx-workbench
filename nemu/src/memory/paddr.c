@@ -29,8 +29,8 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
-  word_t b = host_read(guest_to_host((paddr_t) 0x8300989c), 4);
-  printf("%x\n", b);
+  // word_t b = host_read(guest_to_host((paddr_t) 0x8300989c), 4);
+  // printf("%x\n", b);
   return ret;
 }
 
