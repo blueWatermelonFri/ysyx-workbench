@@ -10,5 +10,5 @@
 int xxxx = (0);
 
 int main() {
-  return 0;
+  return xxxx;
 }
