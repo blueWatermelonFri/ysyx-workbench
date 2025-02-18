@@ -1,17 +1,12 @@
-// #include <stdint.h>
+#include <stdint.h>
 
-// #ifdef __ISA_NATIVE__
-// #error can not support ISA=native
-// #endif
+#ifdef __ISA_NATIVE__
+#error can not support ISA=native
+#endif
 
-// #define SYS_yield 1
-// extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);
-
-int xxxx = (0);
+#define SYS_yield 1
+extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);
 
 int main() {
-  char A[100];
-  sprintf(A, "old=%x\n", xxxx); 
-  write(1, A, 14);
-  return xxxx;
+  return _syscall_(SYS_yield, 0, 0, 0);
 }
