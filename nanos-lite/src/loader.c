@@ -44,15 +44,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       segFileSize = program_header.p_filesz;
       segMemSize =  program_header.p_memsz;
       segVirtAddr =  program_header.p_vaddr;
-      printf("segOffset = %x\n", segOffset);
-      printf("segFileSize = %x\n", segFileSize);
-      printf("segMemSize = %x\n", segMemSize);
-      printf("segVirtAddr = %x\n", segVirtAddr);
       // MemSize >= FileSize 通常是因为bss段，https://stackoverflow.com/questions/27958743/difference-between-p-filesz-and-p-memsz-of-elf32-phdr
       // memcpy((uint8_t *) segVirtAddr, (uint8_t *) (segOffset + ramdisk_start), segFileSize);
       ramdisk_read((void *) segVirtAddr, segOffset, segFileSize);
-      printf("addr1 = %x\n", segVirtAddr + segFileSize);
-      printf("len = %x\n", segMemSize-segFileSize);
       memset((void *) (segVirtAddr + segFileSize), segMemSize-segFileSize, 0);
     }
   }
