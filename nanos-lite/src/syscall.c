@@ -5,7 +5,7 @@ void strace(uintptr_t a0, uintptr_t a1, uintptr_t a2, uintptr_t a3, uintptr_t re
   switch (a0) {
     case 0:  Log("SYS_exit, arg1 : %d, arg2 : %d, arg3 : %d, return value is none", a1, a2, a3); break;
     case 1:  Log("SYS_yield, arg1 : %d, arg2 : %d, arg3 : %d, return value is none", a1, a2, a3); break;
-    case 4:  Log("SYS_write, arg1 : %x, arg2 : %d, arg3 : %d, return value is %d", a1, a2, a3, return_value);  break;
+    case 4:  Log("SYS_write, fd : %x, buf : %x, count : %d, return value is %d", a1, a2, a3, return_value);  break;
     case 9:  Log("SYS_sbrk, arg1 : %x, arg2 : %d, arg3 : %d, return value is %d", a1, a2, a3, return_value);  break;
     default: panic("Unhandled syscall ID = %d", a0);
   }
