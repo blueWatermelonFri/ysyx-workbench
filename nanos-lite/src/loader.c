@@ -47,7 +47,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       // MemSize >= FileSize 通常是因为bss段，https://stackoverflow.com/questions/27958743/difference-between-p-filesz-and-p-memsz-of-elf32-phdr
       // memcpy((uint8_t *) segVirtAddr, (uint8_t *) (segOffset + ramdisk_start), segFileSize);
       ramdisk_read((void *) segVirtAddr, segOffset, segFileSize);
-      memset((void *) (segVirtAddr + segFileSize), segMemSize-segFileSize, 0);
+      // 为什么需要将 [VirtAddr + FileSiz, VirtAddr + MemSiz) 对应的物理区间清零? 
+      // 因为这一段区域对应着bss section，它保存着将初始化为0全局、静态变量、未初始化的全局和静态变量
+      // c语言标准定义需要将这部分内容初始化为0
+      memset((void *) (segVirtAddr + segFileSize), 0, segMemSize-segFileSize);
     }
   }
 
