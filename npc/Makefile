@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 TOPNAME = ysyx_24100005_top
 NXDC_FILES = constr/top.nxdc
 INC_PATH ?= /home/myuser/ysyx/ysyx-workbench/npc/include
@@ -156,10 +157,21 @@ include ../Makefile
 sim:$(BIN)
 	@$^
 	$(call git_commit, "sim RTL") 
+=======
+all:
+	@echo "Write this Makefile by your self."
+
+sim:
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	@echo "Write this Makefile by your self."
+	verilator --cc --exe --build -j 0 -Wall --trace  ./csrc/main.cpp ./vsrc/example.v 
+>>>>>>> 35ceda6 (> compile NEMU)
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf ./obj_dir
+	rm  ./dump.vcd
 
+<<<<<<< HEAD
 .PHONY: default all clean run
 
 <<<<<<< HEAD
@@ -175,3 +187,6 @@ clean:
 
 include ../Makefile
 >>>>>>> e0f44bf (> sim RTL)
+=======
+include ../Makefile
+>>>>>>> 35ceda6 (> compile NEMU)
