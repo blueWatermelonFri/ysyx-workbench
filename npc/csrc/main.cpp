@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // #include <nvboard.h>
 #include "npc_common.h"
 #include "sdb.h"
@@ -45,8 +46,14 @@ int main(int argc, char *argv[]) {
 #include <stdlib.h>
 #include <assert.h>
 #include "Vexample.h"
+=======
+#include <Vlight.h>
+#include <nvboard.h>
+>>>>>>> 241d764 (> compile NEMU)
 #include "verilated.h"
+#include "verilated_vcd_c.h"
 
+<<<<<<< HEAD
 // while (1) {
 <<<<<<< HEAD
 =======
@@ -56,27 +63,28 @@ int main(int argc, char *argv[]) {
 >>>>>>> f2d33a7 (>)
 =======
 >>>>>>> 35ceda6 (> compile NEMU)
+=======
+static TOP_NAME top;
+>>>>>>> 241d764 (> compile NEMU)
 
+void nvboard_bind_all_pins(TOP_NAME* top);
 
-// }
+static void single_cycle() {
+  top.clk = 0; top.eval();
+  top.clk = 1; top.eval();
+}
 
-int main(int argc, char** argv) {
-      int a = rand() & 1;
-      int b = rand() & 1;
-      VerilatedContext* contextp = new VerilatedContext;
-      contextp->commandArgs(argc, argv);
-      Vexample* top = new Vexample{contextp};
-      
-    contextp->traceEverOn(true); // 生成波形文件使用，打开追踪功能
+static void reset(int n) {
+  top.rst = 1;
+  while (n -- > 0) single_cycle();
+  top.rst = 0;
+}
 
-      while (!contextp->gotFinish()) {
-        top->a = a;
-        top->b = b;
-        top->eval();
-        printf("a = %d, b = %d, f = %d\n", a, b, top->f);
-        assert(top->f == (a ^ b));
-                contextp->timeInc(1); // 时间+1，推动仿真时间
+int main() {
+  nvboard_bind_all_pins(&top);
+  nvboard_init();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -98,3 +106,12 @@ int main(int argc, char** argv) {
 =======
   }
 >>>>>>> 35ceda6 (> compile NEMU)
+=======
+  reset(10);
+
+  while(1) {
+    nvboard_update();
+    single_cycle();
+  }
+}
+>>>>>>> 241d764 (> compile NEMU)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import "DPI-C" function void npcmem_write(
   input int waddr, input int wdata, input byte wmask);
 import "DPI-C" function void ebreak();
@@ -507,4 +508,27 @@ module ysyx_24100005_top(
   //   $display("add2=%h, ", add_input2);
   // end
 
+=======
+module top(
+  input a,
+  input b,
+  output f
+);
+  assign f = a ^ b;
+endmodule
+
+module light(
+  input clk,
+  input rst,
+  output reg [15:0] led
+);
+  reg [31:0] count;
+  always @(posedge clk) begin
+    if (rst) begin led <= 1; count <= 0; end
+    else begin
+      if (count == 0) led <= {led[14:0], led[15]};
+      count <= (count >= 5000000 ? 32'b0 : count + 1);
+    end
+  end
+>>>>>>> 241d764 (> compile NEMU)
 endmodule

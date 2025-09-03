@@ -57,7 +57,10 @@ static int cmd_q(char *args) {
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 241d764 (> compile NEMU)
 static int cmd_info(char *args) {
   
   if(args == NULL){
@@ -82,7 +85,10 @@ static int cmd_si(char *args) {
   uint64_t steps;
 
   if(args == NULL) steps = 1;
+<<<<<<< HEAD
   // si每次最多只打印9条指令
+=======
+>>>>>>> 241d764 (> compile NEMU)
   else steps = strtoul(args, &endptr, 0);
   cpu_exec(steps);
 
@@ -126,7 +132,11 @@ static int cmd_x(char *args) {
   for (int i = 0; i < len; i++ ) {
     printf("0x%08x : 0x", 0x80000000 + i);
     printf("%02x\n", int8_addr[i]);
+<<<<<<< HEAD
   }
+=======
+}
+>>>>>>> 241d764 (> compile NEMU)
 
   return 0;
 }

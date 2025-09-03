@@ -32,6 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 void difftest_wp();
+<<<<<<< HEAD
 
 // 环形缓冲区打印log 指令
 extern char log_ringbuf[100][108];
@@ -46,6 +47,8 @@ extern uint32_t ftrace_func_begin[100];
 extern uint32_t ftrace_func_end[100];
 extern uint32_t ftrace_func_count;
 extern char ftrace_func_name[100][128];
+=======
+>>>>>>> 241d764 (> compile NEMU)
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND

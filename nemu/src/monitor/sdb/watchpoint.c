@@ -93,11 +93,20 @@ void display_wp(){
     
     printf("%-8s %-18s %s\n", "Num", "Type", "What");
     while(tmp != NULL){
+<<<<<<< HEAD
       // The %-8s (and similar) format specifiers tell printf to print a string (s)
       // or a number (d, lx for unsigned long hex) with a width of 8, left-aligned (-).
       printf("%-8d %-18s %s\n", count, "watchpoint", tmp->expression);
       tmp = tmp->next;
       count += 1;
+=======
+    
+    // The %-8s (and similar) format specifiers tell printf to print a string (s)
+    // or a number (d, lx for unsigned long hex) with a width of 8, left-aligned (-).
+    printf("%-8d %-18s %s\n", count, "watchpoint", tmp->expression);
+    tmp = tmp->next;
+    count += 1;
+>>>>>>> 241d764 (> compile NEMU)
     }
 
 }
@@ -131,7 +140,10 @@ void free_wp(char *args){
   cur->next = free_;
   free_ = cur;
   NUM_WP -= 1;
+<<<<<<< HEAD
   return;
+=======
+>>>>>>> 241d764 (> compile NEMU)
   
 }
 

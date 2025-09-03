@@ -38,7 +38,11 @@ static int choose(int n){
 
 static void gen_rand_op(){
   // 防止出现一个运算符后面没有表达式这种情况
+<<<<<<< HEAD
   if(count + 1 > 60000)
+=======
+  if(count + 1 > 65000)
+>>>>>>> 241d764 (> compile NEMU)
     return; 
 
   int op =  rand() % 7 ;
@@ -59,7 +63,11 @@ static void gen_rand_op(){
 
 static void gen(char str){
   // 防止出现()这种情况
+<<<<<<< HEAD
   if(count + 1 > 60000)
+=======
+  if(count + 1 > 65000)
+>>>>>>> 241d764 (> compile NEMU)
     return; 
   buf[count] = str;
   count ++;
@@ -84,7 +92,11 @@ static void gen_num(){
 
 
 static void gen_rand_expr() {
+<<<<<<< HEAD
   if (count > 60000)
+=======
+  if (count > 65000)
+>>>>>>> 241d764 (> compile NEMU)
     return;
 
   switch (choose(5)) {
