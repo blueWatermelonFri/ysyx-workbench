@@ -20,12 +20,10 @@
 
 #define IO_SPACE_MAX (2 * 1024 * 1024)
 
-// 在init_map中初始化，每init一个device，就会改变一次p_space
 static uint8_t *io_space = NULL;
 static uint8_t *p_space = NULL;
 
 uint8_t* new_space(int size) {
-  // 地址对齐到4K
   uint8_t *p = p_space;
   // page aligned;
   size = (size + (PAGE_SIZE - 1)) & ~PAGE_MASK;
@@ -54,11 +52,9 @@ void init_map() {
   p_space = io_space;
 }
 
-// 先通过回调函数，更新mmio，再读取mmio
 word_t map_read(paddr_t addr, int len, IOMap *map) {
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
-  IFDEF(CONFIG_DTRACE, printf("read device address = 0x%08x, device = %s\n", addr, map->name););
   paddr_t offset = addr - map->low;
   invoke_callback(map->callback, offset, len, false); // prepare data to read
   word_t ret = host_read(map->space + offset, len);
@@ -68,7 +64,6 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
 void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
-  IFDEF(CONFIG_DTRACE, printf("write device address = 0x%08x, device = %s\n", addr, map->name););
   paddr_t offset = addr - map->low;
   host_write(map->space + offset, len, data);
   invoke_callback(map->callback, offset, len, true);

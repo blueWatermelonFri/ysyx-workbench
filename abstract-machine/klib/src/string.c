@@ -5,64 +5,23 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-
-  size_t i = 0;
-
-  while(s[i] != '\0') i++;
-  return i;
+  panic("Not implemented");
 }
 
 char *strcpy(char *dst, const char *src) {
-  size_t i;
-  
-  for (i = 0; src[i] != '\0'; i++)
-    dst[i] = src[i];
-  dst[i] = '\0';
-  return dst;
+  panic("Not implemented");
 }
 
-// No null-character is implicitly appended at the end of destination if source is longer than num. 
-// Thus, in this case, destination shall not be considered a null terminated C string 
-// (reading it as such would overflow).
 char *strncpy(char *dst, const char *src, size_t n) {
-    size_t i;
-
-    for (i = 0; i < n && src[i] != '\0'; i++)
-        dst[i] = src[i];
-    for ( ; i < n; i++)
-        dst[i] = '\0';
-
-    return dst;
-
+  panic("Not implemented");
 }
 
 char *strcat(char *dst, const char *src) {
-  size_t dest_len = strlen(dst);
-  size_t i;
-
-  for (i = 0 ; src[i] != '\0' ; i++)
-      dst[dest_len + i] = src[i];
-  dst[dest_len + i] = '\0';
-
-  return dst;
-
+  panic("Not implemented");
 }
 
 int strcmp(const char *s1, const char *s2) {
-  const unsigned char *p1 = (const unsigned char *) s1;
-  const unsigned char *p2 = (const unsigned char *) s2;
-  unsigned int c1, c2;
-
-  do
-    {
-      c1 = (unsigned char) *p1++;
-      c2 = (unsigned char) *p2++;
-      if (c1 == '\0')
-	      return c1 - c2;
-    }
-  while (c1 == c2);
-
-  return c1 - c2;
+  panic("Not implemented");
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
@@ -70,63 +29,19 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
-  char *p1 = (char *) s;
-  size_t i;
-  for(i = 0; i < n; i++){
-    p1[i] = (char) c;
-  }
-  return s;
+  panic("Not implemented");
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
-    unsigned char *d = (unsigned char *)dst;
-    const unsigned char *s = (const unsigned char *)src;
-
-    if (d < s) {
-        // Copy forwards if dst is before src
-        for (size_t i = 0; i < n; i++) {
-            d[i] = s[i];
-        }
-    } else if (d > s) {
-        // Copy backwards if dst is after src
-        for (size_t i = n; i > 0; i--) {
-            d[i-1] = s[i-1];
-        }
-    }
-    // If d == s, no need to copy
-
-    return dst;
+  panic("Not implemented");
 }
 
-// 在函数的返回值中, void 是没有任何返回值, 而 void * 是返回任意类型的值的指针.
 void *memcpy(void *out, const void *in, size_t n) {
-      size_t i;
-    const unsigned char *p1 = (const unsigned char *) in;
-    unsigned char *p2 = (unsigned char *) out;
-    for (i = 0; i < n ; i++){
-      p2[i] = p1[i];
-    }
-    return p2;
+  panic("Not implemented");
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  
-  if(n == 0) return 0;
-
-  const unsigned char *p1 = (const unsigned char *) s1;
-  const unsigned char *p2 = (const unsigned char *) s2;
-  unsigned int c1, c2;
-
-  do
-    { 
-      n --;
-      c1 = (unsigned char) *p1++;
-      c2 = (unsigned char) *p2++;
-
-    }
-  while (c1 == c2 && n > 0);
-
-  return c1 - c2;
+  panic("Not implemented");
 }
 
 #endif

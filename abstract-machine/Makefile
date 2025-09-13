@@ -36,7 +36,6 @@ ISA        = $(word 1,$(ARCH_SPLIT))
 PLATFORM   = $(word 2,$(ARCH_SPLIT))
 
 ### Check if there is something to build
-# flavor 返回变量的类型
 ifeq ($(flavor SRCS), undefined)
   $(error Nothing to build)
 endif
@@ -64,7 +63,6 @@ LINKAGE   = $(OBJS) \
     $(addsuffix /build/, $(addprefix $(AM_HOME)/, $(LIBS))), \
     $(LIBS) ))
 
-
 ## 3. General Compilation Flags
 
 ### (Cross) compilers, e.g., mips-linux-gnu-g++
@@ -88,7 +86,7 @@ CFLAGS   += -O2 -MMD -Wall -Werror $(INCFLAGS) \
             -D__PLATFORM__=$(PLATFORM) -D__PLATFORM_$(shell echo $(PLATFORM) | tr a-z A-Z | tr - _) \
             -DARCH_H=\"$(ARCH_H)\" \
             -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector \
-            -Wno-main -U_FORTIFY_SOURCE -fvisibility=hidden -g3 -ggdb
+            -Wno-main -U_FORTIFY_SOURCE -fvisibility=hidden
 CXXFLAGS +=  $(CFLAGS) -ffreestanding -fno-rtti -fno-exceptions
 ASFLAGS  += -MMD $(INCFLAGS)
 LDFLAGS  += -z noexecstack
@@ -107,9 +105,6 @@ endif
 ## 5. Compilation Rules
 
 ### Rule (compile): a single `.c` -> `.o` (gcc)
-# 生成.S文件的命令
-# @$(CC) -std=gnu11 $(CFLAGS) -S -o $(patsubst %.o, %.S, $@) $(realpath $<)
-# 为什么每次会重新触发trm.o的编译
 $(DST_DIR)/%.o: %.c
 	@mkdir -p $(dir $@) && echo + CC $<
 	@$(CC) -std=gnu11 $(CFLAGS) -c -o $@ $(realpath $<)
@@ -149,10 +144,6 @@ $(ARCHIVE): $(OBJS)
 ## 6. Miscellaneous
 
 ### Build order control
-# 如果多条规则中只有一条规则有命令，那么直接合并成一条规则，目标不变，依赖叠加；
-# 如果有多条规则有命令，那么后面的规则会覆盖前面的规则，且会爆告警
-# native.mk和这里都有iamge目标
-
 image: image-dep
 archive: $(ARCHIVE)
 image-dep: $(OBJS) $(LIBS)

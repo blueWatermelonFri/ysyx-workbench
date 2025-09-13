@@ -155,17 +155,6 @@ config ITRACE_COND
   string "Only trace instructions when the condition is true"
   default "true"
 
-config MTRACE
-  bool "trace memory access"
-  default n
-
-config FTRACE
-  bool "trace function callak"
-  default n
-
-config DTRACE
-  bool "trace device access"
-  default n
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF

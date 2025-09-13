@@ -66,10 +66,6 @@ void engine_start() {
   #else
     // test expr compute 
     test_cmd_p();
-<<<<<<< HEAD
-    nemu_state.state = NEMU_QUIT;
-=======
->>>>>>> 241d764 (> compile NEMU)
   #endif
 #endif
 }

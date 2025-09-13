@@ -19,11 +19,10 @@ LDFLAGS_CXX = $(addprefix -Wl$(comma), $(LDFLAGS))
 
 image:
 	@echo + LD "->" $(IMAGE_REL)
-	@g++ -g3 -pie -o $(IMAGE) -Wl,--whole-archive $(LINKAGE) -Wl,-no-whole-archive $(LDFLAGS_CXX) -lSDL2 -ldl
+	@g++ -pie -o $(IMAGE) -Wl,--whole-archive $(LINKAGE) -Wl,-no-whole-archive $(LDFLAGS_CXX) -lSDL2 -ldl
 
 run: image
 	$(IMAGE)
 
-# "handle SIGUSR1 SIGUSR2 SIGSEGV noprint nostop"会导致段错误无法输出所在的行
 gdb: image
-	gdb  $(IMAGE)
+	gdb -ex "handle SIGUSR1 SIGUSR2 SIGSEGV noprint nostop" $(IMAGE)

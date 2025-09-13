@@ -60,7 +60,7 @@ help:
 	@echo  '  savedefconfig   - Save current config as configs/defconfig (minimal config)'
 
 distclean: clean
-	-@rm -rf $(rm-distclean)
+	rm -rf $(rm-distclean)
 
 .PHONY: help distclean
 

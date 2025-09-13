@@ -1,5 +1,5 @@
-AM_SRCS := platform/nemu/ioe/ioe.c \
-           platform/nemu/trm.c \
+AM_SRCS := platform/nemu/trm.c \
+           platform/nemu/ioe/ioe.c \
            platform/nemu/ioe/timer.c \
            platform/nemu/ioe/input.c \
            platform/nemu/ioe/gpu.c \
@@ -11,15 +11,14 @@ CFLAGS    += -fdata-sections -ffunction-sections
 LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
              --defsym=_pmem_start=0x80000000 --defsym=_entry_offset=0x0
 LDFLAGS   += --gc-sections -e _start
-NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt  -e $(IMAGE).elf   -b
+NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
 CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include
 .PHONY: $(AM_HOME)/am/src/platform/nemu/trm.c
 
-# -M no-aliases表示不生成伪指令
 image: $(IMAGE).elf
-	@$(OBJDUMP) -M no-aliases -d $(IMAGE).elf > $(IMAGE).txt
+	@$(OBJDUMP) -d $(IMAGE).elf > $(IMAGE).txt
 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
